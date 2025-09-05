@@ -1,0 +1,149 @@
+ 
+-- Bảng Roles
+CREATE TABLE Roles (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(50) NOT NULL
+);
+
+-- Bảng Users
+CREATE TABLE Users (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
+    Password NVARCHAR(255) NOT NULL,
+    Phone NVARCHAR(20),
+    RoleId INT NOT NULL,
+    Status NVARCHAR(50) DEFAULT 'Active',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Users_Roles FOREIGN KEY (RoleId) REFERENCES Roles(Id)
+);
+
+-- Bảng PropertyTypes
+CREATE TABLE PropertyTypes (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(50) NOT NULL
+);
+
+-- Bảng Properties
+CREATE TABLE Properties (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    Title NVARCHAR(200) NOT NULL,
+    Description NVARCHAR(MAX),
+    Price DECIMAL(18,2) NOT NULL,
+    Area DECIMAL(10,2),
+    Address NVARCHAR(255),
+    City NVARCHAR(100),
+    District NVARCHAR(100),
+    Ward NVARCHAR(100),
+    TypeId INT NOT NULL,
+    Status NVARCHAR(50) DEFAULT 'Active',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Properties_Users FOREIGN KEY (UserId) REFERENCES Users(Id),
+    CONSTRAINT FK_Properties_Types FOREIGN KEY (TypeId) REFERENCES PropertyTypes(Id)
+);
+
+-- Bảng PropertyImages
+CREATE TABLE PropertyImages (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    PropertyId INT NOT NULL,
+    ImageUrl NVARCHAR(255) NOT NULL,
+    IsPrimary BIT DEFAULT 0,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_PropertyImages_Properties FOREIGN KEY (PropertyId) REFERENCES Properties(Id)
+);
+
+-- Bảng Categories
+CREATE TABLE Categories (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX)
+);
+
+-- Bảng News
+CREATE TABLE News (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Title NVARCHAR(200) NOT NULL,
+    Content NVARCHAR(MAX),
+    CategoryId INT,
+    AuthorId INT,
+    PublishedAt DATETIME DEFAULT GETDATE(),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_News_Categories FOREIGN KEY (CategoryId) REFERENCES Categories(Id),
+    CONSTRAINT FK_News_Users FOREIGN KEY (AuthorId) REFERENCES Users(Id)
+);
+
+-- Bảng Transactions
+CREATE TABLE Transactions (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    PropertyId INT NOT NULL,
+    Amount DECIMAL(18,2) NOT NULL,
+    TransactionType NVARCHAR(50),
+    Status NVARCHAR(50) DEFAULT 'Pending',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Transactions_Users FOREIGN KEY (UserId) REFERENCES Users(Id),
+    CONSTRAINT FK_Transactions_Properties FOREIGN KEY (PropertyId) REFERENCES Properties(Id)
+);
+
+-- Bảng Payments
+CREATE TABLE Payments (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    TransactionId INT NOT NULL,
+    PaymentMethod NVARCHAR(50),
+    Amount DECIMAL(18,2),
+    PaymentStatus NVARCHAR(50) DEFAULT 'Pending',
+    PaidAt DATETIME,
+    CONSTRAINT FK_Payments_Transactions FOREIGN KEY (TransactionId) REFERENCES Transactions(Id)
+);
+
+-- Bảng Favorites
+CREATE TABLE Favorites (
+    UserId INT NOT NULL,
+    PropertyId INT NOT NULL,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT PK_Favorites PRIMARY KEY (UserId, PropertyId),
+    CONSTRAINT FK_Favorites_Users FOREIGN KEY (UserId) REFERENCES Users(Id),
+    CONSTRAINT FK_Favorites_Properties FOREIGN KEY (PropertyId) REFERENCES Properties(Id)
+);
+
+-- Bảng Reviews
+CREATE TABLE Reviews (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    PropertyId INT NOT NULL,
+    Rating INT CHECK (Rating >= 1 AND Rating <= 5),
+    Comment NVARCHAR(MAX),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Reviews_Users FOREIGN KEY (UserId) REFERENCES Users(Id),
+    CONSTRAINT FK_Reviews_Properties FOREIGN KEY (PropertyId) REFERENCES Properties(Id)
+);
+
+-- Bảng Messages
+CREATE TABLE Messages (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    SenderId INT NOT NULL,
+    ReceiverId INT NOT NULL,
+    PropertyId INT,
+    Content NVARCHAR(MAX),
+    Status NVARCHAR(50) DEFAULT 'Sent',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Messages_Sender FOREIGN KEY (SenderId) REFERENCES Users(Id),
+    CONSTRAINT FK_Messages_Receiver FOREIGN KEY (ReceiverId) REFERENCES Users(Id),
+    CONSTRAINT FK_Messages_Property FOREIGN KEY (PropertyId) REFERENCES Properties(Id)
+);
+
+-- Bảng Logs
+CREATE TABLE Logs (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    Action NVARCHAR(255),
+    Target NVARCHAR(255),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Logs_Users FOREIGN KEY (UserId) REFERENCES Users(Id)
+);
+
