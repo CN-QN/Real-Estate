@@ -1,0 +1,44 @@
+1.Cấu hình 
+ - connection string, authentication, session, customErrors.
+ - Thêm HTTP Modules & HTTP Handlers nếu cần xử lý request toàn cục.
+2.Quản lý dữ liệu (Models & DB)
+ - Tạo Models và liên kết Entity Framework
+ - Thiết kế các table cơ bản: Property, User, Customer, Transaction.
+ - Cài AutoMapper để mapping Model ↔ ViewModel.
+ - Tạo CRUD controller + View cơ bản cho Property, User, Transaction.
+3.Authentication / Authorization
+ - Microsoft.Owin.Security.Google (OAuth Google/Facebook) nếu cần external log
+ - Thiết lập role: Admin, Agent, Customer.
+ - Test login/register cơ bản.
+4.Giao diện cơ bản & UI helpers
+ - Bootstrap, Font Awesome, jQuery
+ - DataTables → danh sách Property / Transaction
+ - Toastr.js / SweetAlert → notification
+ - Form nhập liệu cơ bản cho Property, Customer, Transaction.
+5.Validation Phân trang
+ - FluentValidation → validate form trước khi lưu vào DB
+ - PagedList.Mvc → phân trang danh sách property / khách hàng / giao dịch
+6.Notification / Realtime
+ - Cài SignalR → chat live hoặc thông báo user (nếu cần)
+ - Cài SendGrid / SMTP client → gửi email xác nhận, thông báo cho user
+7.UI nâng cao
+ - Select2 / Chosen → dropdown search/filter
+ - Chart.js / Highcharts → hiển thị thống kê giá, lượt xem, giao dịch
+ - Moment.js / Day.js → format ngày tháng
+ - Bootstrap Datepicker → chọn ngày đăng tin
+8.Loggin & Monitoring
+ - Cài Serilog / NLog / log4net → log server, request, lỗi
+ - Cài Elmah → theo dõi lỗi runtime
+9.Security / Spam protection
+ - AntiXSS → bảo vệ input
+ - Captcha / Google reCAPTCHA → tránh spam form
+10.Caching & Performance
+ - MemoryCache hoặc Redis → cache dữ liệu thường dùng
+ - MiniProfiler → đo hiệu suất query, request
+11.Export / Import / Scheduler
+ - CsvHelper → xuất nhập .csv
+ - EPPlus / ClosedXML → xuất Excel
+ - iTextSharp / PdfSharp → xuất PDF hợp đồng / báo cáo
+ - Hangfire → chạy các task định kỳ (gửi email, update property status…)
+12. Tích hợp Map
+ - GeoCoordinate / Google Maps SDK → hiển thị bản đồ, định vị property
