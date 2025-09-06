@@ -1,0 +1,87 @@
+HTTP Handler ,HTTP Modules =>Xử lí request
+
+authentication 
+
+auth, session, compilation, customErrors
+
+module, handler, rewrite rules
+
+Install-Package Microsoft.Owin.Security.Google :  login bằng Google/Facebook → OAuth packages:
+
+DataTables 
+
+Toastr.js / SweetAlert
+
+Font Awesome
+
+AutoMapper : mapping Model ↔ ViewModel.
+
+FluentValidation 
+
+PagedList.Mvc : phân trang
+
+SendGrid / SMTP client : Gữi mail
+
+SignalR : Chat realtime
+
+
+
+UI
+
+Select2 / Chosen → select box đẹp, search filter cho dropdown.
+
+Chart.js / Highcharts → hiển thị biểu đồ thống kê (giá, lượt xem, giao dịch…).
+
+Moment.js / Day.js → xử lý format, hiển thị ngày tháng dễ dàng trong JS.
+
+Bootstrap Datepicker → chọn ngày tiện lợi (ví dụ ngày đăng tin).
+
+
+
+
+BE : 
+Logging / Monitoring
+
+Serilog / NLog / log4net → ghi log server, request, lỗi hệ thống.
+
+Elmah → quản lý lỗi runtime, báo cáo lỗi tự động qua web.
+
+
+Security / Bảo mật
+
+Microsoft.Owin.Security → OAuth / External login (Google, Facebook).
+
+AntiXSS → bảo vệ khỏi injection, script trong input của user.
+
+Captcha / Google reCAPTCHA → tránh spam form liên hệ, đăng tin.
+
+
+
+Data / API / Helper
+
+RestSharp → gọi API từ server (ví dụ lấy dữ liệu bản đồ, tiện ích bên ngoài).
+
+AutoMapper → mapping giữa Model ↔ ViewModel (như mình đã đề cập).
+
+CsvHelper → xuất / nhập dữ liệu .csv (ví dụ danh sách khách hàng, bất động sản)
+
+
+
+Caching / Performance
+
+Redis / StackExchange.Redis → cache dữ liệu bất động sản hot, giảm load DB.
+
+MemoryCache / System.Runtime.Caching → cache tạm thời trong app.
+
+MiniProfiler → đo thời gian request, query để tối ưu performance.
+
+
+
+
+Hangfire → task scheduler (gửi email định kỳ, làm cron jobs).
+
+EPPlus / ClosedXML → xuất dữ liệu ra Excel (danh sách bất động sản, báo cáo).
+
+iTextSharp / PdfSharp → xuất PDF (hợp đồng, báo cáo).
+
+GeoCoordinate / Google Maps SDK → xử lý tọa độ, bản đồ, định vị property.
