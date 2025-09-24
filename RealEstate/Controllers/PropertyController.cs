@@ -1,13 +1,23 @@
-﻿using System.Web.Mvc;
+﻿using RealEstate.Services;
+using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace RealEstate.Controllers
 {
     public class PropertyController : Controller
     {
         // GET: Property
-        public ActionResult Index()
+
+
+        PropertyService _service = new PropertyService();
+        public ActionResult Index(int PageSize =50 , int PageNumber  =1)
         {
-            return Content("Hello world");
+             var property = _service.GetPropertyAll(PageSize , PageNumber);
+            //return View(property);
+            //return Json(_service.GetPropertyAll());
+            //return Content("Hello");
+            //return Json(property, JsonRequestBehavior.AllowGet);
+            return Json(property , JsonRequestBehavior.AllowGet);
         }
 
         // GET: Property/Details/5

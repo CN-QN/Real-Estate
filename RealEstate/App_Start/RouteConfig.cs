@@ -10,17 +10,17 @@ namespace RealEstate
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name :"Properties",
+                url : "{controller}/{action}/{id}",
+                defaults : new {controller = "Property", action = "Index",id = UrlParameter.Optional}
+                );
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-            routes.MapRoute(
-
-                name: "PropertyDetails",
-                url: "Property/Details/{id}",
-                defaults: new { controller = "Property", action = "Details", id = UrlParameter.Optional }
-            );
+          
             routes.MapRoute(
 
                name: "PropertyList",

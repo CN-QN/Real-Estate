@@ -120,11 +120,28 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
-    <Compile Include="DAL\UserDAL.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="DTO\PropertyDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Category.Models.cs" />
+    <Compile Include="Models\Favorite.Models.cs" />
+    <Compile Include="Models\Log.Models.cs" />
+    <Compile Include="Models\Message.Models.cs" />
+    <Compile Include="Models\News.Models.cs" />
+    <Compile Include="Models\Payment.Models.cs" />
+    <Compile Include="Models\Property.Models.cs" />
+    <Compile Include="Models\PropertyImage.Models.cs" />
+    <Compile Include="Models\PropertyType.Models.cs" />
+    <Compile Include="Models\Review.Models.cs" />
+    <Compile Include="Models\Role.Models.cs" />
+    <Compile Include="Models\Transaction.Models.cs" />
+    <Compile Include="Models\User.Models.cs" />
+    <Compile Include="Models\ViewModels\PropertyViewModel.cs" />
+    <Compile Include="Modules\AuthModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\PropertyService.cs" />
     <Compile Include="Utils\DbHelper.cs" />
     <Compile Include="Utils\HashHelper.cs" />
   </ItemGroup>
@@ -154,6 +171,7 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Compile Include="Repository\PropertyRepo.cs" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -179,14 +197,11 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Property\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Handlers\" />
-    <Folder Include="Models\" />
-    <Folder Include="Modules\" />
-    <Folder Include="Services\" />
-    <Folder Include="Views\Property\" />
     <Folder Include="Views\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
