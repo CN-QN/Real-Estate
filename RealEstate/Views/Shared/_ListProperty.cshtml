@@ -1,0 +1,25 @@
+﻿@model RealEstate.Models.ViewModels.PropertyViewModel
+
+<a href="/Property/Details/@Model.Id" class="property-link">
+    <div class="property-card">
+        <img src="@Model.ImageUrl" alt="@Model.Title" class="property-img" />
+        <div class="property-body">
+            <h5 class="property-title">@Model.Title</h5>
+            <p class="property-address">@Model.Address </p>
+            <div style="display: flex; justify-content: space-between; height: 26px;">
+                <p class="property-price">
+                    @(Model.Price ==0 ? "Thỏa thuân" : string.Format("{0:N0} Tỷ", Model.Price))
+                </p>
+
+                <p class="property-address">@Model.Area m2</p>
+            </div>
+            <p class="property-users">
+                <span>
+                    <img src="@Model.Avatar" alt="Alternate Text" />
+                </span>
+                @Model.Name
+            </p>
+
+        </div>
+    </div>
+</a>

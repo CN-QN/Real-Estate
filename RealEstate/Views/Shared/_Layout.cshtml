@@ -3,37 +3,180 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>@ViewBag.Title - RealEstate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <style>
+        .search-bar {
+            background: #e9f4ff;
+            padding: 30px 0;
+        }
+
+        .property-card {
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+            .property-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
-            </div>
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a class="navbar-brand" href="/">RealEstate</a>
+            <ul class="navbar-menu">
+                <li><a href="/">Trang chủ</a></li>
+                <li><a href="/Property">Bất động sản</a></li>
+                <li><a href="/Home/About">Giới thiệu</a></li>
+                <li><a href="/Home/Contact">Liên hệ</a></li>
+            </ul>
         </div>
     </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+
+    <!-- Search Section -->
+    <div class="search-bar">
+        <form class="search-form">
+            <select>
+                <option>Toàn quốc</option>
+                <option>Hà Nội</option>
+                <option>TP. Hồ Chí Minh</option>
+            </select>
+            <select>
+                <option>Loại BĐS</option>
+                <option>Nhà riêng</option>
+                <option>Căn hộ</option>
+                <option>Đất</option>
+            </select>
+            <select>
+                <option>Mức giá</option>
+                <option>< 1 tỷ</option>
+                <option>1 - 3 tỷ</option>
+                <option>> 3 tỷ</option>
+            </select>
+            <button type="submit">Tìm kiếm</button>
+        </form>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <!-- Body -->
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-columns">
+                    <!-- Cột 1 -->
+                    <div class="footer-col">
+                        <h4>Bất động sản TPHCM</h4>
+                        <ul>
+                            <li><a href="#">Bán đất TPHCM</a></li>
+                            <li><a href="#">Bán nhà TPHCM</a></li>
+                            <li><a href="#">Bán đất nền TPHCM</a></li>
+                            <li><a href="#">Bán nhà mặt phố TPHCM</a></li>
+                            <li><a href="#">Bán căn hộ chung cư TPHCM</a></li>
+                            <li><a href="#">Cho thuê căn hộ TPHCM</a></li>
+                            <li><a href="#">Cho thuê phòng trọ TPHCM</a></li>
+                            <li><a href="#">Cho thuê văn phòng TPHCM</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Cột 2 -->
+                    <div class="footer-col">
+                        <h4>Bất động sản Hà Nội</h4>
+                        <ul>
+                            <li><a href="#">Bán đất Hà Nội</a></li>
+                            <li><a href="#">Bán nhà Hà Nội</a></li>
+                            <li><a href="#">Bán căn hộ Hà Nội</a></li>
+                            <li><a href="#">Cho thuê căn hộ Hà Nội</a></li>
+                            <li><a href="#">Cho thuê nhà mặt phố Hà Nội</a></li>
+                            <li><a href="#">Cho thuê văn phòng Hà Nội</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Cột 3 -->
+                    <div class="footer-col">
+                        <h4>Mua bán nhà đất</h4>
+                        <ul>
+                            <li><a href="#">Bán đất Quận 9</a></li>
+                            <li><a href="#">Bán đất Bình Chánh</a></li>
+                            <li><a href="#">Bán nhà Quận 12</a></li>
+                            <li><a href="#">Bán chung cư Quận 12</a></li>
+                            <li><a href="#">Bán đất Bảo Lộc</a></li>
+                            <li><a href="#">Dự án Dalat Pearl</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Cột 4 -->
+                    <div class="footer-col">
+                        <h4>Cho thuê bất động sản</h4>
+                        <ul>
+                            <li><a href="#">Phòng trọ Đà Nẵng</a></li>
+                            <li><a href="#">Thuê nhà Hải Phòng</a></li>
+                            <li><a href="#">Phòng trọ Quận 9</a></li>
+                            <li><a href="#">Phòng trọ Gò Vấp</a></li>
+                            <li><a href="#">Phòng trọ Bình Thạnh</a></li>
+                            <li><a href="#">Phòng trọ Thủ Đức</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer bottom -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-links">
+                    <div>
+                        <h4>Về RealEstate</h4>
+                        <ul>
+                            <li><a href="#">Giới thiệu</a></li>
+                            <li><a href="#">Tuyển dụng</a></li>
+                            <li><a href="#">Bảo mật thông tin</a></li>
+                            <li><a href="#">Trợ giúp</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Tài khoản</h4>
+                        <ul>
+                            <li><a href="#">Đăng ký</a></li>
+                            <li><a href="#">Đăng nhập</a></li>
+                            <li><a href="#">Đăng tin mới</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Liên hệ</h4>
+                        <p>📞 0768.283.968</p>
+                        <p>✉️ lienhe@realestate.com</p>
+                    </div>
+                    <div>
+                        <h4>Kết nối</h4>
+                        <div class="socials">
+                            <a href="#">🌐 Facebook</a>
+                            <a href="#">🌐 LinkedIn</a>
+                            <a href="#">🌐 Twitter</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="copyright">
+                    <p>&copy; 2025 RealEstate - Bản quyền thuộc về Công ty RealEstate Việt Nam</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+     
+
+
 </body>
 </html>

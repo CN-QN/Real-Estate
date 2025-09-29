@@ -12,6 +12,7 @@ CREATE TABLE Users (
     Email NVARCHAR(100) NOT NULL UNIQUE,
     Password NVARCHAR(255) NOT NULL,
     Phone NVARCHAR(20),
+    Profile_Link NVARCHAR(MAX),
     RoleId INT NOT NULL,
     Status NVARCHAR(50) DEFAULT 'Active',
     CreatedAt DATETIME DEFAULT GETDATE(),
