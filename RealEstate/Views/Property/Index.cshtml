@@ -1,20 +1,24 @@
-﻿@model List<RealEstate.Models.Property>
+﻿@model List<RealEstate.Models.ViewModels.PropertyViewModel>
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Danh sách bất động sản";
 }
 
-<h2>Index</h2>
+<div class="title-home">
+    <h3>Bất động sản dành cho bạn</h3>
+    <ul>
+        <li><a href="#">Bán đất</a></li>
+        <li><a href="#">Bán nhà riêng</a></li>
+        <li><a href="#">Bán căn hộ</a></li>
+        <li><a href="#">Cho thuê</a></li>
 
+    </ul>
+</div>
+<div class="list-item">
 
-
-<div>
-    @foreach(var item in Model)
-            {
-                <div>
-                    <p>
-                        @item.Title
-                    </p>
-                </div>
-            }
+    @foreach (var item in Model)
+    {
+        <div>
+           @Html.Partial("_ListProperty", item)
+        </div>
+    }
 </div>

@@ -14,19 +14,7 @@ namespace RealEstate
                 url : "{controller}/{action}/{id}",
                 defaults : new {controller = "Property", action = "Index",id = UrlParameter.Optional}
                 );
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
-
-          
-            routes.MapRoute(
-
-               name: "PropertyList",
-               url: "Properties",
-               defaults: new { controller = "Property", action = "Index" }
-           );
+            
         }
     }
 }

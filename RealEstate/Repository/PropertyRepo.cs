@@ -1,10 +1,13 @@
-﻿using RealEstate.Models;
+﻿using Newtonsoft.Json;
+using RealEstate.Models;
+using RealEstate.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace RealEstate.Repository
 {
@@ -12,14 +15,14 @@ namespace RealEstate.Repository
 	{
 		private string connStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 		 
-		public List<Property> GetPropertyAll(int PageSize,int PageNumber) 
+		public List<PropertyViewModel> GetPropertyAll(int PageSize,int PageNumber) 
 		{
-			 var list = new List<Property>();
+			 var list = new List<PropertyViewModel>();
 
 			using (SqlConnection conn = new SqlConnection(connStr))
 			{
 				conn.Open();
-                using (SqlCommand cmd = new SqlCommand("GetPropertyPage", conn))
+                using (SqlCommand cmd = new SqlCommand("GetProperty", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@PageSize", PageSize);
@@ -41,22 +44,58 @@ namespace RealEstate.Repository
 			return list;
              
         }
-
-        public Property MapReader(SqlDataReader reader)
+        public PropertyDetailViewModel GetPropertyById(int Id)
         {
-            return new Property
+            PropertyDetailViewModel propertyDetailViewModel = new PropertyDetailViewModel();
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                Id = (int)reader["Id"],
-                UserId = (int)reader["UserId"],
-                Title = (string)reader["Title"],
-                Description = (string)reader["Description"],
-                Price = (decimal)reader["Price"],
-                Area = (decimal)reader["Area"],
-                Address = (string)reader["Address"],
-                City = (string)reader["City"],
-                District = (string)reader["District"],
-                Ward = (string)reader["Ward"],
-                Status = (string)reader["Status"],
+                conn.Open ();
+                using (SqlCommand cmd = new SqlCommand("GetPropertyById", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("Id", Id);
+                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while(reader.Read())
+                        {
+
+                            propertyDetailViewModel.Id = Convert.ToInt32(reader["Id"]);
+                            propertyDetailViewModel.UserId = Convert.ToInt32(reader["UserId"]);
+                            propertyDetailViewModel.Title = Convert.ToString(reader["Title"]);
+                            propertyDetailViewModel.Description = Convert.ToString(reader["Description"]);
+                            propertyDetailViewModel.Area = Convert.ToDecimal(reader["Area"]);
+                            propertyDetailViewModel.NameType = Convert.ToString(reader["NameType"]);
+                            propertyDetailViewModel.NameUser = Convert.ToString(reader["NameUser"]);
+
+                            propertyDetailViewModel.Price = Convert.ToInt32(reader["Price"]);
+                            propertyDetailViewModel.Address = Convert.ToString(reader["Area"]);
+                            propertyDetailViewModel.Phone = Convert.ToString(reader["Phone"]);
+                            propertyDetailViewModel.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+                            propertyDetailViewModel.ImageGallery = JsonConvert.DeserializeObject<List<ImageItem>>(Convert.ToString(reader["ImageGallery"]));
+
+
+
+
+                        }
+                    }
+
+                }
+            }
+            return propertyDetailViewModel;
+
+        }
+        public PropertyViewModel MapReader(SqlDataReader reader)
+        {
+            return new PropertyViewModel
+            {
+                Id = Convert.ToInt32(reader["Id"]),
+                Title =  reader["Title"].ToString(),
+                Price = Convert.ToInt32(reader["Price"]),
+                Area = Convert.ToDecimal(reader["Area"]),
+                Address =  reader["Address"].ToString(),
+                ImageUrl =  reader["ImageUrl"].ToString(),
+                Name =  reader["Name"].ToString(),
+                Avatar =  reader["Avatar"].ToString(),
 
             };
         }

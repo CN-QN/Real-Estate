@@ -9,9 +9,16 @@ namespace RealEstate.Models.ViewModels
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public decimal Price { get; set; }
+        public decimal Area { get; set; }
+        public string Name { get; set; }
+        public int Price { get; set; }
         public string Address { get; set; }
-        public string City { get; set; }
-        public string Status { get; set; }
+        
+        public string ImageUrl { get; set; }
+        public string Avatar { get; set; }
+
+
+
+
     }
 }

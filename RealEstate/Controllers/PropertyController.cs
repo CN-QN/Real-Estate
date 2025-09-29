@@ -1,4 +1,6 @@
-﻿using RealEstate.Services;
+﻿using RealEstate.Models.ViewModels;
+using RealEstate.Services;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 
@@ -13,17 +15,22 @@ namespace RealEstate.Controllers
         public ActionResult Index(int PageSize =50 , int PageNumber  =1)
         {
              var property = _service.GetPropertyAll(PageSize , PageNumber);
-            //return View(property);
-            //return Json(_service.GetPropertyAll());
-            //return Content("Hello");
-            //return Json(property, JsonRequestBehavior.AllowGet);
-            return Json(property , JsonRequestBehavior.AllowGet);
+            return View(property);
         }
 
         // GET: Property/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+
+         
+            if(id.HasValue)
+            {
+                var property = _service.GetPropertyById(id.Value);
+                return View(property);
+
+            }
+
+            return null;
         }
 
         // GET: Property/Create
