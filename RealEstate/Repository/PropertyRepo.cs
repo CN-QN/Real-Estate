@@ -8,18 +8,18 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
-
+using RealEstate.Utils;
 namespace RealEstate.Repository
 {
 	public class PropertyRepo
 	{
-		private string connStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private SqlConnection connStr = DbHelper.GetConnection();
 		 
 		public List<PropertyViewModel> GetPropertyAll(int PageSize,int PageNumber) 
 		{
 			 var list = new List<PropertyViewModel>();
 
-			using (SqlConnection conn = new SqlConnection(connStr))
+			using (SqlConnection conn = connStr)
 			{
 				conn.Open();
                 using (SqlCommand cmd = new SqlCommand("GetProperty", conn))
@@ -47,7 +47,7 @@ namespace RealEstate.Repository
         public PropertyDetailViewModel GetPropertyById(int Id)
         {
             PropertyDetailViewModel propertyDetailViewModel = new PropertyDetailViewModel();
-            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlConnection conn =  connStr)
             {
                 conn.Open ();
                 using (SqlCommand cmd = new SqlCommand("GetPropertyById", conn))
@@ -63,16 +63,24 @@ namespace RealEstate.Repository
                             propertyDetailViewModel.UserId = Convert.ToInt32(reader["UserId"]);
                             propertyDetailViewModel.Title = Convert.ToString(reader["Title"]);
                             propertyDetailViewModel.Description = Convert.ToString(reader["Description"]);
-                            propertyDetailViewModel.Area = Convert.ToDecimal(reader["Area"]);
+                            propertyDetailViewModel.AreaUnit = Convert.ToString(reader["AreaUnit"]);
+                            propertyDetailViewModel.AreaMax = Convert.ToDecimal(reader["AreaMax"]);
+                            propertyDetailViewModel.AreaMin = Convert.ToDecimal(reader["AreaMin"]);
+
                             propertyDetailViewModel.NameType = Convert.ToString(reader["NameType"]);
                             propertyDetailViewModel.NameUser = Convert.ToString(reader["NameUser"]);
+                            propertyDetailViewModel.Avatar = Convert.ToString(reader["Avatar"]);
 
-                            propertyDetailViewModel.Price = Convert.ToInt32(reader["Price"]);
-                            propertyDetailViewModel.Address = Convert.ToString(reader["Area"]);
+
+                            propertyDetailViewModel.PriceMin = Convert.ToDecimal(reader["PriceMin"]);
+                            propertyDetailViewModel.PriceMax = Convert.ToDecimal(reader["PriceMax"]);
+                            propertyDetailViewModel.PriceUnit = Convert.ToString(reader["PriceUnit"]);
+
+                            propertyDetailViewModel.Address = Convert.ToString(reader["Address"]);
                             propertyDetailViewModel.Phone = Convert.ToString(reader["Phone"]);
                             propertyDetailViewModel.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
-                            propertyDetailViewModel.ImageGallery = JsonConvert.DeserializeObject<List<ImageItem>>(Convert.ToString(reader["ImageGallery"]));
 
+                            propertyDetailViewModel.ImageGallery = JsonConvert.DeserializeObject<List<ImageItem>>(Convert.ToString(reader["ImageGallery"]));
 
 
 
@@ -90,10 +98,16 @@ namespace RealEstate.Repository
             {
                 Id = Convert.ToInt32(reader["Id"]),
                 Title =  reader["Title"].ToString(),
-                Price = Convert.ToInt32(reader["Price"]),
-                Area = Convert.ToDecimal(reader["Area"]),
+                PriceMin = Convert.ToDecimal(reader["PriceMin"]),
+                PriceMax = Convert.ToDecimal(reader["PriceMax"]),
+                PriceUnit = Convert.ToString(reader["PriceUnit"]),
+
+                AreaMin = Convert.ToDecimal(reader["AreaMin"]),
+                AreaMax = Convert.ToDecimal(reader["AreaMax"]),
+                AreaUnit = Convert.ToString(reader["AreaUnit"]),
+
                 Address =  reader["Address"].ToString(),
-                ImageUrl =  reader["ImageUrl"].ToString(),
+                ImageUrl =  JsonConvert.DeserializeObject<List<ImageItem>>(Convert.ToString(reader["ImageUrl"].ToString())),
                 Name =  reader["Name"].ToString(),
                 Avatar =  reader["Avatar"].ToString(),
 
