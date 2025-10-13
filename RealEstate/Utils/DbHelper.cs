@@ -5,7 +5,7 @@ namespace RealEstate.Utils
 {
     public static class DbHelper
     {
-        private static readonly string ConnString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private static readonly string ConnString = ConfigurationManager.ConnectionStrings["MyDB"].ConnectionString;
 
         public static SqlConnection GetConnection()
         {

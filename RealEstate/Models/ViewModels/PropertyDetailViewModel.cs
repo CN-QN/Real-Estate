@@ -12,11 +12,16 @@ namespace RealEstate.Models.ViewModels
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public decimal Area { get; set; }
+        public decimal AreaMin { get; set; }
+        public decimal AreaMax { get; set; }
+        public string AreaUnit { get; set; }
+
         public string NameUser { get; set; }
         public string NameType { get; set; }
-
-        public int Price { get; set; }
+        public string Avatar { get; set; }
+        public decimal PriceMin { get; set; }
+        public decimal PriceMax { get; set; }
+        public string PriceUnit { get; set; }
         public string Address { get; set; }
   
 

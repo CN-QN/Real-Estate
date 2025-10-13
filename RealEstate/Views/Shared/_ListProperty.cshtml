@@ -1,17 +1,32 @@
-﻿@model RealEstate.Models.ViewModels.PropertyViewModel
+﻿@using  RealEstate.Utils;
+@model RealEstate.Models.ViewModels.PropertyViewModel
 
 <a href="/Property/Details/@Model.Id" class="property-link">
     <div class="property-card">
-        <img src="@Model.ImageUrl" alt="@Model.Title" class="property-img" />
+        <img src="@Model.ImageUrl[0].ImageUrl" alt="@Model.Title" class="property-img" />
         <div class="property-body">
             <h5 class="property-title">@Model.Title</h5>
             <p class="property-address">@Model.Address </p>
             <div style="display: flex; justify-content: space-between; height: 26px;">
                 <p class="property-price">
-                    @(Model.Price ==0 ? "Thỏa thuân" : string.Format("{0:N0} Tỷ", Model.Price))
+                    @{
+                        if (Model.PriceMin == 0 && Model.PriceMax == 0)
+                        {
+                            @Model.PriceUnit
+                        }
+                        else if (Model.PriceMax == Model.PriceMin)
+                        {
+                            @($"{FormatNumber.Num(Model.PriceMin)} {Model.PriceUnit}")
+                        }
+                        else
+                        {
+                            @($"{FormatNumber.Num(Model.PriceMin)} - {FormatNumber.Num(Model.PriceMax)} {Model.PriceUnit}")
+                        }
+                    }
+
                 </p>
 
-                <p class="property-address">@Model.Area m2</p>
+                <p class="property-address">@Model.AreaMin - @Model.AreaMax @Model.AreaUnit</p>
             </div>
             <p class="property-users">
                 <span>

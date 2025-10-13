@@ -1,0 +1,67 @@
+﻿@model RealEstate.Models.ViewModels.LoginViewModels
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+
+                    <h3 class="text-center mb-4 fw-bold text-primary">Đăng nhập tài khoản</h3>
+
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "needs-validation" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Email, "Email", new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Nhập email", @type = "email" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Password, "Mật khẩu", new { @class = "form-label fw-semibold" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Nhập mật khẩu" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary py-2 fw-semibold">
+                                Đăng nhập
+                            </button>
+                        </div>
+                    }
+
+                    <div class="text-center my-3 text-muted">— hoặc —</div>
+
+                    @using (Html.BeginForm("ExternalLogin", "Account", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-outline-danger fw-semibold" id="Google" name="provider" value="Google">
+                                <i class="bi bi-google me-2"></i> Đăng nhập với Google
+                            </button>
+                        </div>
+                    }
+
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                <div class="d-flex justify-content-between">
+                    <small>
+                        Bạn chưa có tài khoản?
+                        <a href="/Account/Register" class="text-decoration-none fw-semibold">Đăng ký</a>
+                    </small>
+                    <small>
+                   
+                        <a href="/Account/ForgotPassword" class="text-decoration-none fw-semibold">Quên mật khẩu</a>
+                    </small>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

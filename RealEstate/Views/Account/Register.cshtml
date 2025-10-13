@@ -1,0 +1,61 @@
+﻿@model RealEstate.Models.ViewModels.RegisterViewModels
+@{
+    ViewBag.Title = "Đăng ký";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4 fw-bold text-success">Tạo tài khoản mới</h3>
+
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "needs-validation" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Name, "Họ và tên", new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Nhập họ và tên" })
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Email, "Email", new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Nhập email", @type = "email" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Password, "Mật khẩu", new { @class = "form-label fw-semibold" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Nhập mật khẩu" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-4">
+                            @Html.LabelFor(m => m.ConfirmPassword, "Nhập lại mật khẩu", new { @class = "form-label fw-semibold" })
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Nhập lại mật khẩu" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-success py-2 fw-semibold">
+                                Đăng ký
+                            </button>
+                        </div>
+                    }
+
+                    @Html.ValidationSummary("", new { @class = "text-danger small text-center" })
+
+                    <div class="text-center mt-3">
+                        <small>
+                            Đã có tài khoản?
+                            <a href="/Account/Login" class="text-decoration-none fw-semibold text-primary">Đăng nhập</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
