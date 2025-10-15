@@ -215,7 +215,6 @@
     <Compile Include="Identity\AppUser.cs" />
     <Compile Include="Models\Account.Models.cs" />
     <Compile Include="Models\Category.Models.cs" />
-    <Compile Include="Models\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="Models\Favorite.Models.cs" />
     <Compile Include="Models\ImageItem.cs" />
     <Compile Include="Models\Log.Models.cs" />
@@ -248,6 +247,7 @@
     <Compile Include="Utils\FormatNumber.cs" />
     <Compile Include="Utils\HashHelper.cs" />
     <Compile Include="Utils\JwtHelper.cs" />
+    <Compile Include="Utils\RedirectAuthenticatedAttribute.cs" />
     <Compile Include="Utils\SendResetPasswordEmail.cs" />
   </ItemGroup>
   <ItemGroup>

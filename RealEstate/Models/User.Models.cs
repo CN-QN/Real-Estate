@@ -15,7 +15,10 @@ namespace RealEstate.Models
         public string Password { get; set; }
         public string Phone { get; set; }
         public string Avatar { get; set; }
- 
+        public string ProviderKey { get; set; }
+        public string LoginProvider { get; set; }
+
+
         public virtual Role Role { get; set; }
 
 

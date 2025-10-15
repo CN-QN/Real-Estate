@@ -12,8 +12,10 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.ModelBinding;
 using System.Web.Mvc;
+using System.Xml.Linq;
 namespace RealEstate.Controllers
 {
     public class AccountController : Controller
@@ -63,46 +65,75 @@ namespace RealEstate.Controllers
 
             private const string XsrfKey = "XsrfId";
         }
-        [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await HttpContext.GetOwinContext().Authentication.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
+            try
             {
-                return RedirectToAction("Login"); // Chuyển về trang login nếu không lấy được info
-            }
+                var loginInfo = await HttpContext.GetOwinContext().Authentication.GetExternalLoginInfoAsync();
+                if (loginInfo == null)
+                {
+                    return RedirectToAction("Login");
+                }
 
-          
-            var externalIdentity = loginInfo.ExternalIdentity;
-            if (externalIdentity != null)
+                var provider = loginInfo.Login.LoginProvider;
+                var providerKey = loginInfo.Login.ProviderKey;
+                var Email = loginInfo.Email;
+                var Name = loginInfo.ExternalIdentity?.Name;
+                
+
+                var user = _UserService.FindEmail(Email);
+                if (user != null && user.ProviderKey != "Google")
+                {
+                    if (_UserService.FindEmail(Email) == null)
+                    {
+                        ModelState.AddModelError("Email", "Email này đã đăng ký tài khoản khác !");
+                        return View();
+                    }
+                }
+                if (user == null)
+                {
+                    _UserService.CreateUser(Email, Name, null, provider, providerKey);
+                    var info = _UserService.FindEmail(Email);
+
+                    var identity = new ClaimsIdentity(new[]
+                 {
+                new Claim(ClaimTypes.Name,info.Email),
+                new Claim(ClaimTypes.NameIdentifier,info.Id.ToString())
+            }, DefaultAuthenticationTypes.ApplicationCookie);
+
+                    HttpContext.GetOwinContext().Authentication.SignIn(
+                        new AuthenticationProperties { IsPersistent = true },
+                        identity
+                        );
+                  
+                    return RedirectToAction("Index", "Property");
+                }
+                _UserService.UpdateProvider(Email, provider, providerKey);
+                ViewBag.ReturnUrl = returnUrl;
+                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+            }
+            catch(Exception ex)
             {
-                // Đăng nhập người dùng bằng External Cookie
-                HttpContext.GetOwinContext().Authentication.SignIn(
-                    new AuthenticationProperties { IsPersistent = false },
-                    externalIdentity);
-
-                return RedirectToLocal(returnUrl); // Chuyển hướng về trang gốc
+                ModelState.AddModelError("", ex.Message);
             }
+            return RedirectToLocal(returnUrl);
 
-            ViewBag.ReturnUrl = returnUrl;
-            ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
 
-            return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
         }
         [HttpGet]
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction("Index", "Property"); 
-        }
-     
+
+        [AllowAnonymous]
+
+        [RedirectAuthenticated]
+
         public ActionResult Login() { return View(); }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+
+        [RedirectAuthenticated]
+
         public ActionResult Login(LoginViewModels model) 
         { 
             try
@@ -130,36 +161,42 @@ namespace RealEstate.Controllers
                     }
                 }    
             }
-            catch
+            catch(Exception ex)
             {
-                ModelState.AddModelError("", "Đã có lỗi xảy ra. Vui lòng thử lại.");
+                ModelState.AddModelError("", ex.Message);
                 
             }
             return View(model);
         }
 
+        [RedirectAuthenticated]
+        [AllowAnonymous]
+
         public ActionResult Register() { return View(); }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+
+        [RedirectAuthenticated]
         public ActionResult Register(string Name, string Email , String Password)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (_UserService.FindEmail(Email) > 0)
+                    if (_UserService.FindEmail(Email) !=null)
                     {
                         ModelState.AddModelError("Email", "Email này đã tồn tại ");
                         return View();
                     }
-                    _UserService.CreateUser(Email, Name, Password);
+                    _UserService.CreateUser(Email, Name, Password,null,null);
                     return RedirectToAction("Login", "Account");
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                ModelState.AddModelError("", "Đã có lỗi xảy ra. Vui lòng thử lại!");
+                ModelState.AddModelError("", ex.Message);
 
             }
             return View();
@@ -171,11 +208,12 @@ namespace RealEstate.Controllers
             try
             {
                 var user = _UserService.FindEmail(model.Email);
-                if(user == -1)
-                {
-                    return View(model);
-                }
                
+                if(user ==null || user.LoginProvider =="Google")
+                {
+                    ModelState.AddModelError("", "Email này chưa tồn tại");
+                    return View( );
+                }    
                 byte[] bytes = new byte[64];
                 using(var rng = RandomNumberGenerator.Create()) 
                 {
@@ -184,7 +222,7 @@ namespace RealEstate.Controllers
                 var token = HttpServerUtility.UrlTokenEncode(bytes);
                 ResetPassword resetPassword = new ResetPassword()
                 {
-                    UserId = user,
+                    UserId = user.Id,
                     Token = token,
                     TokenExpires = DateTime.Now.AddHours(1)
                 };
@@ -222,7 +260,6 @@ namespace RealEstate.Controllers
             {
                 Debug.WriteLine(ex.Message);
                 return RedirectToAction("Login");
-                //return RedirectToAction("ResetPassword");
 
             }
 
@@ -245,6 +282,24 @@ namespace RealEstate.Controllers
         public ActionResult SuccessResetPassword ()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+
+        public ActionResult Logout()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Property");
+        }
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (!string.IsNullOrEmpty(returnUrl)
+                && Url.IsLocalUrl(returnUrl)
+                && !returnUrl.Contains("/Account/Login"))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Property");
         }
 
     }
