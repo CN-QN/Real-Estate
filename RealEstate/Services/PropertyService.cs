@@ -12,9 +12,9 @@ namespace RealEstate.Services
     public class PropertyService
     {
         private PropertyRepo _repo = new PropertyRepo();
-        public List<PropertyViewModel> GetPropertyAll(int PageSize , int PageNumber)
+        public List<PropertyViewModel> GetPropertyAll(  int PageNumber)
         {
-            return _repo.GetPropertyAll(PageSize, PageNumber);
+            return _repo.GetPropertyAll(  PageNumber);
         }
 
         public  PropertyDetailViewModel GetPropertyById   (int Id) 

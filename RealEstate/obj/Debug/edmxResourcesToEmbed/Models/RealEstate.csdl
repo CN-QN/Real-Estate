@@ -1,0 +1,714 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RealEstateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="News" Relationship="Self.FK_News_Categories" FromRole="Categories" ToRole="News" />
+  </EntityType>
+  <EntityType Name="Favorite">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="PropertyId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="PropertyId" Type="Int32" Nullable="false" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Property" Relationship="Self.FK_Favorites_Properties" FromRole="Favorites" ToRole="Properties" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Favorites_Users" FromRole="Favorite" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Furniture">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Properties" Relationship="Self.PropertyFurnitures" FromRole="Furnitures" ToRole="Properties" />
+  </EntityType>
+  <EntityType Name="Log">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Action" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Target" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Logs_Users" FromRole="Log" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SenderId" Type="Int32" Nullable="false" />
+    <Property Name="ReceiverId" Type="Int32" Nullable="false" />
+    <Property Name="PropertyId" Type="Int32" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Property" Relationship="Self.FK_Messages_Property" FromRole="Messages" ToRole="Properties" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Messages_Receiver" FromRole="Message" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="RealEstateModel.FK_Messages_Sender" FromRole="Message" ToRole="User" />
+  </EntityType>
+  <EntityType Name="News">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="AuthorId" Type="Int32" />
+    <Property Name="PublishedAt" Type="DateTime" Precision="3" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_News_Categories" FromRole="News" ToRole="Categories" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK_News_Users" FromRole="News" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TransactionId" Type="Int32" Nullable="false" />
+    <Property Name="PaymentMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PaidAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Transaction" Relationship="Self.FK_Payments_Transactions" FromRole="Payments" ToRole="Transactions" />
+  </EntityType>
+  <EntityType Name="Property">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PriceMin" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="PriceMax" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Int32" Nullable="false" />
+    <Property Name="AreaMin" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="AreaMax" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="AreaUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="PriceUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Favorites" Relationship="Self.FK_Favorites_Properties" FromRole="Properties" ToRole="Favorites" />
+    <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_Property" FromRole="Properties" ToRole="Messages" />
+    <NavigationProperty Name="PropertyAttributes" Relationship="Self.FK__PropertyA__Prope__1BC821DD" FromRole="Properties" ToRole="PropertyAttributes" />
+    <NavigationProperty Name="PropertyType" Relationship="Self.FK_Properties_Types" FromRole="Properties" ToRole="PropertyTypes" />
+    <NavigationProperty Name="PropertyImages" Relationship="Self.FK_PropertyImages_Properties" FromRole="Properties" ToRole="PropertyImages" />
+    <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Properties" FromRole="Properties" ToRole="Reviews" />
+    <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Properties" FromRole="Properties" ToRole="Transactions" />
+    <NavigationProperty Name="Furnitures" Relationship="Self.PropertyFurnitures" FromRole="Properties" ToRole="Furnitures" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Properties_Users" FromRole="Property" ToRole="User" />
+  </EntityType>
+  <EntityType Name="PropertyImage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PropertyId" Type="Int32" Nullable="false" />
+    <Property Name="ImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Property" Relationship="Self.FK_PropertyImages_Properties" FromRole="PropertyImages" ToRole="Properties" />
+  </EntityType>
+  <EntityType Name="PropertyType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Properties" Relationship="Self.FK_Properties_Types" FromRole="PropertyTypes" ToRole="Properties" />
+  </EntityType>
+  <EntityType Name="RefreshToken">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="User_Id" Type="Int32" />
+    <Property Name="Token" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Expires" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Created_At" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK__RefreshTo__User___2A164134" FromRole="RefreshToken" ToRole="User" />
+  </EntityType>
+  <EntityType Name="ResetPassword">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Token" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="User_id" Type="Int32" />
+    <Property Name="Expires" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Created_at" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK__ResetPass__User___40058253" FromRole="ResetPassword" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Review">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="PropertyId" Type="Int32" Nullable="false" />
+    <Property Name="Rating" Type="Int32" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Property" Relationship="Self.FK_Reviews_Properties" FromRole="Reviews" ToRole="Properties" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Reviews_Users" FromRole="Review" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="RealEstateModel.FK_Users_Roles" FromRole="Role" ToRole="User" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Transaction">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="PropertyId" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="TransactionType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Payments" Relationship="Self.FK_Payments_Transactions" FromRole="Transactions" ToRole="Payments" />
+    <NavigationProperty Name="Property" Relationship="Self.FK_Transactions_Properties" FromRole="Transactions" ToRole="Properties" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Transactions_Users" FromRole="Transaction" ToRole="User" />
+  </EntityType>
+  <EntityType Name="UserProfile">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK_UserProfiles_Users" FromRole="UserProfile" ToRole="User" />
+  </EntityType>
+  <EntityType Name="PropertyAttribute">
+    <Key>
+      <PropertyRef Name="key" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="PropertyId" Type="Int32" />
+    <Property Name="key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Property" Relationship="Self.FK__PropertyA__Prope__1BC821DD" FromRole="PropertyAttributes" ToRole="Properties" />
+  </EntityType>
+  <Association Name="FK_News_Categories">
+    <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="News" Type="Self.News" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="News">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Favorites_Properties">
+    <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+    <End Role="Favorites" Type="Self.Favorite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Properties">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Favorites">
+        <PropertyRef Name="PropertyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_Property">
+    <End Role="Properties" Type="Self.Property" Multiplicity="0..1" />
+    <End Role="Messages" Type="Self.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Properties">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="PropertyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payments_Transactions">
+    <End Role="Transactions" Type="Self.Transaction" Multiplicity="1" />
+    <End Role="Payments" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Transactions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="TransactionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PropertyA__Prope__1BC821DD">
+    <End Role="Properties" Type="Self.Property" Multiplicity="0..1" />
+    <End Role="PropertyAttributes" Type="Self.PropertyAttribute" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Properties">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PropertyAttributes">
+        <PropertyRef Name="PropertyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Properties_Types">
+    <End Role="PropertyTypes" Type="Self.PropertyType" Multiplicity="1" />
+    <End Role="Properties" Type="Self.Property" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PropertyTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Properties">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PropertyImages_Properties">
+    <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+    <End Role="PropertyImages" Type="Self.PropertyImage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Properties">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PropertyImages">
+        <PropertyRef Name="PropertyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reviews_Properties">
+    <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+    <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Properties">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reviews">
+        <PropertyRef Name="PropertyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Transactions_Properties">
+    <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+    <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Properties">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="PropertyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PropertyFurnitures">
+    <End Role="Furnitures" Type="Self.Furniture" Multiplicity="*" />
+    <End Role="Properties" Type="Self.Property" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="RealEstateEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Favorites" EntityType="Self.Favorite" />
+    <EntitySet Name="Furnitures" EntityType="Self.Furniture" />
+    <EntitySet Name="Logs" EntityType="Self.Log" />
+    <EntitySet Name="Messages" EntityType="Self.Message" />
+    <EntitySet Name="News" EntityType="Self.News" />
+    <EntitySet Name="Payments" EntityType="Self.Payment" />
+    <EntitySet Name="Properties" EntityType="Self.Property" />
+    <EntitySet Name="PropertyImages" EntityType="Self.PropertyImage" />
+    <EntitySet Name="PropertyTypes" EntityType="Self.PropertyType" />
+    <EntitySet Name="RefreshTokens" EntityType="Self.RefreshToken" />
+    <EntitySet Name="ResetPasswords" EntityType="Self.ResetPassword" />
+    <EntitySet Name="Reviews" EntityType="Self.Review" />
+    <EntitySet Name="Roles" EntityType="Self.Role" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+    <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
+    <EntitySet Name="PropertyAttributes" EntityType="Self.PropertyAttribute" />
+    <AssociationSet Name="FK_News_Categories" Association="Self.FK_News_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="News" EntitySet="News" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Favorites_Properties" Association="Self.FK_Favorites_Properties">
+      <End Role="Properties" EntitySet="Properties" />
+      <End Role="Favorites" EntitySet="Favorites" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_Property" Association="Self.FK_Messages_Property">
+      <End Role="Properties" EntitySet="Properties" />
+      <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payments_Transactions" Association="Self.FK_Payments_Transactions">
+      <End Role="Transactions" EntitySet="Transactions" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PropertyA__Prope__1BC821DD" Association="Self.FK__PropertyA__Prope__1BC821DD">
+      <End Role="Properties" EntitySet="Properties" />
+      <End Role="PropertyAttributes" EntitySet="PropertyAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Properties_Types" Association="Self.FK_Properties_Types">
+      <End Role="PropertyTypes" EntitySet="PropertyTypes" />
+      <End Role="Properties" EntitySet="Properties" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PropertyImages_Properties" Association="Self.FK_PropertyImages_Properties">
+      <End Role="Properties" EntitySet="Properties" />
+      <End Role="PropertyImages" EntitySet="PropertyImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reviews_Properties" Association="Self.FK_Reviews_Properties">
+      <End Role="Properties" EntitySet="Properties" />
+      <End Role="Reviews" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Transactions_Properties" Association="Self.FK_Transactions_Properties">
+      <End Role="Properties" EntitySet="Properties" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="PropertyFurnitures" Association="Self.PropertyFurnitures">
+      <End Role="Furnitures" EntitySet="Furnitures" />
+      <End Role="Properties" EntitySet="Properties" />
+    </AssociationSet>
+    <FunctionImport Name="GetProperty" ReturnType="Collection(RealEstateModel.GetProperty_Result)">
+      <Parameter Name="PageSize" Mode="In" Type="Int32" />
+      <Parameter Name="PageNumber" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetPropertyById" ReturnType="Collection(RealEstateModel.GetPropertyById_Result)">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(RealEstateModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(RealEstateModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="VerifyLogin" ReturnType="Collection(RealEstateModel.VerifyLogin_Result)">
+      <Parameter Name="Email" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="Users" EntityType="RealEstateModel.User" />
+    <AssociationSet Name="FK_Favorites_Users" Association="RealEstateModel.FK_Favorites_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Favorite" EntitySet="Favorites" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Logs_Users" Association="RealEstateModel.FK_Logs_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Log" EntitySet="Logs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_Receiver" Association="RealEstateModel.FK_Messages_Receiver">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Message" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_Sender" Association="RealEstateModel.FK_Messages_Sender">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Message" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_News_Users" Association="RealEstateModel.FK_News_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="News" EntitySet="News" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Properties_Users" Association="RealEstateModel.FK_Properties_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Property" EntitySet="Properties" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RefreshTo__User___2A164134" Association="RealEstateModel.FK__RefreshTo__User___2A164134">
+      <End Role="User" EntitySet="Users" />
+      <End Role="RefreshToken" EntitySet="RefreshTokens" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ResetPass__User___40058253" Association="RealEstateModel.FK__ResetPass__User___40058253">
+      <End Role="User" EntitySet="Users" />
+      <End Role="ResetPassword" EntitySet="ResetPasswords" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reviews_Users" Association="RealEstateModel.FK_Reviews_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Roles" Association="RealEstateModel.FK_Users_Roles">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Transactions_Users" Association="RealEstateModel.FK_Transactions_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Transaction" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserProfiles_Users" Association="RealEstateModel.FK_UserProfiles_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserProfile" EntitySet="UserProfiles" />
+    </AssociationSet>
+  </EntityContainer>
+  <ComplexType Name="GetProperty_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+    <Property Type="Double" Name="TotalPage" Nullable="true" />
+    <Property Type="String" Name="Avatar" Nullable="true" />
+    <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="ImageUrl" Nullable="true" MaxLength="255" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
+    <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
+  </ComplexType>
+  <ComplexType Name="GetPropertyById_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="Int32" Name="UserId" Nullable="false" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="TypeId" Nullable="false" />
+    <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
+    <Property Type="DateTime" Name="CreatedAt" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="UpdatedAt" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Avatar" Nullable="true" />
+    <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="ImageGallery" Nullable="true" />
+    <Property Type="String" Name="NameType" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="VerifyLogin_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="RoleId" Nullable="false" />
+    <Property Type="String" Name="RoleName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Password" Nullable="true" MaxLength="255" />
+    <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Avatar" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderKey" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Favorites" Relationship="RealEstateModel.FK_Favorites_Users" FromRole="User" ToRole="Favorite" />
+    <NavigationProperty Name="Logs" Relationship="RealEstateModel.FK_Logs_Users" FromRole="User" ToRole="Log" />
+    <NavigationProperty Name="Messages" Relationship="RealEstateModel.FK_Messages_Receiver" FromRole="User" ToRole="Message" />
+    <NavigationProperty Name="Messages1" Relationship="RealEstateModel.FK_Messages_Sender" FromRole="User" ToRole="Message" />
+    <NavigationProperty Name="News" Relationship="RealEstateModel.FK_News_Users" FromRole="User" ToRole="News" />
+    <NavigationProperty Name="Properties" Relationship="RealEstateModel.FK_Properties_Users" FromRole="User" ToRole="Property" />
+    <NavigationProperty Name="RefreshTokens" Relationship="RealEstateModel.FK__RefreshTo__User___2A164134" FromRole="User" ToRole="RefreshToken" />
+    <NavigationProperty Name="ResetPasswords" Relationship="RealEstateModel.FK__ResetPass__User___40058253" FromRole="User" ToRole="ResetPassword" />
+    <NavigationProperty Name="Reviews" Relationship="RealEstateModel.FK_Reviews_Users" FromRole="User" ToRole="Review" />
+    <NavigationProperty Name="Role" Relationship="RealEstateModel.FK_Users_Roles" FromRole="User" ToRole="Role" />
+    <NavigationProperty Name="Transactions" Relationship="RealEstateModel.FK_Transactions_Users" FromRole="User" ToRole="Transaction" />
+    <NavigationProperty Name="UserProfile" Relationship="RealEstateModel.FK_UserProfiles_Users" FromRole="User" ToRole="UserProfile" />
+  </EntityType>
+  <Association Name="FK_Favorites_Users">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
+    <End Type="RealEstateModel.Favorite" Role="Favorite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Favorite">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Logs_Users">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
+    <End Type="RealEstateModel.Log" Role="Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Log">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_Receiver">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
+    <End Type="RealEstateModel.Message" Role="Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="ReceiverId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_Sender">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
+    <End Type="RealEstateModel.Message" Role="Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="SenderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_News_Users">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="RealEstateModel.News" Role="News" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="News">
+        <PropertyRef Name="AuthorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Properties_Users">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
+    <End Type="RealEstateModel.Property" Role="Property" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Property">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RefreshTo__User___2A164134">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="RealEstateModel.RefreshToken" Role="RefreshToken" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RefreshToken">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ResetPass__User___40058253">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="RealEstateModel.ResetPassword" Role="ResetPassword" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ResetPassword">
+        <PropertyRef Name="User_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reviews_Users">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
+    <End Type="RealEstateModel.Review" Role="Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Roles">
+    <End Type="RealEstateModel.Role" Role="Role" Multiplicity="1" />
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Transactions_Users">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
+    <End Type="RealEstateModel.Transaction" Role="Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserProfiles_Users">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
+    <End Type="RealEstateModel.UserProfile" Role="UserProfile" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserProfile">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

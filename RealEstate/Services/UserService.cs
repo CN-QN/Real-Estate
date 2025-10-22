@@ -18,7 +18,7 @@ namespace RealEstate.Services
         public User FindEmail(string Email)
         {
 
-            return _repo.FindEmail(Email);
+            return _repo.FindEmail(Email.ToLower().Trim());
         }
 
         public User VerifyLogin(string Email, string Password)
@@ -32,16 +32,16 @@ namespace RealEstate.Services
             return null;
         }
 
-        public User CreateUser(string Email, string Name, string Password, string Provider, string Providerkey)
+        public User CreateUser(string Email, string Name, string Password, string ProviderName, string Providerkey)
         {
-            if(Password !=null)
+            if(Password !=null && ProviderName == null && Providerkey ==null)
             {
                 var PasswordHash = BCrypt.Net.BCrypt.HashPassword(Password);
-                return _repo.CreateUser(Email, Name, PasswordHash, Provider, Providerkey);
+                return _repo.CreateUser(Email, Name, PasswordHash, null, null);
 
 
             }
-            return _repo.CreateUser(Email, Name, null, Provider, Providerkey);
+            return _repo.CreateUser(Email, Name, null, ProviderName, Providerkey);
 
         }
 
