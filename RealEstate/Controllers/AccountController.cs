@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.ModelBinding;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Xml.Linq;
 namespace RealEstate.Controllers
 {
@@ -65,6 +66,8 @@ namespace RealEstate.Controllers
 
             private const string XsrfKey = "XsrfId";
         }
+
+
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             try
@@ -75,14 +78,14 @@ namespace RealEstate.Controllers
                     return RedirectToAction("Login");
                 }
 
-                var provider = loginInfo.Login.LoginProvider;
+                var providerName = loginInfo.Login.LoginProvider;
                 var providerKey = loginInfo.Login.ProviderKey;
                 var Email = loginInfo.Email;
                 var Name = loginInfo.ExternalIdentity?.Name;
-                
+
 
                 var user = _UserService.FindEmail(Email);
-                if (user != null && user.ProviderKey != "Google")
+                if (user != null && user.ProviderName != "Google")
                 {
                     if (_UserService.FindEmail(Email) == null)
                     {
@@ -92,27 +95,34 @@ namespace RealEstate.Controllers
                 }
                 if (user == null)
                 {
-                    _UserService.CreateUser(Email, Name, null, provider, providerKey);
-                    var info = _UserService.FindEmail(Email);
+                    _UserService.CreateUser(Email, Name, null, providerName, providerKey);
+                    user = _UserService.FindEmail(Email);
 
-                    var identity = new ClaimsIdentity(new[]
-                 {
-                new Claim(ClaimTypes.Name,info.Email),
-                new Claim(ClaimTypes.NameIdentifier,info.Id.ToString())
-            }, DefaultAuthenticationTypes.ApplicationCookie);
 
-                    HttpContext.GetOwinContext().Authentication.SignIn(
-                        new AuthenticationProperties { IsPersistent = true },
-                        identity
-                        );
-                  
-                    return RedirectToAction("Index", "Property");
+
                 }
-                _UserService.UpdateProvider(Email, provider, providerKey);
-                ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                else
+                {
+                    _UserService.UpdateProvider(Email, providerName, providerKey);
+                    //ViewBag.ReturnUrl = returnUrl;
+                    //ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                }
+                var identity = new ClaimsIdentity(new[]
+                     {
+                      new Claim(ClaimTypes.Name,user.Email),
+                    new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
+                  }, DefaultAuthenticationTypes.ApplicationCookie);
+
+                HttpContext.GetOwinContext().Authentication.SignIn(
+                    new AuthenticationProperties { IsPersistent = true },
+                    identity
+                    );
+                TempData["ToastrType"] = "success";
+                TempData["ToastrMessage"] = "Đăng nhập thành công ";
+                return RedirectToAction("Index", "Property");
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
             }
@@ -135,23 +145,26 @@ namespace RealEstate.Controllers
         [RedirectAuthenticated]
 
         public ActionResult Login(LoginViewModels model) 
-        { 
+        {
             try
             {
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var user = _UserService.VerifyLogin(model.Email, model.Password);
-                    if ( user!=null)
+                    if (user != null)
                     {
                         var identity = new ClaimsIdentity(new[]
                         {
                            new Claim(ClaimTypes.Name , user.Email),
                            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
-                       },DefaultAuthenticationTypes.ApplicationCookie);
+                       }, DefaultAuthenticationTypes.ApplicationCookie);
+
                         HttpContext.GetOwinContext().Authentication.SignIn(
-                            new AuthenticationProperties { IsPersistent = true},
+                            new AuthenticationProperties { IsPersistent = true },
                             identity
                         );
+                        TempData["ToastrType"] = "success";
+                        TempData["ToastrMessage"] = "Đăng nhập thành công ";
                         return RedirectToAction("Index", "Property");
                     }
                     else
@@ -159,12 +172,12 @@ namespace RealEstate.Controllers
                         ModelState.AddModelError("", "Email hoặc mật khẩu không đúng");
                         return View(model);
                     }
-                }    
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
-                
+
             }
             return View(model);
         }
@@ -179,22 +192,28 @@ namespace RealEstate.Controllers
         [AllowAnonymous]
 
         [RedirectAuthenticated]
-        public ActionResult Register(string Name, string Email , String Password)
+        public ActionResult Register(RegisterViewModels model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (_UserService.FindEmail(Email) !=null)
+                    if (_UserService.FindEmail(model.Email) ==null)
                     {
-                        ModelState.AddModelError("Email", "Email này đã tồn tại ");
+                        _UserService.CreateUser(model.Email, model.Name, model.Password, null, null);
+                        return RedirectToAction("Login", "Account");
+                    
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Email", "Email đã tòn tại");
                         return View();
                     }
-                    _UserService.CreateUser(Email, Name, Password,null,null);
-                    return RedirectToAction("Login", "Account");
+                
+
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
 
@@ -208,23 +227,23 @@ namespace RealEstate.Controllers
             try
             {
                 var user = _UserService.FindEmail(model.Email);
-               
-                if(user ==null || user.LoginProvider =="Google")
+
+                if (user == null || user.ProviderName == "Google")
                 {
                     ModelState.AddModelError("", "Email này chưa tồn tại");
-                    return View( );
-                }    
+                    return View();
+                }
                 byte[] bytes = new byte[64];
-                using(var rng = RandomNumberGenerator.Create()) 
+                using (var rng = RandomNumberGenerator.Create())
                 {
                     rng.GetBytes(bytes);
                 }
                 var token = HttpServerUtility.UrlTokenEncode(bytes);
                 ResetPassword resetPassword = new ResetPassword()
                 {
-                    UserId = user.Id,
+                    User_id = user.Id,
                     Token = token,
-                    TokenExpires = DateTime.Now.AddHours(1)
+                    Expires = DateTime.Now.AddHours(1)
                 };
 
                 _AuthService.UpdateResetPassword(resetPassword);
@@ -233,7 +252,7 @@ namespace RealEstate.Controllers
 
                 SendResetPasswordEmail.SendEmail(model.Email, resetLink);
 
-              
+
 
                 return RedirectToAction("SuccessResetPassword");
 
@@ -249,14 +268,14 @@ namespace RealEstate.Controllers
         [HttpGet]
         public ActionResult ResetPassword ([QueryString]string token , string email)
         {
-         
+
 
             try
             {
                 _AuthService.VerifyTokenPassword(token, email);
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
                 return RedirectToAction("Login");
@@ -288,6 +307,10 @@ namespace RealEstate.Controllers
 
         public ActionResult Logout()
         {
+            TempData["ToastrType"] = "success";
+            TempData["ToastrMessage"] = "Đăng xuất thành công";
+            TempData.Keep();
+
             HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Property");
         }
@@ -299,6 +322,7 @@ namespace RealEstate.Controllers
             {
                 return Redirect(returnUrl);
             }
+          
             return RedirectToAction("Index", "Property");
         }
 

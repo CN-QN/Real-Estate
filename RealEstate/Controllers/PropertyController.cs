@@ -1,4 +1,5 @@
-﻿using RealEstate.Models.ViewModels;
+﻿using RealEstate.Models;
+using RealEstate.Models.ViewModels;
 using RealEstate.Services;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -10,11 +11,11 @@ namespace RealEstate.Controllers
     {
         // GET: Property
 
-
         PropertyService _service = new PropertyService();
-        public ActionResult Index(int PageSize =50 , int PageNumber  =1)
+        public ActionResult Index( int id  =1)
         {
-             var property = _service.GetPropertyAll(PageSize , PageNumber);
+             List<PropertyViewModel> property = _service.GetPropertyAll(id);
+             ViewBag.PageSize = id;
             return View(property);
         }
 

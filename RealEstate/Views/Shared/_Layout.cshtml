@@ -7,9 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -18,6 +16,36 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <style>
+        .toast {
+            opacity: 1 !important;
+        }
+
+        .toast-success {
+            background-color: #51A351 !important;
+        }
+
+        .toast-error {
+            background-color: #BD362F !important;
+        }
+
+        .toast-info {
+            background-color: #2F96B4 !important;
+        }
+
+        .toast-warning {
+            background-color: #F89406 !important;
+        }
+    </style>
 
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -42,83 +70,15 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <!-- Navbar -->
-    <header class="header">
-        <div class="logo">
-            <img src="https://homedy.com/favicon.ico" alt="Homedy logo">
-            <span>Homedy</span>
-        </div>
-        <nav class="nav">
-            <a href="#">Dự án</a>
-            <a href="#">Mua bán</a>
-            <a href="#">Cho thuê</a>
-            <a href="#">Chuyên gia</a>
-            <a href="#">Thiết kế nhà đẹp</a>
-            <a href="#">Cẩm nang</a>
-            <a href="#">Tiện ích</a>
-        </nav>
-        <div class="user">
-            <button class="btn-post">+ Đăng tin</button>
-            <span class="username">Hồ Quốc Nam</span>
-        </div>
-    </header>
-    <section class="search-section">
-        <div class="search-box">
-            <div class="tabs">
-                <button class="active">Mua bán</button>
-                <button>Cho thuê</button>
-                <button>Dự án</button>
-            </div>
-            <div class="search-input">
-                <input type="text" placeholder="Nhập từ khóa tìm kiếm...">
-                <button class="btn-search">🔍</button>
-            </div>
-            <div class="filters">
-                <select>
-                    <option>Toàn quốc</option>
-                    <option>TP.HCM</option>
-                    <option>Hà Nội</option>
-                </select>
-                <select>
-                    <option>Dự án</option>
-                    <option>Chung cư</option>
-                    <option>Nhà riêng</option>
-                </select>
-                <select>
-                    <option>Loại BĐS</option>
-                    <option>Đất nền</option>
-                    <option>Nhà phố</option>
-                </select>
-                <select>
-                    <option>Mức giá</option>
-                    <option>Dưới 1 tỷ</option>
-                    <option>1 - 3 tỷ</option>
-                </select>
-                <select>
-                    <option>Diện tích</option>
-                    <option>Dưới 50m²</option>
-                    <option>50 - 100m²</option>
-                </select>
-                <select>
-                    <option>Lọc thêm</option>
-                    <option>Hướng nhà</option>
-                    <option>Số phòng</option>
-                </select>
-                <button class="btn-reset">↻ Đặt lại</button>
-                <button class="btn-map">🗺️ Bản đồ</button>
-            </div>
-        </div>
-         
-    </section>
+    
+
+    @Html.Partial("_Header")
 
 
-    <!-- Body -->
-    <div class="container">
+    <div >
         @RenderBody()
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-top">
             <div class="container">
@@ -226,5 +186,28 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-left", // top-left, bottom-right,...
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            //"hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+    @if (TempData["ToastrMessage"] != null)
+    {
+        <script>
+              toastr["@TempData["ToastrType"]"]("@TempData["ToastrMessage"]");
+        </script>
+    }
+
 </body>
+
 </html>

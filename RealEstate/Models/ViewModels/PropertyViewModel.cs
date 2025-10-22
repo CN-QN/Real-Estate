@@ -20,7 +20,8 @@ namespace RealEstate.Models.ViewModels
 
         public string Address { get; set; }
 
-        public List<ImageItem> ImageUrl { get; set; }
+        public int TotalPage { get; set; }
+        public string ImageUrl { get; set; }
 
         public string Avatar { get; set; }
 

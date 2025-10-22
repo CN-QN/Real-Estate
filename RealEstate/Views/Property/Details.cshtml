@@ -1,120 +1,111 @@
-﻿
-@using RealEstate.Utils
-
+﻿@using RealEstate.Utils
 @model RealEstate.Models.ViewModels.PropertyDetailViewModel
 
 @{
     ViewBag.Title = Model.Title;
 }
 
-<!-- Swiper CSS -->
-<link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-<div class="container">
-    <div>
-        <!-- GALLERY -->
-        <div class="gallery-wrapper">
-            <!-- Ảnh lớn -->
-            <div class="swiper mySwiperMain">
-                <div class="swiper-wrapper">
-                    @foreach (var item in Model.ImageGallery)
+<div class="container my-5">
+    <div class="row g-4">
+        <!-- MAIN LEFT -->
+        <div class="col-lg-8">
+            <!-- ẢNH CHÍNH -->
+            <div id="mainCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < Model.ImageGallery.Count; i++)
                     {
-                        <div class="swiper-slide">
-                            <img src="@item.ImageUrl" alt="Property Image" />
+                        var img = Model.ImageGallery[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img src="@img.ImageUrl" class="d-block w-100 rounded" style="height:420px;object-fit:cover" alt="Ảnh bất động sản" />
                         </div>
                     }
                 </div>
-
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
             </div>
 
-            <!-- Ảnh nhỏ bên phải -->
-            <div class="swiper mySwiperThumbs">
-                <div class="swiper-wrapper">
-                    @foreach (var item in Model.ImageGallery)
-                    {
-                        <div class="swiper-slide">
-                            <img src="@item.ImageUrl" alt="Thumbnail" />
-                        </div>
+            <!-- ẢNH NHỎ -->
+            <div class="row g-2">
+                @for (int i = 0; i < Model.ImageGallery.Count; i++)
+                {
+                    <div class="col-3">
+                        <img src="@Model.ImageGallery[i].ImageUrl" class="img-fluid rounded thumb-img" style="height:100px;object-fit:cover;cursor:pointer" data-index="@i" />
+                    </div>
+                }
+            </div>
+
+            <!-- THÔNG TIN CƠ BẢN -->
+            <h4 class="fw-bold mt-4">@Model.Title</h4>
+            <p class="text-muted">Bán Nhà riêng Đường Bông Sao - Phường 5, Quận 8, TP Hồ Chí Minh</p>
+
+            <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
+                <div class="fs-5 fw-bold text-danger">
+                    @{
+                        if (Model.PriceMin == 0 && Model.PriceMax == 0)
+                        {
+                            @Model.PriceUnit
+                        }
+                        else if (Model.PriceMax == Model.PriceMin)
+                        {
+                            @($"{FormatNumber.Num(Model.PriceMin)} {Model.PriceUnit}")
+                        }
+                        else
+                        {
+                            @($"{FormatNumber.Num(Model.PriceMin)} - {FormatNumber.Num(Model.PriceMax)} {Model.PriceUnit}")
+                        }
                     }
                 </div>
+                <div class="text-muted">
+                    Diện tích: @Model.AreaMin - @Model.AreaMax @Model.AreaUnit
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mb-4">
+                <button class="btn btn-outline-primary"><i class="fa-regular fa-heart"></i> Lưu tin</button>
+                <button class="btn btn-outline-secondary"><i class="fa-solid fa-share-nodes"></i> Chia sẻ</button>
+                <button class="btn btn-outline-danger"><i class="fa-solid fa-flag"></i> Báo xấu</button>
+            </div>
+
+            <!-- MÔ TẢ -->
+            <h5 class="fw-bold mb-3">Thông tin mô tả</h5>
+            <div class="border p-3 rounded bg-light">
+                <div id="descBox" class="desc-limit">@Html.Raw(Model.Description)</div>
+                <button class="btn btn-link p-0 mt-2" id="toggleDesc">Thu gọn ▲</button>
             </div>
         </div>
 
-        <!-- PHẦN NỘI DUNG -->
-        <div class="property-container">
-            <div class="main">
-                <div class="title">
-                    @Model.Title
-                </div>
-                <div class="subtitle">
-                    Bán Nhà riêng Đường Bông Sao - Phường 5, Quận 8, TP Hồ Chí Minh
-                </div>
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <img src="@Model.Avatar" class="rounded-circle mb-3" width="90" height="90" alt="avatar" />
+                    <h6 class="fw-bold">@Model.NameUser</h6>
 
-                <div class="price-area">
-                    <div class="price">
-                        Giá
-                        @{
-                            if (Model.PriceMin == 0 && Model.PriceMax == 0)
-                            {
-                                @Model.PriceUnit
-                            }
-                            else if (Model.PriceMax == Model.PriceMin)
-                            {
-                                @($"{FormatNumber.Num(Model.PriceMin)} {Model.PriceUnit}")
-                            }
-                            else
-                            {
-                                @($"{FormatNumber.Num(Model.PriceMin)} - {FormatNumber.Num(Model.PriceMax)} {Model.PriceUnit}")
-                            }
-                        }
-                    </div>
-                    <div class="area">
-                        Diện tích @Model.AreaMin - @Model.AreaMax @Model.AreaUnit
-                    </div>
-                </div>
-
-                <div class="actions">
-                    <button>Lưu tin</button>
-                    <button>Chia sẻ</button>
-                    <button>Báo xấu</button>
-                </div>
-
-                <div class="section-title">Thông tin mô tả</div>
-                <div class="desc-box">
-                    @Model.Description
-                </div>
-            </div>
-
-            <!-- SIDEBAR -->
-            <div class="sidebar">
-                <div class="contact-box">
-                    <div class="property-users">
-                        <p><img src="@Model.Avatar" alt="Alternate Text" /></p>
-                        <p>@Model.NameUser</p>
-                    </div>
-
-                    <div class="phone-btn" onclick="showPhone('@Model.Phone')">
-                        <p><i class="fa-solid fa-phone"></i></p>
+                    <div class="d-flex align-items-center justify-content-center gap-2 mt-3 phone-btn" onclick="showPhone('@Model.Phone')">
+                        <i class="fa-solid fa-phone text-danger fs-5"></i>
                         <div>
-                            <p class="phone">
-                                @(Model.Phone.Substring(0, Model.Phone.Length - 3) + "***")
-                            </p>
-                            <p>Nhấp để hiện số</p>
+                            <div class="fw-bold phone">@($"{Model.Phone.Substring(0, Model.Phone.Length - 3)}***")</div>
+                            <small class="text-muted">Nhấp để hiện số</small>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="related-box">
-                    <div class="section-title">Bán Nhà riêng tại Quận 8, TP Hồ Chí Minh</div>
-                    <ul>
-                        <li><a href="#">Bán Nhà riêng Phường 1</a></li>
-                        <li><a href="#">Bán Nhà riêng Phường 10</a></li>
-                        <li><a href="#">Bán Nhà riêng Phường 11</a></li>
-                        <li><a href="#">Bán Nhà riêng Phường 12</a></li>
-                        <li><a href="#">Bán Nhà riêng Phường 13</a></li>
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h6 class="fw-bold text-primary mb-3">Bán Nhà riêng tại Quận 8, TP Hồ Chí Minh</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-decoration-none text-primary">Bán Nhà riêng Phường 1</a></li>
+                        <li><a href="#" class="text-decoration-none text-primary">Bán Nhà riêng Phường 10</a></li>
+                        <li><a href="#" class="text-decoration-none text-primary">Bán Nhà riêng Phường 11</a></li>
+                        <li><a href="#" class="text-decoration-none text-primary">Bán Nhà riêng Phường 12</a></li>
                     </ul>
                 </div>
             </div>
@@ -122,81 +113,54 @@
     </div>
 </div>
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    const swiperThumbs = new Swiper(".mySwiperThumbs", {
-        spaceBetween: 10,
-        slidesPerView: 3,
-        direction: "vertical",
-        watchSlidesProgress: true,
-    });
-
-    const swiperMain = new Swiper(".mySwiperMain", {
-        spaceBetween: 10,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        thumbs: {
-            swiper: swiperThumbs,
-        },
-    });
-
-    function showPhone(Phone) {
-        document.querySelector('.phone-btn .phone').innerText = Phone;
+    // Hiện số điện thoại
+    function showPhone(phone) {
+        document.querySelector('.phone-btn .phone').innerText = phone;
     }
+
+    // Thu gọn / mở rộng mô tả
+    const descBox = document.getElementById("descBox");
+    const toggleBtn = document.getElementById("toggleDesc");
+    toggleBtn.addEventListener("click", () => {
+        descBox.classList.toggle("desc-limit");
+        toggleBtn.innerText = descBox.classList.contains("desc-limit") ? "Xem thêm ▼" : "Thu gọn ▲";
+    });
+
+    // Click thumbnail đổi ảnh chính
+    document.querySelectorAll(".thumb-img").forEach(img => {
+        img.addEventListener("click", e => {
+            const index = e.target.getAttribute("data-index");
+            const carousel = document.querySelector("#mainCarousel");
+            const bsCarousel = bootstrap.Carousel.getOrCreateInstance(carousel);
+            bsCarousel.to(index);
+        });
+    });
 </script>
 
 <style>
-    /* Layout gallery */
-    .gallery-wrapper {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        align-items: flex-start;
-        max-width: 1000px;
-        margin: 20px auto;
+    body {
+        background-color: #f8f9fa;
     }
 
-    .mySwiperMain {
-        width: 75%;
-        height: 400px;
-        border-radius: 10px;
+    .thumb-img:hover {
+        opacity: 0.85;
+        border: 2px solid #0d6efd;
+    }
+
+    .desc-limit {
+        max-height: 200px;
         overflow: hidden;
     }
 
-    .mySwiperThumbs {
-        width: 25%;
-        height: 400px;
+    .btn-link {
+        font-weight: 500;
+        color: #0d6efd;
     }
 
-    .swiper-slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    .mySwiperThumbs .swiper-slide {
-        height: calc((400px - 20px) / 3);
-        opacity: 0.6;
-        transition: opacity 0.3s;
-    }
-
-    .mySwiperThumbs .swiper-slide-thumb-active {
-        opacity: 1;
-        border: 2px solid #007bff;
-    }
-
-    .swiper-button-next,
-    .swiper-button-prev {
-        color: #fff;
-    }
-
-    .swiper-pagination-bullet-active {
-        background: #007bff;
-    }
+        .btn-link:hover {
+            text-decoration: underline;
+        }
 </style>

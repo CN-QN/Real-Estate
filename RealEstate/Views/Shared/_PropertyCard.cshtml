@@ -1,0 +1,56 @@
+﻿
+@using RealEstate.Utils
+@model RealEstate.Models.ViewModels.PropertyViewModel
+
+<a href="/Property/Details/@Model.Id" class="text-decoration-none text-dark ">
+    <div class="card property-card shadow-sm border-0">
+        <div class="position-relative">
+            <img src="@Model.ImageUrl"
+                 alt="@Model.Title"
+                 class="card-img-top property-img" />
+
+            <span class="badge bg-primary position-absolute top-0 end-0 m-2">
+                Nổi bật
+               
+            </span>
+        </div>
+        
+        <div class="card-body p-2">
+            <h6 class="card-title text-primary mb-1 line-clamp-2">@Model.Title</h6>
+            <p class="text-muted small mb-2 text-truncate">
+                <i class="bi bi-geo-alt"></i> @Model.Address
+            </p>
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-semibold text-danger">
+                    @{
+                        if (Model.PriceMin == 0 && Model.PriceMax == 0)
+                        {
+                            @Model.PriceUnit
+                        }
+                        else if (Model.PriceMax == Model.PriceMin)
+                        {
+                            @($"{FormatNumber.Num(Model.PriceMin)} {Model.PriceUnit}")
+                        }
+                        else
+                        {
+                            @($"{FormatNumber.Num(Model.PriceMin)} - {FormatNumber.Num(Model.PriceMax)} {Model.PriceUnit}")
+                        }
+                    }
+                </span>
+                <span class="small text-muted">
+                    <i class="bi bi-aspect-ratio"></i>
+                    @Model.AreaMin - @Model.AreaMax @Model.AreaUnit
+                </span>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <img src="@Model.Avatar"
+                     alt="Agent"
+                     class="rounded-circle me-2"
+                     width="25" height="25" />
+                <span class="small">@Model.Name</span>
+            </div>
+        </div>
+    </div>
+</a>
