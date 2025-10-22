@@ -28,6 +28,7 @@ namespace RealEstate.Models
         }
     
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<Furniture> Furnitures { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
@@ -37,6 +38,7 @@ namespace RealEstate.Models
         public virtual DbSet<Property> Properties { get; set; }
         public virtual DbSet<PropertyImage> PropertyImages { get; set; }
         public virtual DbSet<PropertyType> PropertyTypes { get; set; }
+        public virtual DbSet<Province> Provinces { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<ResetPassword> ResetPasswords { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
@@ -44,8 +46,9 @@ namespace RealEstate.Models
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
-        public virtual DbSet<PropertyAttribute> PropertyAttributes { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Ward> Wards { get; set; }
+        public virtual DbSet<PropertyAttribute> PropertyAttributes { get; set; }
     
         public virtual ObjectResult<GetProperty_Result> GetProperty(Nullable<int> pageSize, Nullable<int> pageNumber)
         {
