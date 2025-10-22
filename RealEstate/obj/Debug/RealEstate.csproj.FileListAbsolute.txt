@@ -1,5 +1,3 @@
-D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\obj\Debug\RealEstate.csproj.AssemblyReference.cache
-D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\obj\Debug\RealEstate.csproj.CoreCompileInputs.cache
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\bin\RealEstate.dll.config
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\bin\RealEstate.dll
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\bin\RealEstate.pdb
@@ -115,6 +113,8 @@ D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\bin\System.Web.
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\bin\System.Web.Optimization.xml
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\bin\Newtonsoft.Json.xml
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\bin\Antlr3.Runtime.pdb
+D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\obj\Debug\RealEstate.csproj.AssemblyReference.cache
+D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\obj\Debug\RealEstate.csproj.CoreCompileInputs.cache
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\obj\Debug\RealEstate.csproj.Up2Date
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\obj\Debug\RealEstate.dll
 D:\workspaces\Project_Practice\Real_Estate\RealEstate\RealEstate\obj\Debug\RealEstate.pdb

@@ -8,6 +8,15 @@
     <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" />
   </EntityType>
+  <EntityType Name="Districts">
+    <Key>
+      <PropertyRef Name="code" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="code" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="province_code" Type="int" />
+  </EntityType>
   <EntityType Name="Favorites">
     <Key>
       <PropertyRef Name="UserId" />
@@ -125,6 +134,14 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <EntityType Name="Provinces">
+    <Key>
+      <PropertyRef Name="code" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="code" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="RefreshTokens">
     <Key>
       <PropertyRef Name="Id" />
@@ -211,6 +228,27 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Property Name="CreatedAt" Type="datetime" />
     <Property Name="UpdatedAt" Type="datetime" />
   </EntityType>
+  <EntityType Name="Wards">
+    <Key>
+      <PropertyRef Name="code" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="district_code" Type="int" />
+  </EntityType>
+  <Association Name="FK__Districts__provi__2704CA5F">
+    <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+    <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provinces">
+        <PropertyRef Name="code" />
+      </Principal>
+      <Dependent Role="Districts">
+        <PropertyRef Name="province_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__PropertyA__Prope__1BC821DD">
     <End Role="Properties" Type="Self.Properties" Multiplicity="0..1" />
     <End Role="PropertyAttributes" Type="Self.PropertyAttributes" Multiplicity="*" />
@@ -270,6 +308,18 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       </Principal>
       <Dependent Role="ResetPassword">
         <PropertyRef Name="User_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Wards__district___29E1370A">
+    <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+    <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Districts">
+        <PropertyRef Name="code" />
+      </Principal>
+      <Dependent Role="Wards">
+        <PropertyRef Name="district_code" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -532,6 +582,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
   </Function>
   <EntityContainer Name="RealEstateModelStoreContainer">
     <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Furnitures" EntityType="Self.Furnitures" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
@@ -542,6 +593,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <EntitySet Name="PropertyFurnitures" EntityType="Self.PropertyFurnitures" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyImages" EntityType="Self.PropertyImages" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyTypes" EntityType="Self.PropertyTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RefreshTokens" EntityType="Self.RefreshTokens" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ResetPassword" EntityType="Self.ResetPassword" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
@@ -550,6 +602,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserProfiles" EntityType="Self.UserProfiles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyAttributes" EntityType="Self.PropertyAttributes" store:Type="Tables" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [PropertyAttributes].[PropertyId] AS [PropertyId], 
@@ -557,6 +610,10 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     [PropertyAttributes].[value] AS [value]
     FROM [dbo].[PropertyAttributes] AS [PropertyAttributes]</DefiningQuery>
     </EntitySet>
+    <AssociationSet Name="FK__Districts__provi__2704CA5F" Association="Self.FK__Districts__provi__2704CA5F">
+      <End Role="Provinces" EntitySet="Provinces" />
+      <End Role="Districts" EntitySet="Districts" />
+    </AssociationSet>
     <AssociationSet Name="FK__PropertyA__Prope__1BC821DD" Association="Self.FK__PropertyA__Prope__1BC821DD">
       <End Role="Properties" EntitySet="Properties" />
       <End Role="PropertyAttributes" EntitySet="PropertyAttributes" />
@@ -576,6 +633,10 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <AssociationSet Name="FK__ResetPass__User___40058253" Association="Self.FK__ResetPass__User___40058253">
       <End Role="Users" EntitySet="Users" />
       <End Role="ResetPassword" EntitySet="ResetPassword" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Wards__district___29E1370A" Association="Self.FK__Wards__district___29E1370A">
+      <End Role="Districts" EntitySet="Districts" />
+      <End Role="Wards" EntitySet="Wards" />
     </AssociationSet>
     <AssociationSet Name="FK_Favorites_Properties" Association="Self.FK_Favorites_Properties">
       <End Role="Properties" EntitySet="Properties" />
