@@ -1,0 +1,32 @@
+﻿
+@model RealEstate.Models.ViewModels.TinDangGanDay
+@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<h3 class="mb-4">Chỉnh sửa tin đăng</h3>
+
+@using (Html.BeginForm("SuaTin", "Admin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="mb-3">
+        <label class="form-label">Tiêu đề</label>
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Trạng thái</label>
+        @Html.DropDownListFor(m => m.Status, new SelectList(
+            new[] {
+                new { Value = "Active", Text = "Đã duyệt" },
+                new { Value = "Pending", Text = "Chờ duyệt" },
+                new { Value = "Rejected", Text = "Từ chối" }
+            }, "Value", "Text", Model.Status),
+            new { @class = "form-select" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    <a href="@Url.Action("QuanLyTin", "Admin")" class="btn btn-secondary">Hủy</a>
+}

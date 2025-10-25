@@ -1,0 +1,40 @@
+﻿@model  RealEstate.Models.ViewModels.TangTruongViewModel
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-bg-primary shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fa-solid fa-building"></i> Tổng tin đăng</h6>
+                <h3 class="fw-bold">@Model.TongBaiDang</h3>
+                <p class="mb-0">Giảm @Model.TiLeBaiDang% so với tháng trước</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-success shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fa-solid fa-users"></i> Người dùng</h6>
+                <h3 class="fw-bold">@Model.TongNguoiDung</h3>
+                <p class="mb-0">Tăng @Model.TiLeNguoiDung% so với tháng trước</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-warning shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fa-solid fa-clock"></i> Tin chờ duyệt</h6>
+                <h3 class="fw-bold">37</h3>
+                <p class="mb-0">Đang xử lý</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-danger shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fa-solid fa-flag"></i> Báo cáo vi phạm</h6>
+                <h3 class="fw-bold">12</h3>
+                <p class="mb-0">Cần xem xét</p>
+            </div>
+        </div>
+    </div>
+</div>
