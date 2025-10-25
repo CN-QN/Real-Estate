@@ -208,7 +208,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
-    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -310,10 +309,13 @@
     <Compile Include="Models\VerifyLogin_Result.cs">
       <DependentUpon>RealEstate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\DanhSachNguoiDung.cs" />
     <Compile Include="Models\ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="Models\ViewModels\TangTruongViewModel.cs" />
     <Compile Include="Models\ViewModels\LoginViewModels.cs" />
     <Compile Include="Models\ViewModels\PropertyDetailViewModel.cs" />
     <Compile Include="Models\ViewModels\PropertyViewModel.cs" />
+    <Compile Include="Models\ViewModels\TinDangGanDay.cs" />
     <Compile Include="Models\ViewModels\RegisterViewModels.cs" />
     <Compile Include="Models\ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="Models\Ward.cs">
@@ -321,9 +323,11 @@
     </Compile>
     <Compile Include="Modules\AuthModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AdminRepo.cs" />
     <Compile Include="Repository\AgentRepo.cs" />
     <Compile Include="Repository\AuthRepo.cs" />
     <Compile Include="Repository\UsersRepo.cs" />
+    <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\AgentService.cs" />
     <Compile Include="Services\AuthService.cs" />
     <Compile Include="Services\PropertyService.cs" />
@@ -786,26 +790,25 @@
     <Content Include="Views\Shared\_PropertyCard.cshtml" />
     <Content Include="Views\Shared\_Layout_Admin.cshtml" />
     <Content Include="Views\Shared\_LayoutAgent.cshtml" />
-    <Content Include="Views\Admin\QuanLyTin.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Agent\TinCuaToi.cshtml" />
     <Content Include="Views\Agent\Index.cshtml" />
-    <Content Include="Views\Admin\QuanLyUser.cshtml" />
     <Content Include="Views\Agent\Profile.cshtml" />
     <Content Include="Views\Agent\Customers.cshtml" />
     <Content Include="Views\Agent\AddPost.cshtml" />
     <Content Include="Views\Agent\MyPosts.cshtml" />
-    <Content Include="Views\Admin\Posts.cshtml" />
-    <Content Include="Views\Admin\Transactions.cshtml" />
-    <Content Include="Views\Admin\Users.cshtml" />
     <Content Include="Views\Agent\_NavbarAgent.cshtml" />
     <Content Include="Views\Agent\_SidebarAgent.cshtml" />
     <Content Include="Views\Map\Index.cshtml" />
+    <Content Include="Views\Shared\_Pagination.cshtml" />
+    <None Include="Views\Admin\EditPost.cshtml" />
+    <Content Include="Views\Admin\_DanhSachNguoiDung.cshtml" />
+    <Content Include="Views\Admin\EditUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Common\" />
     <Folder Include="Handlers\" />
-    <Folder Include="Views\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
