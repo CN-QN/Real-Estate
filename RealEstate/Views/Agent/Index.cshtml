@@ -1,0 +1,505 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAgent.cshtml";
+
+}
+
+<div class="container">
+    <div class="fs-6 mb-2 fw-bold">Các bước đăng tin > <a class="text-decoration-none" href="#">Soạn tin đăng</a></div>
+    <div class="bg-white p-4 mb-4">
+        <p class="text-primary fw-bold">I. Thông tin cơ bản</p>
+        <div class="row">
+            <div class="col-6">
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Tên dự án
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" name="name" value="" placeholder="Nhập tên dự án" />
+                    </div>
+                </div>
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Loại hình*
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <button class="btn btn-primary">Mua bán </button>
+                        <button class="btn btn-outline-primary">Cho thuê </button>
+
+                    </div>
+                </div>
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Loại BĐS*
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select class="form-select">
+                            <option value="value">--Loại BĐS--</option>
+                            <option value="value">text</option>
+                            <option value="value">text</option>
+                            <option value="value">text</option>
+                            <option value="value">text</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Tỉnh/Thành phố*
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select id="provinceSelect" class="form-select">
+                            <option value="value">Nhập tên Thành Phố</option>
+                            @foreach (var item in ViewBag.Provinces)
+
+                            {
+                                <option value="@item.code">@item.name</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Quận/Huyện*
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select id="districtSelect" class="form-select" disabled>
+                            <option value="value">Chọn tên Quận/Huyện</option>
+                            @foreach (var item in ViewBag.Districts)
+
+                            {
+                                <option value="@item.code">@item.name</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Xã/Phường
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select id="wardSelect" class="form-select" disabled>
+                            <option value="value">Nhập tên Xã/Phường</option>
+                            @foreach (var item in ViewBag.Wards)
+
+                            {
+                                <option value="@item.code">@item.name</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Đường phố
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" name="name" value="" placeholder="Nhập tên đường phố" />
+                    </div>
+                </div>
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Địa chỉ
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" placeholder="Nhập địa chỉ" name="name" value="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                @*<div id="map" style="height: 450px; width: 100%; border-radius: 10px;"></div>
+                <button id="btnCurrentLocation" type="button" class="btn btn-sm btn-outline-primary mt-2">
+                    📍 Lấy vị trí hiện tại của tôi
+                </button>*@
+                @*<input type="hidden" id="latitude" name="latitude" />
+                <input type="hidden" id="longitude" name="longitude" />*@
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="bg-white p-4 mb-4">
+        <p class="text-primary fw-bold">
+            II. Thông tin mô tả
+        </p>
+        <div class="row">
+            <div class="col-6">
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Giá tiền (VNĐ)*
+                        </label>
+                    </div>
+                    <div class="col-9 d-flex justify-content-between ">
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Min" />
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Max" />
+                        </div>
+                    </div>
+                </div>
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Diện tích (m2)*
+                        </label>
+                    </div>
+                    <div class="col-9 d-flex justify-content-between ">
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Min" />
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Max" />
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+            </div>
+            <div class="col-6">
+                <div class="  d-flex align-items-center justify-content-between   mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Hướng nhà
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select id="provinceSelect" class="form-select">
+                            <option value="value"></option>
+                            @foreach (var item in ViewBag.Provinces)
+
+                            {
+                                <option value="@item.code">@item.name</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="  d-flex align-items-center justify-content-between   mb-4">
+            <div class="col-1" style="margin-right:50px">
+                <label class="form-label">
+                    Tiêu đề*
+                </label>
+            </div>
+
+            <div class="w-100">
+                <input type="text" class="form-control" name="name" value="" placeholder="Diện tích Max" />
+            </div>
+
+        </div>
+        <div class="  d-flex   justify-content-between   mb-4">
+            <div class="col-1" style="margin-right:50px">
+                <label class="form-label">
+                    Mô tả*
+                </label>
+            </div>
+
+            <div class="w-100 h-50">
+                <textarea id="editor1" name="editorContent">@ViewBag.Content</textarea>
+
+
+                <br />
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <!-- ============================ -->
+    <!-- III. Thông tin hình ảnh -->
+    <!-- ============================ -->
+    <div class="bg-white p-4 mb-4">
+        <p class="text-primary fw-bold">
+            III. Thông tin hình ảnh
+        </p>
+
+        <div class="mb-3">
+            <label class="form-label">
+                * Up ít nhất 3 ảnh cho bài đăng để đạt hiệu quả tốt hơn
+            </label>
+        </div>
+
+        <div class="border p-4 text-center rounded mb-2" style="min-height: 200px;">
+            <p class="text-secondary mb-3">
+                Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.
+                <br />
+                (Kéo thả tối đa 3 ảnh vào đây hoặc nhấn nút để tải lên)
+            </p>
+            <input id="imageInput"
+                   type="file"
+                   accept="image/*"
+                   multiple
+                   hidden
+                   onchange="previewImages(event)" />
+
+            <button type="button"
+                    class="btn btn-outline-primary px-4"
+                    onclick="document.getElementById('imageInput').click()">
+                THÊM ẢNH
+            </button>
+           
+        </div>
+
+        <p class="text-danger small mt-2">
+            * Lưu ý: Ảnh tải lên không được là ảnh sao chép trên Internet, không chứa logo, thông tin của website khác,
+            kích thước ảnh tối thiểu 300 x 300px
+        </p>
+    </div>
+
+    <div class="bg-white p-4 mb-4">
+        <p class="text-primary fw-bold">
+            IV. Chọn gói tin - Thanh toán
+        </p>
+
+        <div class="mb-3">
+            <label class="form-label">
+                * Quý khách nên chọn đăng tin VIP để có hiệu quả hơn.
+                <br />
+                VD: Tin <span class="text-danger fw-bold">HDY Diamond</span> có lượt xem trung bình
+                <span class="text-danger fw-bold">cao hơn 20 lần</span> so với tin thường.
+            </label>
+        </div>
+
+        <div class="row g-3 align-items-center mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Loại tin</label>
+                <select class="form-select">
+                    <option selected>HDY Basic</option>
+                    <option>HDY Silver</option>
+                    <option>HDY Diamond</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Thời gian</label>
+                <select class="form-select">
+                    <option selected>4 tuần</option>
+                    <option>8 tuần</option>
+                    <option>12 tuần</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Ngày bắt đầu</label>
+                <input type="date" class="form-control" value="2025-10-22" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Ngày kết thúc</label>
+                <input type="date" class="form-control" value="2025-11-19" readonly />
+            </div>
+        </div>
+
+        <hr>
+
+        <p class="fw-bold text-uppercase text-secondary mb-2">
+            Giá trị tin đăng:
+            <span class="text-primary">0 VNĐ</span>
+        </p>
+
+        <p class="fw-bold mb-2">Thanh toán bằng coupon:</p>
+
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>CHỌN MÃ</th>
+                        <th>TÊN</th>
+                        <th>MÃ COUPON</th>
+                        <th>HẠN DÙNG</th>
+                        <th>TÌNH TRẠNG</th>
+                        <th>SỐ LẦN SỬ DỤNG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="radio" name="coupon" /></td>
+                        <td>[TK mới] Coupon Tin đăng HDY Basic 4 tuần</td>
+                        <td>D1STLFH93M</td>
+                        <td>28/11/2025</td>
+                        <td class="text-success">Hoạt động</td>
+                        <td>0/1</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="coupon" /></td>
+                        <td>[TK mới] Coupon Tin đăng HDY Basic 4 tuần</td>
+                        <td>MK0CAC8JZH</td>
+                        <td>28/11/2025</td>
+                        <td class="text-success">Hoạt động</td>
+                        <td>0/1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary me-2">Đăng tin</button>
+        <button class="btn btn-outline-primary">Lưu nháp</button>
+
+    </div>
+</div>
+@section scripts {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     
+    <script src="https://cdn.ckeditor.com/4.25.1/standard/ckeditor.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            CKEDITOR.replace('editor1', {
+                height: 300
+            });
+        });
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            const map = L.map('map').setView([10.762622, 106.660172], 13); // Mặc định HCM
+            let marker = L.marker([10.762622, 106.660172]).addTo(map);
+
+            //L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            //    maxZoom: 19,
+            //    attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+            //}).addTo(map);
+
+            //function setMarker(lat, lng, zoom = 14) {
+            //    if (marker) marker.setLatLng([lat, lng]);
+            //    else marker = L.marker([lat, lng]).addTo(map);
+            //    map.setView([lat, lng], zoom);
+            //    $('#latitude').val(lat);
+            //    $('#longitude').val(lng);
+            //}
+
+            //map.on('click', function (e) {
+            //    setMarker(e.latlng.lat, e.latlng.lng);
+            //});
+
+            //$('#btnCurrentLocation').click(function () {
+            //    if (navigator.geolocation) {
+            //        navigator.geolocation.getCurrentPosition(
+            //            function (pos) {
+            //                setMarker(pos.coords.latitude, pos.coords.longitude);
+            //            },
+            //            function (err) {
+            //                alert('Không thể lấy vị trí hiện tại: ' + err.message);
+            //            }
+            //        );
+            //    } else {
+            //        alert('Trình duyệt không hỗ trợ định vị.');
+            //    }
+            //});
+
+            function searchLocation(address) {
+                if (!address || address.trim() === '') return;
+
+                $.ajax({
+                    url: 'https://nominatim.openstreetmap.org/search',
+                    data: {
+                        format: 'json',
+                        limit: 1,
+                        q: address
+                    },
+                    headers: {
+                        'Accept-Language': 'vi',
+                        'User-Agent': 'RealEstateApp/1.0 (your-email@example.com)'
+                    },
+                    success: function (data) {
+                        if (data && data.length > 0) {
+                            const lat = parseFloat(data[0].lat);
+                            const lon = parseFloat(data[0].lon);
+                            setMarker(lat, lon);
+                        }
+                    },
+                    error: function () {
+                        console.warn('Không thể truy vấn vị trí cho địa chỉ:', address);
+                    }
+                });
+            }
+
+            //$('input[placeholder="Nhập địa chỉ"]').on('blur', function () {
+            //    const fullAddress = $(this).val();
+            //    if (fullAddress.trim() !== '') searchLocation(fullAddress);
+            //});
+            //$('#provinceSelect, #districtSelect, #wardSelect').change(function () {
+            //    const provinceText = $('#provinceSelect option:selected').text();
+            //    const districtText = $('#districtSelect option:selected').text();
+            //    const wardText = $('#wardSelect option:selected').text();
+
+            //    const fullAddress = [wardText, districtText, provinceText]
+            //        .filter(x => x && x !== "Nhập tên Thành Phố" && x !== "Nhập tên Quận/Huyện" && x !== "Nhập tên Xã/Phường")
+            //        .join(', ');
+
+            //    console.log("fullAddress", fullAddress)
+            //    if (fullAddress) searchLocation(fullAddress);
+            //});
+
+            // === LOAD HUYỆN / XÃ THEO AJAX ===
+            $('#provinceSelect').change(function () {
+                const provinceCode = $(this).val();
+                $('#districtSelect').html("");
+                $('#wardSelect').html("");
+                if (provinceCode) {
+                    $.getJSON('/Agent/Districts', { provinceCode: provinceCode }, function (data) {
+                        $.each(data, function (i, item) {
+                            $('#districtSelect').append($('<option>', {
+                                value: item.code,
+                                text: item.name
+                            }));
+                        });
+                    });
+                    $('#districtSelect').attr('disabled', false);
+
+                }
+
+            });
+
+            $('#districtSelect').change(function () {
+                const districtCode = $(this).val();
+                $('#wardSelect').html('<option value="">-- Chọn Xã/Phường --</option>');
+                if (districtCode) {
+                    $.getJSON('/Agent/Wards', { districtCode: districtCode }, function (data) {
+                        $.each(data, function (i, item) {
+                            $('#wardSelect').append($('<option>', {
+                                value: item.code,
+                                text: item.name
+                            }));
+                        });
+                    });
+                    $('#wardSelect').attr('disabled', false);
+
+                }
+            });
+
+        });
+    </script>
+}

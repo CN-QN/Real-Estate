@@ -12,8 +12,8 @@ namespace RealEstate.Models.ViewModels
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public decimal AreaMin { get; set; }
-        public decimal AreaMax { get; set; }
+        public decimal? AreaMin { get; set; }
+        public decimal? AreaMax { get; set; }
         public string AreaUnit { get; set; }
 
         public string NameUser { get; set; }
@@ -25,7 +25,7 @@ namespace RealEstate.Models.ViewModels
         public string Address { get; set; }
   
 
-        public List<ImageItem> ImageGallery { get; set; }
+        public List<PropertyImage> ImageGallery { get; set; }
         public string Phone { get; set; }
         public DateTime CreatedAt { get; set; }
     }

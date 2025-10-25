@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Hồ sơ cá nhân";
+    Layout = "~/Views/Shared/_LayoutAgent.cshtml";
+}
+
+<div class="container-fluid">
+    <h3 class="fw-bold mb-4">Hồ sơ cá nhân</h3>
+
+    <div class="card p-4 shadow-sm">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="avatar" />
+                <h5>Trần Minh</h5>
+                <p class="text-muted">Nhân viên môi giới</p>
+            </div>
+            <div class="col-md-8">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input type="text" class="form-control" value="Trần Minh" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" value="minhagent@gmail.com" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" value="0901 234 567" />
+                    </div>
+                    <button class="btn btn-primary">Cập nhật</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,11 @@
 ﻿
 
 
-using Owin;
-using Microsoft.Owin.Security.Cookies;
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security.Google;
 using Microsoft.Owin;  
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Google;
+using Owin;
 
 namespace RealEstate  
 {
@@ -17,7 +17,11 @@ namespace RealEstate
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login")
+                LoginPath = new PathString("/Account/Login"),
+                ExpireTimeSpan = System.TimeSpan.FromHours(8),
+                SlidingExpiration = true,
+                CookieSecure = CookieSecureOption.SameAsRequest,
+                CookieHttpOnly = true
             });
              
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
