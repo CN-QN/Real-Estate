@@ -1,328 +1,254 @@
-﻿@{
+﻿@model RealEstate.Models.ViewModels.PostFormVM
+@{
+    ViewBag.Title = "Đăng tin mới";
     Layout = "~/Views/Shared/_LayoutAgent.cshtml";
 }
+<h3 class="fw-bold mb-3">Đăng tin mới</h3>
 
-<div class="container">
-    <div class="fs-6 mb-2 fw-bold">Các bước đăng tin > <a class="text-decoration-none" href="#">Soạn tin đăng</a></div>
-    <div class="bg-white p-4 mb-4">
-        <p class="text-primary fw-bold">I. Thông tin cơ bản</p>
+@using (Html.BeginForm("ThemMoiDanhSach", "Agent", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    if (ViewBag.Thongbao != null)
+    {
+        <div class="alert alert-warning">@ViewBag.Thongbao</div>
+    }
+
+    <div class="card p-3 mb-3">
         <div class="row">
-            <div class="col-12">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Tên dự án
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <input type="text" class="form-control" name="name" value="" placeholder="Nhập tên dự án" />
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Loại hình*
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <button id="btnMuaBan" class="btn btn-primary btn-type" data-type="muaban">Mua bán </button>
-                        <button id="btnChoThue" class="btn btn-outline-primary btn-type" data-type="chothue">Cho thuê </button>
-
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Loại BĐS*
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <select class="form-select">
-                            <option value="value">--Loại BĐS--</option>
-                            <option value="value">text</option>
-                            <option value="value">text</option>
-                            <option value="value">text</option>
-                            <option value="value">text</option>
-
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Tỉnh/Thành phố*
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <select id="provinceSelect" class="form-select">
-                            <option value="value">Nhập tên Thành Phố</option>
-                            @foreach (var item in ViewBag.Provinces)
-
-                            {
-                                <option value="@item.code">@item.name</option>
-
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Quận/Huyện*
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <select id="districtSelect" class="form-select" disabled>
-                            <option value="value">Chọn tên Quận/Huyện</option>
-                            @foreach (var item in ViewBag.Districts)
-
-                            {
-                                <option value="@item.code">@item.name</option>
-
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Xã/Phường
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <select id="wardSelect" class="form-select" disabled>
-                            <option value="value">Nhập tên Xã/Phường</option>
-                            @foreach (var item in ViewBag.Wards)
-
-                            {
-                                <option value="@item.code">@item.name</option>
-
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Đường phố
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <input type="text" class="form-control" name="name" value="" placeholder="Nhập tên đường phố" />
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Địa chỉ
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <input type="text" class="form-control" placeholder="Nhập địa chỉ" name="name" value="" />
-                    </div>
-                </div>
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.ProjectName)
+                @Html.TextBoxFor(m => m.ProjectName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProjectName, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-3 mb-3">
+                @Html.LabelFor(m => m.TransactionType)
+                @Html.DropDownListFor(m => m.TransactionType,
+                    new SelectList(new[] {
+                        new {v="Sell", t="Bán"},
+                        new {v="Rent", t="Cho thuê"}
+                    }, "v", "t", Model?.TransactionType),
+                    "-- Chọn --", new { @class = "form-select" })
+                @Html.ValidationMessageFor(m => m.TransactionType, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-3 mb-3">
+                @Html.LabelFor(m => m.PropertyType)
+                @Html.DropDownListFor(m => m.PropertyType,
+                    new SelectList(new[] {
+                        new {v="Apartment", t="Căn hộ"},
+                        new {v="House", t="Nhà ở"},
+                        new {v="Land", t="Đất"},
+                        new {v="Office", t="Văn phòng"}
+                    }, "v", "t", Model?.PropertyType),
+                    "-- Chọn --", new { @class = "form-select" })
+                @Html.ValidationMessageFor(m => m.PropertyType, "", new { @class = "text-danger" })
             </div>
         </div>
-    </div>
-    <div class="bg-white p-4 mb-4">
-        <p class="text-primary fw-bold">
-            II. Thông tin mô tả
-        </p>
-        <div class="row">
-            <div class="col-6">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Giá tiền (VNĐ)*
-                        </label>
-                    </div>
-                    <div class="col-9 d-flex justify-content-between ">
-                        <div class="col-5">
-                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Min" />
-                        </div>
-                        <div class="col-5">
-                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Max" />
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Diện tích (m2)*
-                        </label>
-                    </div>
-                    <div class="col-9 d-flex justify-content-between ">
-                        <div class="col-5">
-                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Min" />
-                        </div>
-                        <div class="col-5">
-                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Max" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Hướng nhà
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <select id="directionSelect" class="form-select">
-                            <option value="">-- Chọn hướng --</option>
-                            <option value="Đông">Đông</option>
-                            <option value="Tây">Tây</option>
-                            <option value="Nam">Nam</option>
-                            <option value="Bắc">Bắc</option>
-                            <option value="Đông Nam">Đông Nam</option>
-                            <option value="Tây Nam">Tây Nam</option>
-                            <option value="Đông Bắc">Đông Bắc</option>
-                            <option value="Tây Bắc">Tây Bắc</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div class="col-1" style="margin-right:50px">
-                <label class="form-label">
-                    Tiêu đề*
-                </label>
-            </div>
-
-            <div class="w-100">
-                <input type="text" class="form-control" name="name" value="" placeholder="Diện tích Max" />
-            </div>
-
-        </div>
-        <div class="d-flex justify-content-between mb-4">
-            <div class="col-1" style="margin-right:50px">
-                <label class="form-label">
-                    Mô tả*
-                </label>
-            </div>
-
-            <div class="w-100 h-50">
-                <textarea id="editor1" name="editorContent">@ViewBag.Content</textarea>
-
-
-                <br />
-
-            </div>
-
-        </div>
-
-
-    </div>
-    ---
-    <div class="bg-white p-4 mb-4">
-        <p class="text-primary fw-bold">
-            III. Thông tin hình ảnh
-        </p>
 
         <div class="mb-3">
-            <label class="form-label">
-                * Up ít nhất 3 ảnh cho bài đăng để đạt hiệu quả tốt hơn
-            </label>
+            @Html.LabelFor(m => m.Title)
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
         </div>
 
-        <div class="border p-4 text-center rounded mb-2" style="min-height: 200px;">
-            <p class="text-secondary mb-3">
-                Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.
-                <br />
-                (Kéo thả tối đa 3 ảnh vào đây hoặc nhấn nút để tải lên)
-            </p>
-            <input id="imageInput"
-                   type="file"
-                   accept="image/*"
-                   multiple
-                   hidden
-                   onchange="previewImages(event)" />
-
-            <button type="button"
-                    class="btn btn-outline-primary px-4"
-                    onclick="document.getElementById('imageInput').click()">
-                THÊM ẢNH
-            </button>
-
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description, 8, 0, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
         </div>
 
-        <p class="text-danger small mt-2">
-            * Lưu ý: Ảnh tải lên không được là ảnh sao chép trên Internet, không chứa logo, thông tin của website khác,
-            kích thước ảnh tối thiểu 300 x 300px
-        </p>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Tỉnh/Thành</label>
+                @Html.DropDownListFor(m => m.ProvinceCode,
+                    (IEnumerable<SelectListItem>)ViewBag.Provinces,
+                    "-- Chọn tỉnh/thành --",
+                    new { @class = "form-select", id = "ProvinceCode" })
+                @Html.ValidationMessageFor(m => m.ProvinceCode, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Quận/Huyện</label>
+                @Html.DropDownListFor(m => m.DistrictCode,
+                    (IEnumerable<SelectListItem>)ViewBag.Districts,
+                    "-- Chọn quận/huyện --",
+                    new { @class = "form-select", id = "DistrictCode" })
+                @Html.ValidationMessageFor(m => m.DistrictCode, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Phường/Xã</label>
+                @Html.DropDownListFor(m => m.WardCode,
+                    (IEnumerable<SelectListItem>)ViewBag.Wards,
+                    "-- Chọn phường/xã --",
+                    new { @class = "form-select", id = "WardCode" })
+                @Html.ValidationMessageFor(m => m.WardCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.StreetName)
+                @Html.TextBoxFor(m => m.StreetName, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.AddressText)
+                @Html.TextBoxFor(m => m.AddressText, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                @Html.LabelFor(m => m.Direction)
+                @Html.TextBoxFor(m => m.Direction, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 mb-3">
+                @Html.Label("Giá min (VNĐ)")
+                @Html.TextBoxFor(m => m.PriceMin, new { @type = "number", step = "0.01", @class = "form-control" })
+            </div>
+            <div class="col-md-3 mb-3">
+                @Html.Label("Giá max (VNĐ)")
+                @Html.TextBoxFor(m => m.PriceMax, new { @type = "number", step = "0.01", @class = "form-control" })
+            </div>
+            <div class="col-md-3 mb-3">
+                @Html.Label("Diện tích min (m²)")
+                @Html.TextBoxFor(m => m.AreaMin, new { @type = "number", step = "0.01", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="card p-3 mb-3">
+            <div class="mb-2">Ảnh (nhiều ảnh)</div>
+            <div id="dz" class="border rounded p-3 text-center mb-3" style="cursor:pointer;">
+                Kéo & thả ảnh vào đây hoặc bấm để chọn
+                <input id="fileInput-0" type="file" name="ImageFiles" multiple accept="image/*" class="d-none" />
+            </div>
+            <div class="mb-2">
+                <button type="button" id="btnAddMore" class="btn btn-outline-secondary btn-sm">Thêm lần chọn ảnh</button>
+                <small class="text-muted ms-2">Tối đa 20 ảnh, ≤ 10MB/ảnh</small>
+            </div>
+            <div id="preview" class="row g-2"></div>
+        </div>
     </div>
 
-    <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-primary me-2">Đăng tin</button>
-        <button class="btn btn-outline-primary">Lưu nháp</button>
+    <button type="submit" class="btn btn-primary px-4">Đăng tin</button>
+}
 
-    </div>
-</div>
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="https://cdn.ckeditor.com/4.25.1/standard/ckeditor.js"></script>
+@section scripts{
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            CKEDITOR.replace('editor1', {
-                height: 300
-            });
-        });
-    </script>
+(function(){
+  const maxFiles = 20;
+  const maxSize  = 10 * 1024 * 1024;
+  const allowed  = ["image/jpeg","image/png","image/gif","image/webp"];
+  const dz       = document.getElementById("dz");
+  const preview  = document.getElementById("preview");
+  const addBtn   = document.getElementById("btnAddMore");
 
-    <script>
+  let inputCount = 1;
+  const inputs = [document.getElementById("fileInput-0")];
 
-        $(document).ready(function () {
-            $('.btn-type').on('click', function () {
-                $('.btn-type').removeClass('btn-primary').addClass('btn-outline-primary');
+  const createInput = () => {
+    const id = `fileInput-${inputCount++}`;
+    const inp = document.createElement("input");
+    inp.type = "file";
+    inp.name = "ImageFiles";
+    inp.accept = "image/*";
+    inp.multiple = true;
+    inp.className = "d-none";
+    document.forms[0].appendChild(inp);
+    bindInput(inp);
+    inputs.push(inp);
+    return inp;
+  };
 
-                $(this).removeClass('btn-outline-primary').addClass('btn-primary');
+  const bindInput = (inp) => {
+    inp.addEventListener("change", () => {
+      renderFromFileList(inp);
+      validateTotal();
+    });
+  };
+  bindInput(inputs[0]);
 
-                console.log('Loại hình đã chọn:', $(this).data('type'));
-            });
+  const renderFromFileList = (inp) => {
+    [...inp.files].forEach((file) => {
+      if (!allowed.includes(file.type) || file.size > maxSize) return;
+      const col = document.createElement("div");
+      col.className = "col-6 col-md-3";
+      const card = document.createElement("div");
+      card.className = "position-relative border rounded overflow-hidden";
+      const img = document.createElement("img");
+      img.className = "w-100";
+      img.style.aspectRatio = "1/1";
+      img.style.objectFit = "cover";
+      img.src = URL.createObjectURL(file);
+      const rm = document.createElement("button");
+      rm.type = "button";
+      rm.className = "btn btn-sm btn-danger position-absolute";
+      rm.style.top = "6px"; rm.style.right = "6px";
+      rm.textContent = "×";
+      rm.onclick = () => {
+        removeOneFileFromInput(inp, file);
+        col.remove();
+      };
+      card.appendChild(img); card.appendChild(rm); col.appendChild(card);
+      preview.appendChild(col);
+    });
+  };
 
-            $('#provinceSelect').change(function () {
-                const provinceCode = $(this).val();
-                $('#districtSelect').html('<option value="">Chọn tên Quận/Huyện</option>');
-                $('#wardSelect').html('<option value="">Nhập tên Xã/Phường</option>');
-                if (provinceCode && provinceCode !== 'value') {
-                    $.getJSON('/Agent/Districts', { provinceCode: provinceCode }, function (data) {
-                        $.each(data, function (i, item) {
-                            $('#districtSelect').append($('<option>', {
-                                value: item.code,
-                                text: item.name
-                            }));
-                        });
-                        $('#districtSelect').attr('disabled', false);
-                    });
-                } else {
-                    $('#districtSelect').attr('disabled', true);
-                    $('#wardSelect').attr('disabled', true);
-                }
+  const removeOneFileFromInput = (inp, fileToRemove) => {
+    const dt = new DataTransfer();
+    [...inp.files].forEach(f => { if (f !== fileToRemove) dt.items.add(f); });
+    inp.files = dt.files;
+    validateTotal();
+  };
 
-            });
+  const getTotalFiles = () => inputs.reduce((sum, i) => sum + i.files.length, 0);
 
-            $('#districtSelect').change(function () {
-                const districtCode = $(this).val();
-                $('#wardSelect').html('<option value="">Nhập tên Xã/Phường</option>');
-                if (districtCode && districtCode !== 'value') {
-                    $.getJSON('/Agent/Wards', { districtCode: districtCode }, function (data) {
-                        $.each(data, function (i, item) {
-                            $('#wardSelect').append($('<option>', {
-                                value: item.code,
-                                text: item.name
-                            }));
-                        });
-                        $('#wardSelect').attr('disabled', false);
-                    });
-                } else {
-                    $('#wardSelect').attr('disabled', true);
-                }
-            });
+  const validateTotal = () => {
+    const total = getTotalFiles();
+    if (total > maxFiles) {
+      alert(`Vượt quá ${maxFiles} ảnh. Hãy bớt ảnh trước khi gửi.`);
+    }
+  };
 
-        });
+  dz.addEventListener("click", () => inputs[0].click());
+
+  dz.addEventListener("dragover", (e) => { e.preventDefault(); dz.classList.add("bg-light"); });
+  dz.addEventListener("dragleave", () => dz.classList.remove("bg-light"));
+  dz.addEventListener("drop", (e) => {
+    e.preventDefault(); dz.classList.remove("bg-light");
+    const inp = inputs[0];
+    const dt = new DataTransfer();
+    [...inp.files].forEach(f => dt.items.add(f));
+    [...e.dataTransfer.files].forEach(f => dt.items.add(f));
+    inp.files = dt.files;
+    renderFromFileList(inp);
+    validateTotal();
+  });
+
+  addBtn.addEventListener("click", () => {
+    const inp = createInput();
+    inp.click();
+  });
+
+  $("#ProvinceCode").change(function () {
+      var code = $(this).val();
+      $("#DistrictCode").empty().append($("<option>").val("").text("-- Chọn quận/huyện --"));
+      $("#WardCode").empty().append($("<option>").val("").text("-- Chọn phường/xã --"));
+      if (!code) return;
+      $.getJSON("@Url.Action("Districts","Agent")", { provinceCode: code }, function (rs) {
+          $.each(rs, function (_, d) {
+              $("#DistrictCode").append($("<option>").val(d.code).text(d.name));
+          });
+      });
+  });
+  $("#DistrictCode").change(function () {
+      var code = $(this).val();
+      $("#WardCode").empty().append($("<option>").val("").text("-- Chọn phường/xã --"));
+      if (!code) return;
+      $.getJSON("@Url.Action("Wards","Agent")", { districtCode: code }, function (rs) {
+          $.each(rs, function (_, w) {
+              $("#WardCode").append($("<option>").val(w.code).text(w.name));
+          });
+      });
+  });
+})();
     </script>
 }
