@@ -1,0 +1,328 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAgent.cshtml";
+}
+
+<div class="container">
+    <div class="fs-6 mb-2 fw-bold">Các bước đăng tin > <a class="text-decoration-none" href="#">Soạn tin đăng</a></div>
+    <div class="bg-white p-4 mb-4">
+        <p class="text-primary fw-bold">I. Thông tin cơ bản</p>
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Tên dự án
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" name="name" value="" placeholder="Nhập tên dự án" />
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Loại hình*
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <button id="btnMuaBan" class="btn btn-primary btn-type" data-type="muaban">Mua bán </button>
+                        <button id="btnChoThue" class="btn btn-outline-primary btn-type" data-type="chothue">Cho thuê </button>
+
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Loại BĐS*
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select class="form-select">
+                            <option value="value">--Loại BĐS--</option>
+                            <option value="value">text</option>
+                            <option value="value">text</option>
+                            <option value="value">text</option>
+                            <option value="value">text</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Tỉnh/Thành phố*
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select id="provinceSelect" class="form-select">
+                            <option value="value">Nhập tên Thành Phố</option>
+                            @foreach (var item in ViewBag.Provinces)
+
+                            {
+                                <option value="@item.code">@item.name</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Quận/Huyện*
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select id="districtSelect" class="form-select" disabled>
+                            <option value="value">Chọn tên Quận/Huyện</option>
+                            @foreach (var item in ViewBag.Districts)
+
+                            {
+                                <option value="@item.code">@item.name</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Xã/Phường
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select id="wardSelect" class="form-select" disabled>
+                            <option value="value">Nhập tên Xã/Phường</option>
+                            @foreach (var item in ViewBag.Wards)
+
+                            {
+                                <option value="@item.code">@item.name</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Đường phố
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" name="name" value="" placeholder="Nhập tên đường phố" />
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Địa chỉ
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control" placeholder="Nhập địa chỉ" name="name" value="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white p-4 mb-4">
+        <p class="text-primary fw-bold">
+            II. Thông tin mô tả
+        </p>
+        <div class="row">
+            <div class="col-6">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Giá tiền (VNĐ)*
+                        </label>
+                    </div>
+                    <div class="col-9 d-flex justify-content-between ">
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Min" />
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Max" />
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Diện tích (m2)*
+                        </label>
+                    </div>
+                    <div class="col-9 d-flex justify-content-between ">
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Min" />
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="name" value="" placeholder="Giá Max" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="col-3 ">
+                        <label class="form-label">
+                            Hướng nhà
+                        </label>
+                    </div>
+                    <div class="col-9">
+                        <select id="directionSelect" class="form-select">
+                            <option value="">-- Chọn hướng --</option>
+                            <option value="Đông">Đông</option>
+                            <option value="Tây">Tây</option>
+                            <option value="Nam">Nam</option>
+                            <option value="Bắc">Bắc</option>
+                            <option value="Đông Nam">Đông Nam</option>
+                            <option value="Tây Nam">Tây Nam</option>
+                            <option value="Đông Bắc">Đông Bắc</option>
+                            <option value="Tây Bắc">Tây Bắc</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="col-1" style="margin-right:50px">
+                <label class="form-label">
+                    Tiêu đề*
+                </label>
+            </div>
+
+            <div class="w-100">
+                <input type="text" class="form-control" name="name" value="" placeholder="Diện tích Max" />
+            </div>
+
+        </div>
+        <div class="d-flex justify-content-between mb-4">
+            <div class="col-1" style="margin-right:50px">
+                <label class="form-label">
+                    Mô tả*
+                </label>
+            </div>
+
+            <div class="w-100 h-50">
+                <textarea id="editor1" name="editorContent">@ViewBag.Content</textarea>
+
+
+                <br />
+
+            </div>
+
+        </div>
+
+
+    </div>
+    ---
+    <div class="bg-white p-4 mb-4">
+        <p class="text-primary fw-bold">
+            III. Thông tin hình ảnh
+        </p>
+
+        <div class="mb-3">
+            <label class="form-label">
+                * Up ít nhất 3 ảnh cho bài đăng để đạt hiệu quả tốt hơn
+            </label>
+        </div>
+
+        <div class="border p-4 text-center rounded mb-2" style="min-height: 200px;">
+            <p class="text-secondary mb-3">
+                Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.
+                <br />
+                (Kéo thả tối đa 3 ảnh vào đây hoặc nhấn nút để tải lên)
+            </p>
+            <input id="imageInput"
+                   type="file"
+                   accept="image/*"
+                   multiple
+                   hidden
+                   onchange="previewImages(event)" />
+
+            <button type="button"
+                    class="btn btn-outline-primary px-4"
+                    onclick="document.getElementById('imageInput').click()">
+                THÊM ẢNH
+            </button>
+
+        </div>
+
+        <p class="text-danger small mt-2">
+            * Lưu ý: Ảnh tải lên không được là ảnh sao chép trên Internet, không chứa logo, thông tin của website khác,
+            kích thước ảnh tối thiểu 300 x 300px
+        </p>
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary me-2">Đăng tin</button>
+        <button class="btn btn-outline-primary">Lưu nháp</button>
+
+    </div>
+</div>
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.ckeditor.com/4.25.1/standard/ckeditor.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            CKEDITOR.replace('editor1', {
+                height: 300
+            });
+        });
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('.btn-type').on('click', function () {
+                $('.btn-type').removeClass('btn-primary').addClass('btn-outline-primary');
+
+                $(this).removeClass('btn-outline-primary').addClass('btn-primary');
+
+                console.log('Loại hình đã chọn:', $(this).data('type'));
+            });
+
+            $('#provinceSelect').change(function () {
+                const provinceCode = $(this).val();
+                $('#districtSelect').html('<option value="">Chọn tên Quận/Huyện</option>');
+                $('#wardSelect').html('<option value="">Nhập tên Xã/Phường</option>');
+                if (provinceCode && provinceCode !== 'value') {
+                    $.getJSON('/Agent/Districts', { provinceCode: provinceCode }, function (data) {
+                        $.each(data, function (i, item) {
+                            $('#districtSelect').append($('<option>', {
+                                value: item.code,
+                                text: item.name
+                            }));
+                        });
+                        $('#districtSelect').attr('disabled', false);
+                    });
+                } else {
+                    $('#districtSelect').attr('disabled', true);
+                    $('#wardSelect').attr('disabled', true);
+                }
+
+            });
+
+            $('#districtSelect').change(function () {
+                const districtCode = $(this).val();
+                $('#wardSelect').html('<option value="">Nhập tên Xã/Phường</option>');
+                if (districtCode && districtCode !== 'value') {
+                    $.getJSON('/Agent/Wards', { districtCode: districtCode }, function (data) {
+                        $.each(data, function (i, item) {
+                            $('#wardSelect').append($('<option>', {
+                                value: item.code,
+                                text: item.name
+                            }));
+                        });
+                        $('#wardSelect').attr('disabled', false);
+                    });
+                } else {
+                    $('#wardSelect').attr('disabled', true);
+                }
+            });
+
+        });
+    </script>
+}
