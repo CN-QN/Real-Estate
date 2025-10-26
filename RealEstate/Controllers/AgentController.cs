@@ -15,7 +15,7 @@ namespace RealEstate.Controllers
     public class AgentController : Controller
     {
         private AgentService _AgentService = new AgentService();
-         
+
         public ActionResult Index()
         {
             ViewBag.Provinces = _AgentService.Provinces();
@@ -31,8 +31,8 @@ namespace RealEstate.Controllers
                 var districts = _AgentService.Districts(provinceCode)
                     .Select(d => new { d.code, d.name })
                 .ToList();
-                 
-                return Json(districts,JsonRequestBehavior.AllowGet);
+
+                return Json(districts, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace RealEstate.Controllers
         }
 
         [HttpGet]
-        public JsonResult Wards( int districtCode)
+        public JsonResult Wards(int districtCode)
         {
             var wards = _AgentService.Wards(districtCode)
         .Select(w => new { w.code, w.name })
@@ -52,10 +52,6 @@ namespace RealEstate.Controllers
         {
             return View();
         }
-        //public ActionResult AddPost()
-        //{
-        //    return View();
-        //}
         public ActionResult MyPosts()
         {
             return View();
