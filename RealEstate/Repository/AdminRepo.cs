@@ -26,7 +26,7 @@ namespace RealEstate.Repository
 
             return data;
         }
-        public List<DanhSachNguoiDung> DanhSachNguoiDung( int? pageNumber)
+        public List<DanhSachNguoiDung> DanhSachNguoiDung(int? pageNumber)
         {
             IQueryable<DanhSachNguoiDung> query = db.Users
                 .Select(x => new DanhSachNguoiDung
@@ -42,10 +42,36 @@ namespace RealEstate.Repository
                 .Skip((pageNumber.Value - 1) * 30)
                 .Take(30);
 
-            
+
 
             return query.ToList();
         }
+        //public List<DanhSachNguoiDung> DanhSachNguoiDung(int? pageNumber)
+        //{
+        //    using (var db = new RealEstateEntities())
+        //    {
+        //        var total = db.Users.Count(); // 👈 test xem có đúng số lượng mới chưa
+
+        //        System.Diagnostics.Debug.WriteLine("Tong user trong DB: " + total);
+        //        IQueryable<DanhSachNguoiDung> query = db.Users
+        //            .AsNoTracking() // ⬅️ thêm dòng này
+        //            .Select(x => new DanhSachNguoiDung
+        //            {
+        //                Id = x.Id,
+        //                Name = x.Name,
+        //                Email = x.Email,
+        //                Role = x.Role.Name,
+        //                Created_at = x.CreatedAt.Value,
+        //                TongSoNguoiDung = db.Users.Count()
+        //            })
+        //            .OrderByDescending(x => x.Created_at)
+        //            .Skip((pageNumber.Value - 1) * 30)
+        //            .Take(30);
+
+        //        return query.ToList();
+        //    }
+        //}
+
         public object TiLeDangTin()
         {
             var data = db.Properties

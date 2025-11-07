@@ -1,4 +1,5 @@
 ﻿using RealEstate.Models;
+using RealEstate.Models.ViewModels;
 using RealEstate.Repository;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,10 @@ namespace RealEstate.Services
                 return null;
             }
             return _AgentRepo.Wards(district_code);
+        }
+        public bool AddPost(PostViewModels request, int userId)
+        {
+            return _AgentRepo.AddPost(request, userId);
         }
     }
 }

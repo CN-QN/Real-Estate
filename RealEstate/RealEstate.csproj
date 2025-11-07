@@ -208,109 +208,124 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\UrbanController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Identity\AppDbContext.cs" />
-    <Compile Include="Identity\AppUser.cs" />
-    <Compile Include="Models\Category.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\District.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Favorite.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Furniture.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GetPropertyById_Result.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetPropertySearch_Result.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GetProperty_Result.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Log.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Message.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\News.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Payment.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Property.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PropertyAttribute.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PropertyImage.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PropertyType.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Province.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RealEstate.Context.cs">
+    <Compile Include="Models\RealEstateEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RealEstate.Context.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RealEstate.cs">
+    <Compile Include="Models\RealEstateEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RealEstate.Designer.cs">
+    <Compile Include="Models\RealEstateEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RealEstate.edmx</DependentUpon>
+      <DependentUpon>RealEstateEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\RefreshToken.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ResetPassword.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Review.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagrams_Result.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Transaction.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Urban.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UrbanAttribute.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UrbanImage.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserProfile.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VerifyLogin_Result.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\DanhSachNguoiDung.cs" />
     <Compile Include="Models\ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="Models\ViewModels\HomePageViewModel.cs" />
+    <Compile Include="Models\ViewModels\ListBaseViewModel.cs" />
+    <Compile Include="Models\ViewModels\PostViewModels.cs" />
+    <Compile Include="Models\ViewModels\ProfileViewModel.cs" />
+    <Compile Include="Models\ViewModels\PropertyListViewModel.cs" />
     <Compile Include="Models\ViewModels\TangTruongViewModel.cs" />
     <Compile Include="Models\ViewModels\LoginViewModels.cs" />
     <Compile Include="Models\ViewModels\PropertyDetailViewModel.cs" />
@@ -318,19 +333,23 @@
     <Compile Include="Models\ViewModels\TinDangGanDay.cs" />
     <Compile Include="Models\ViewModels\RegisterViewModels.cs" />
     <Compile Include="Models\ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\ViewModels\UrbanDetailViewModel.cs" />
+    <Compile Include="Models\ViewModels\UrbanViewModel.cs" />
     <Compile Include="Models\Ward.cs">
-      <DependentUpon>RealEstate.tt</DependentUpon>
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Modules\AuthModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AdminRepo.cs" />
     <Compile Include="Repository\AgentRepo.cs" />
     <Compile Include="Repository\AuthRepo.cs" />
+    <Compile Include="Repository\UrbanRepo.cs" />
     <Compile Include="Repository\UsersRepo.cs" />
     <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\AgentService.cs" />
     <Compile Include="Services\AuthService.cs" />
     <Compile Include="Services\PropertyService.cs" />
+    <Compile Include="Services\UrbanService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\DbHelper.cs" />
@@ -362,15 +381,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Compile Include="Repository\PropertyRepo.cs" />
-    <Content Include="Models\RealEstate.Context.tt">
+    <Content Include="Models\RealEstateEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RealEstate.edmx</DependentUpon>
-      <LastGenOutput>RealEstate.Context.cs</LastGenOutput>
+      <DependentUpon>RealEstateEntities.edmx</DependentUpon>
+      <LastGenOutput>RealEstateEntities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\RealEstate.tt">
+    <Content Include="Models\RealEstateEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RealEstate.edmx</DependentUpon>
-      <LastGenOutput>RealEstate.cs</LastGenOutput>
+      <DependentUpon>RealEstateEntities.edmx</DependentUpon>
+      <LastGenOutput>RealEstateEntities.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -400,13 +419,6 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <EntityDeploy Include="Models\RealEstate.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RealEstate.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\RealEstate.edmx.diagram">
-      <DependentUpon>RealEstate.edmx</DependentUpon>
-    </Content>
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\CHANGES.html" />
     <Content Include="Scripts\ckeditor\ckeditor.asp" />
@@ -417,6 +429,13 @@
     <Content Include="Scripts\ckeditor\ckeditor_php4.php" />
     <Content Include="Scripts\ckeditor\ckeditor.php" />
     <Content Include="Scripts\ckeditor\ckeditor.pack" />
+    <EntityDeploy Include="Models\RealEstateEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>RealEstateEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\RealEstateEntities.edmx.diagram">
+      <DependentUpon>RealEstateEntities.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\ckeditor\ckeditor_source.js" />
     <Content Include="Scripts\ckeditor\config.js" />
@@ -777,16 +796,13 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Property\Index.cshtml" />
     <Content Include="Views\Property\Details.cshtml" />
     <Content Include="Views\Shared\_ListProperty.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\SuccessResetPassword.cshtml" />
-    <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_PropertyCard.cshtml" />
     <Content Include="Views\Shared\_Layout_Admin.cshtml" />
     <Content Include="Views\Shared\_LayoutAgent.cshtml" />
@@ -801,14 +817,21 @@
     <Content Include="Views\Agent\_SidebarAgent.cshtml" />
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
+    <Content Include="Views\Users\ProfileUser.cshtml" />
     <None Include="Views\Admin\EditPost.cshtml" />
     <Content Include="Views\Admin\_DanhSachNguoiDung.cshtml" />
     <Content Include="Views\Admin\EditUser.cshtml" />
+    <Content Include="Views\Admin\QuanLyNguoiDung.cshtml" />
+    <Content Include="Views\Urban\Index.cshtml" />
+    <Content Include="Views\Urban\Details.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_ListUrban.cshtml" />
+    <Content Include="Views\Shared\_UrbanCard.cshtml" />
+    <Content Include="Views\Property\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Common\" />
-    <Folder Include="Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

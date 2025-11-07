@@ -21,7 +21,6 @@ namespace RealEstate.Models
             this.Logs = new HashSet<Log>();
             this.Messages = new HashSet<Message>();
             this.Messages1 = new HashSet<Message>();
-            this.News = new HashSet<News>();
             this.Properties = new HashSet<Property>();
             this.RefreshTokens = new HashSet<RefreshToken>();
             this.ResetPasswords = new HashSet<ResetPassword>();
@@ -33,7 +32,6 @@ namespace RealEstate.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string Phone { get; set; }
         public string ProviderName { get; set; }
         public string ProviderKey { get; set; }
         public string Avatar { get; set; }
@@ -50,8 +48,6 @@ namespace RealEstate.Models
         public virtual ICollection<Message> Messages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<News> News { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Property> Properties { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

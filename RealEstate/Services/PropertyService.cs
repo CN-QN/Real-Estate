@@ -16,11 +16,21 @@ namespace RealEstate.Services
         {
             return _repo.GetPropertyAll(  PageNumber);
         }
-
+        public List<PropertyDetailViewModel> GetPropertySearch(string Keyword)
+        {
+            return _repo.GetPropertySearch(Keyword);
+        }
+        
         public  PropertyDetailViewModel GetPropertyById   (int Id) 
         {
             return _repo.GetPropertyById(Id);
 
         }
+        public List<PropertyViewModel> GetRelatedProperty(int Id,int Id_Type)
+        {
+            return _repo.GetRelatedProperty(Id, Id_Type);
+
+        }
+        
     }
 }

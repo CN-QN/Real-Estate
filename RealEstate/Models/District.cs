@@ -18,6 +18,7 @@ namespace RealEstate.Models
         public District()
         {
             this.Wards = new HashSet<Ward>();
+            this.Addresses = new HashSet<Address>();
         }
     
         public int id { get; set; }
@@ -28,5 +29,7 @@ namespace RealEstate.Models
         public virtual Province Province { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ward> Wards { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Address> Addresses { get; set; }
     }
 }

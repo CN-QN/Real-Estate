@@ -15,7 +15,8 @@ namespace RealEstate.Models.ViewModels
         public decimal? AreaMin { get; set; }
         public decimal? AreaMax { get; set; }
         public string AreaUnit { get; set; }
-
+            
+        public int TypeId { get; set; }
         public string NameUser { get; set; }
         public string NameType { get; set; }
         public string Avatar { get; set; }

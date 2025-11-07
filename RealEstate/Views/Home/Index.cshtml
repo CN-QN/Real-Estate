@@ -1,0 +1,112 @@
+﻿@model RealEstate.Models.ViewModels.HomePageViewModel
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="bg-light py-4 hero-section d-flex align-items-center">
+    <div class="container position-relative ">
+        <div class="mx-auto bg-white shadow-lg rounded-2 p-4 container">
+
+             
+
+            <form action="/property/index" class="d-flex flex-wrap gap-2">
+                <div class="input-group ">
+                    <input name="keyword" type="text" style="width:95%" placeholder="Tìm kiếm theo khu vực, dự án, tên đường..." />
+
+                </div>
+                <div style="right:30px;width:50px" class="position-absolute  ">
+                    <button class="btn btn-danger ">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+               
+
+            </form>
+ 
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5">
+    <div class="title-home">
+        <h3>Bất động sản dành cho bạn</h3>
+    </div>
+    @Html.Partial("_ListProperty", Model.PropetyView)
+</div>
+<div class="container mt-5">
+    <div class="title-home">
+        <h3>Dự án nổi bật</h3>
+    </div>
+    @Html.Partial("_ListUrban", Model.UrbanView)
+</div>
+
+<div class="container mt-5">
+    <div class="title-home">
+        <h3>Bất động sản theo khu vực</h3>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="position-relative">
+                <img src="https://homedy.com/images/home//ban-nha-dat-tp-ho-chi-minh.webp" class="img-fluid rounded-3" alt="TP. Hồ Chí Minh" style="height:394px" />
+                <div class="position-absolute bottom-0 start-0 text-white p-3"
+                     style="background: linear-gradient(180deg, transparent, rgba(0,0,0,0.7)); width: 100%;">
+                    <h5 class="fw-bold">TP. Hồ Chí Minh</h5>
+                    <small>26.642 tin đăng</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex flex-column-reverse justify-content-between" >
+            <div class="row  ">
+                <div class="col-md-6">
+                    <div class="position-relative" style="width:262px;height:190px">
+                        <img src="https://homedy.com/images/home//ban-nha-dat-ha-noi.webp" class="img-fluid rounded-3" alt="Hà Nội" style="width:100%" />
+                        <div class="position-absolute bottom-0 start-0 text-white p-2"
+                             style="background: linear-gradient(180deg, transparent, rgba(0,0,0,0.7)); width: 100%;">
+                            <h6 class="fw-bold">Hà Nội</h6>
+                            <small>15.249 tin đăng</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative" style="width:262px;height:190px">
+                        <img src="https://homedy.com/images/home//ban-nha-dat-binh-duong.webp" alt="Bình Dương" class="w-100" />
+                        <div class="position-absolute bottom-0 start-0 text-white p-2"
+                             style="background: linear-gradient(180deg, transparent, rgba(0,0,0,0.7)); width: 100%;">
+                            <h6 class="fw-bold">Bình Dương</h6>
+                            <small>2.942 tin đăng</small>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="position-relative" style="width:262px;height:174px">
+                        <img src="https://homedy.com/images/home//ban-nha-dat-da-nang.webp" class="img-fluid rounded-3" alt="Đà Nẵng" />
+                        <div class="position-absolute bottom-0 start-0 text-white p-2"
+                             style="background: linear-gradient(180deg, transparent, rgba(0,0,0,0.7)); width: 100%;">
+                            <h6 class="fw-bold">Đà Nẵng</h6>
+                            <small>1.240 tin đăng</small>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative" style="width:262px;height:174px">
+                        <img src="https://homedy.com/images/home//ban-nha-dat-khanh-hoa.webp" class="img-fluid rounded-3" alt="Khánh Hòa" />
+                        <div class="position-absolute bottom-0 start-0 text-white p-2"
+                             style="background: linear-gradient(180deg, transparent, rgba(0,0,0,0.7)); width: 100%;">
+                            <h6 class="fw-bold">Khánh Hòa</h6>
+                            <small>1.011 tin đăng</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+</div>

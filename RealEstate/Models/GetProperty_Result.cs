@@ -14,6 +14,7 @@ namespace RealEstate.Models
     public partial class GetProperty_Result
     {
         public int Id { get; set; }
+        public int TypeId { get; set; }
         public string Name { get; set; }
         public Nullable<double> TotalPage { get; set; }
         public string Avatar { get; set; }

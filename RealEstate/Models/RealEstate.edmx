@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RealEstateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="RealEstateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categories">
           <Key>
             <PropertyRef Name="Id" />
@@ -59,19 +59,6 @@
           <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedAt" Type="datetime" />
-        </EntityType>
-        <EntityType Name="News">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="Content" Type="nvarchar(max)" />
-          <Property Name="CategoryId" Type="int" />
-          <Property Name="AuthorId" Type="int" />
-          <Property Name="PublishedAt" Type="datetime" />
-          <Property Name="CreatedAt" Type="datetime" />
-          <Property Name="UpdatedAt" Type="datetime" />
         </EntityType>
         <EntityType Name="Payments">
           <Key>
@@ -208,6 +195,34 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="CreatedAt" Type="datetime" />
           <Property Name="UpdatedAt" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'RealEstate.dbo.Urban_Attributes' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Urban_Attributes">
+          <Property Name="Urban_id" Type="int" />
+          <Property Name="Key" Type="nvarchar(max)" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>-->
+        <EntityType Name="Urban_Images">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UrlImage" Type="nvarchar" MaxLength="200" />
+          <Property Name="Urban_id" Type="int" />
+          <Property Name="Created_At" Type="date" />
+          <Property Name="Updated_At" Type="date" />
+        </EntityType>
+        <EntityType Name="Urbans">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="User_id" Type="int" />
+          <Property Name="Created_At" Type="date" />
+          <Property Name="Updated_At" Type="date" />
+        </EntityType>
         <EntityType Name="UserProfiles">
           <Key>
             <PropertyRef Name="UserId" />
@@ -316,6 +331,33 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errors Found During Generation:
+error 6004: The table 'RealEstate.dbo.Urban_Attributes' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__Urban_Att__Urban__43A1090D" />-->
+        <Association Name="FK__Urban_Ima__Urban__3FD07829">
+          <End Role="Urbans" Type="Self.Urbans" Multiplicity="0..1" />
+          <End Role="Urban_Images" Type="Self.Urban_Images" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Urbans">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Urban_Images">
+              <PropertyRef Name="Urban_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Urbans__User_id__3B0BC30C">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Urbans" Type="Self.Urbans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Urbans">
+              <PropertyRef Name="User_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Wards__district___29E1370A">
           <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
           <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
@@ -397,30 +439,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             </Principal>
             <Dependent Role="Messages">
               <PropertyRef Name="SenderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_News_Categories">
-          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
-          <End Role="News" Type="Self.News" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Categories">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="News">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_News_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="News" Type="Self.News" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="News">
-              <PropertyRef Name="AuthorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -592,7 +610,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <EntitySet Name="Furnitures" EntityType="Self.Furnitures" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Properties" EntityType="Self.Properties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PropertyFurnitures" EntityType="Self.PropertyFurnitures" Schema="dbo" store:Type="Tables" />
@@ -605,6 +622,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Urban_Images" EntityType="Self.Urban_Images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Urbans" EntityType="Self.Urbans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProfiles" EntityType="Self.UserProfiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
@@ -639,6 +658,14 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             <End Role="Users" EntitySet="Users" />
             <End Role="ResetPassword" EntitySet="ResetPassword" />
           </AssociationSet>
+          <AssociationSet Name="FK__Urban_Ima__Urban__3FD07829" Association="Self.FK__Urban_Ima__Urban__3FD07829">
+            <End Role="Urbans" EntitySet="Urbans" />
+            <End Role="Urban_Images" EntitySet="Urban_Images" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Urbans__User_id__3B0BC30C" Association="Self.FK__Urbans__User_id__3B0BC30C">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Urbans" EntitySet="Urbans" />
+          </AssociationSet>
           <AssociationSet Name="FK__Wards__district___29E1370A" Association="Self.FK__Wards__district___29E1370A">
             <End Role="Districts" EntitySet="Districts" />
             <End Role="Wards" EntitySet="Wards" />
@@ -666,14 +693,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <AssociationSet Name="FK_Messages_Sender" Association="Self.FK_Messages_Sender">
             <End Role="Users" EntitySet="Users" />
             <End Role="Messages" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_News_Categories" Association="Self.FK_News_Categories">
-            <End Role="Categories" EntitySet="Categories" />
-            <End Role="News" EntitySet="News" />
-          </AssociationSet>
-          <AssociationSet Name="FK_News_Users" Association="Self.FK_News_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="News" EntitySet="News" />
           </AssociationSet>
           <AssociationSet Name="FK_Payments_Transactions" Association="Self.FK_Payments_Transactions">
             <End Role="Transactions" EntitySet="Transactions" />
@@ -716,8 +735,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RealEstateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -800,6 +818,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Category" Relationship="Self.FK_News_Categories" FromRole="News" ToRole="Categories" />
           <NavigationProperty Name="User" Relationship="Self.FK_News_Users" FromRole="News" ToRole="Users" />
+          <NavigationProperty Name="NewImages" Relationship="RealEstateModel.FK__NewImages__NewId__2EA5EC27" FromRole="News" ToRole="NewImage" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -975,6 +994,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <NavigationProperty Name="Role" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
           <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Users" FromRole="Users" ToRole="Transactions" />
           <NavigationProperty Name="UserProfile" Relationship="Self.FK_UserProfiles_Users" FromRole="Users" ToRole="UserProfiles" />
+          <NavigationProperty Name="Urbans" Relationship="RealEstateModel.FK__Urbans__User_id__3B0BC30C" FromRole="User" ToRole="Urban" />
         </EntityType>
         <EntityType Name="Ward">
           <Key>
@@ -1402,7 +1422,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             <Parameter Name="PageNumber" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetPropertyById" ReturnType="Collection(RealEstateModel.GetPropertyById_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
@@ -1435,8 +1455,23 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <FunctionImport Name="VerifyLogin" ReturnType="Collection(RealEstateModel.VerifyLogin_Result)">
-            <Parameter Name="Email" Mode="In" Type="String" />
+          <Parameter Name="Email" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="NewImages" EntityType="RealEstateModel.NewImage" />
+          <AssociationSet Name="FK__NewImages__NewId__2EA5EC27" Association="RealEstateModel.FK__NewImages__NewId__2EA5EC27">
+            <End Role="News" EntitySet="News" />
+            <End Role="NewImage" EntitySet="NewImages" />
+          </AssociationSet>
+          <EntitySet Name="Urban_Images" EntityType="RealEstateModel.Urban_Images" />
+          <EntitySet Name="Urbans" EntityType="RealEstateModel.Urban" />
+          <AssociationSet Name="FK__Urban_Ima__Urban__3FD07829" Association="RealEstateModel.FK__Urban_Ima__Urban__3FD07829">
+            <End Role="Urban" EntitySet="Urbans" />
+            <End Role="Urban_Images" EntitySet="Urban_Images" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Urbans__User_id__3B0BC30C" Association="RealEstateModel.FK__Urbans__User_id__3B0BC30C">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Urban" EntitySet="Urbans" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="GetProperty_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -1497,6 +1532,76 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="Avatar" Nullable="true" />
         </ComplexType>
+        <EntityType Name="NewImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="NewId" Type="Int32" />
+          <Property Name="ImageUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="News" Relationship="RealEstateModel.FK__NewImages__NewId__2EA5EC27" FromRole="NewImage" ToRole="News" />
+        </EntityType>
+        <Association Name="FK__NewImages__NewId__2EA5EC27">
+          <End Type="RealEstateModel.News" Role="News" Multiplicity="0..1" />
+          <End Type="RealEstateModel.NewImage" Role="NewImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NewImage">
+              <PropertyRef Name="NewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Urban_Images">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UrlImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Urban_id" Type="Int32" />
+          <Property Name="Created_At" Type="DateTime" Precision="0" />
+          <Property Name="Updated_At" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Urban" Relationship="RealEstateModel.FK__Urban_Ima__Urban__3FD07829" FromRole="Urban_Images" ToRole="Urban" />
+        </EntityType>
+        <EntityType Name="Urban">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="User_id" Type="Int32" />
+          <Property Name="Created_At" Type="DateTime" Precision="0" />
+          <Property Name="Updated_At" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Urban_Images" Relationship="RealEstateModel.FK__Urban_Ima__Urban__3FD07829" FromRole="Urban" ToRole="Urban_Images" />
+          <NavigationProperty Name="User" Relationship="RealEstateModel.FK__Urbans__User_id__3B0BC30C" FromRole="Urban" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__Urban_Ima__Urban__3FD07829">
+          <End Type="RealEstateModel.Urban" Role="Urban" Multiplicity="0..1" />
+          <End Type="RealEstateModel.Urban_Images" Role="Urban_Images" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Urban">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Urban_Images">
+              <PropertyRef Name="Urban_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Urbans__User_id__3B0BC30C">
+          <End Type="RealEstateModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="RealEstateModel.Urban" Role="Urban" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Urban">
+              <PropertyRef Name="User_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1560,20 +1665,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="News">
-            <EntityTypeMapping TypeName="RealEstateModel.News">
-              <MappingFragment StoreEntitySet="News">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
-                <ScalarProperty Name="PublishedAt" ColumnName="PublishedAt" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1842,6 +1933,29 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Urban_Images">
+            <EntityTypeMapping TypeName="RealEstateModel.Urban_Images">
+              <MappingFragment StoreEntitySet="Urban_Images">
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Urban_id" ColumnName="Urban_id" />
+                <ScalarProperty Name="UrlImage" ColumnName="UrlImage" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Urbans">
+            <EntityTypeMapping TypeName="RealEstateModel.Urban">
+              <MappingFragment StoreEntitySet="Urbans">
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="User_id" ColumnName="User_id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

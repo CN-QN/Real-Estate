@@ -49,6 +49,9 @@ namespace RealEstate.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Ward> Wards { get; set; }
         public virtual DbSet<PropertyAttribute> PropertyAttributes { get; set; }
+        public virtual DbSet<NewImage> NewImages { get; set; }
+        public virtual DbSet<Urban_Images> Urban_Images { get; set; }
+        public virtual DbSet<Urban> Urbans { get; set; }
     
         public virtual ObjectResult<GetProperty_Result> GetProperty(Nullable<int> pageSize, Nullable<int> pageNumber)
         {

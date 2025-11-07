@@ -85,7 +85,7 @@ namespace RealEstate.Controllers
 
 
                 var user = _UserService.FindEmail(Email);
-                if (user != null && user.ProviderName != "Google")
+                if (user != null && user.User.ProviderName != "Google")
                 {
                     if (_UserService.FindEmail(Email) == null)
                     {
@@ -109,8 +109,8 @@ namespace RealEstate.Controllers
                 }
                 var identity = new ClaimsIdentity(new[]
                      {
-                      new Claim(ClaimTypes.Name,user.Email),
-                    new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
+                      new Claim(ClaimTypes.Name,user.User.Email),
+                    new Claim(ClaimTypes.NameIdentifier,user.User.Id.ToString())
                   }, DefaultAuthenticationTypes.ApplicationCookie);
 
                 HttpContext.GetOwinContext().Authentication.SignIn(
@@ -119,7 +119,7 @@ namespace RealEstate.Controllers
                     );
                 TempData["ToastrType"] = "success";
                 TempData["ToastrMessage"] = "Đăng nhập thành công ";
-                return RedirectToAction("Index", "Property");
+                return RedirectToAction("Index", "Home");
 
             }
             catch (Exception ex)
@@ -165,7 +165,7 @@ namespace RealEstate.Controllers
                         );
                         TempData["ToastrType"] = "success";
                         TempData["ToastrMessage"] = "Đăng nhập thành công ";
-                        return RedirectToAction("Index", "Property");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -228,7 +228,7 @@ namespace RealEstate.Controllers
             {
                 var user = _UserService.FindEmail(model.Email);
 
-                if (user == null || user.ProviderName == "Google")
+                if (user == null || user.User.ProviderName == "Google")
                 {
                     ModelState.AddModelError("", "Email này chưa tồn tại");
                     return View();
@@ -241,7 +241,7 @@ namespace RealEstate.Controllers
                 var token = HttpServerUtility.UrlTokenEncode(bytes);
                 ResetPassword resetPassword = new ResetPassword()
                 {
-                    User_id = user.Id,
+                    User_id = user.User.Id,
                     Token = token,
                     Expires = DateTime.Now.AddHours(1)
                 };
@@ -312,7 +312,7 @@ namespace RealEstate.Controllers
             TempData.Keep();
 
             HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Property");
+            return RedirectToAction("Index", "Home");
         }
         private ActionResult RedirectToLocal(string returnUrl)
         {
@@ -323,8 +323,10 @@ namespace RealEstate.Controllers
                 return Redirect(returnUrl);
             }
           
-            return RedirectToAction("Index", "Property");
+            return RedirectToAction("Index", "Home");
         }
+
+        
 
     }
 }

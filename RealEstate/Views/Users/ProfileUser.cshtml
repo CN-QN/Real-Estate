@@ -1,0 +1,116 @@
+﻿@model RealEstate.Models.ViewModels.ProfileViewModel
+@{
+    ViewBag.Title = "Trang cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient bg-primary text-white text-center py-3">
+            <h4 class="fw-bold mb-0">Thông tin cá nhân</h4>
+        </div>
+
+        <div class="card-body p-4">
+            @using (Html.BeginForm("ProfileUser", "Users", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label>Email</label>
+                        <input  type="text" class="form-control" value="@Model.Email" readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Tên hiển thị</label>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Giới tính</label>
+                        @Html.DropDownListFor(m => m.Gender, new SelectList(new[]
+                   {
+                       new {Value = "Nam",Text ="Nam"},
+                       new {Value = "Nữ",Text ="Nữ"},
+                       new {Value = "Khác",Text ="Khác"}
+
+                   },"Value","Text",Model.Gender), "Chọn giới tính", new { @class = "form-control"})
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Ngày sinh</label>
+                        @Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    </div>
+
+                    <div class="col-12">
+                        <label>Tiểu sử</label>
+                        @Html.TextAreaFor(m => m.Bio, new { @class = "form-control", rows = 3, placeholder = "Giới thiệu đôi chút về bạn..." })
+                    </div>
+
+                    <div class="col-12">
+                        <label>Địa chỉ</label>
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Facebook</label>
+                        @Html.TextBoxFor(m => m.Facebook, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Instagram</label>
+                        @Html.TextBoxFor(m => m.Instagram, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Website</label>
+                        @Html.TextBoxFor(m => m.Website, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Ảnh bìa (URL)</label>
+                        @Html.TextBoxFor(m => m.CoverPhoto, new { @class = "form-control", placeholder = "https://..." })
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                if (!Model.IsGoogleAccount)
+                {
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label>Mật khẩu mới</label>
+                            @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-6">
+                            <label>Xác nhận mật khẩu</label>
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        </div>
+                    </div>
+                }
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-4 fw-bold shadow-sm">
+                        <i class="bi bi-save me-1"></i> Lưu thay đổi
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right"
+        };
+    </script>
+    @if (TempData["ToastrMessage"] != null)
+    {
+        <script>
+            toastr["@TempData["ToastrType"]"]("@TempData["ToastrMessage"]");
+        </script>
+    }
+}

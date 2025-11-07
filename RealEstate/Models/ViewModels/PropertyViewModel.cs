@@ -17,6 +17,7 @@ namespace RealEstate.Models.ViewModels
         public decimal PriceMin { get; set; }
         public decimal PriceMax { get; set; }
         public string PriceUnit { get; set; }
+        public int TypeId { get; set; }
 
         public string Address { get; set; }
 
@@ -24,8 +25,8 @@ namespace RealEstate.Models.ViewModels
         public string ImageUrl { get; set; }
 
         public string Avatar { get; set; }
-
-
+ 
+        public  int Count { get;set ; }
 
 
     }

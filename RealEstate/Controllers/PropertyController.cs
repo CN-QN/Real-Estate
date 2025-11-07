@@ -12,14 +12,20 @@ namespace RealEstate.Controllers
         // GET: Property
 
         PropertyService _service = new PropertyService();
-        public ActionResult Index( int id  =1)
+        
+
+
+        public ActionResult Index(string keyword)
         {
-             List<PropertyViewModel> property = _service.GetPropertyAll(id);
-             ViewBag.PageSize = id;
+            if (keyword == null)
+            {
+                return RedirectToAction("Index","Home"); 
+            }
+            var property = _service.GetPropertySearch(keyword);
+
             return View(property);
         }
-
-        // GET: Property/Details/5
+        
         public ActionResult Details(int? id)
         {
 
@@ -30,74 +36,24 @@ namespace RealEstate.Controllers
                 return View(property);
 
             }
+            return RedirectToAction("Index", "Home");
 
-            return null;
         }
-
+       
         // GET: Property/Create
-        public ActionResult Create()
+        public ActionResult RelatedProperty(int? Id , int? TypeId)
         {
-            return View();
+
+            if (TypeId.HasValue)
+            {
+                var property = _service.GetRelatedProperty(Id.Value, TypeId.Value);
+                return PartialView("_ListProperty", property);
+
+            }
+            return  HttpNotFound();
+
         }
 
-        // POST: Property/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Property/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Property/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Property/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Property/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

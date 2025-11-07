@@ -1,0 +1,47 @@
+﻿
+@model  List<RealEstate.Models.ViewModels.UrbanViewModel>
+
+ 
+
+<div id="ListUrban" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-inner">
+        @{
+            var itemsPerRow = 4;
+            var rowsPerSlide = 1;
+            var itemsPerSlide = itemsPerRow * rowsPerSlide;
+
+            var urbanList = Model;
+            int total = urbanList.Count;
+            int slideCount = (int)Math.Ceiling((double)total / itemsPerSlide);
+        }
+
+        @for (int i = 0; i < slideCount; i++)
+        {
+            <div class="carousel-item @(i == 0 ? "active" : "")">
+                <div class="container">
+                    @for (int r = 0; r < rowsPerSlide; r++)
+                    {
+                        var start = i * itemsPerSlide + r * itemsPerRow;
+                        var rowItems = urbanList.Skip(start).Take(itemsPerRow);
+
+                        <div class="row g-3 pt-3">
+                            @foreach (var p in rowItems)
+                            {
+                                <div class="col-md-3 col-sm-6">
+                                    @Html.Partial("_UrbanCard", p)
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#ListUrban" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#ListUrban" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
+    </button>
+</div>
