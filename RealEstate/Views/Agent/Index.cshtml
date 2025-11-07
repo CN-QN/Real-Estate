@@ -19,18 +19,7 @@
                         <input type="text" class="form-control" name="name" value="" placeholder="Nhập tên dự án" />
                     </div>
                 </div>
-                <div class="  d-flex align-items-center justify-content-between   mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Loại hình*
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <button class="btn btn-primary">Mua bán </button>
-                        <button class="btn btn-outline-primary">Cho thuê </button>
 
-                    </div>
-                </div>
                 <div class="  d-flex align-items-center justify-content-between   mb-4">
                     <div class="col-3 ">
                         <label class="form-label">
@@ -56,7 +45,7 @@
                     </div>
                     <div class="col-9">
                         <select id="provinceSelect" class="form-select">
-                            <option value="value">Nhập tên Thành Phố</option>
+                            <option value="value">-- Chọn Thành Phố --</option>
                             @foreach (var item in ViewBag.Provinces)
 
                             {
@@ -74,7 +63,7 @@
                     </div>
                     <div class="col-9">
                         <select id="districtSelect" class="form-select" disabled>
-                            <option value="value">Chọn tên Quận/Huyện</option>
+                            <option value="value">-- Chọn Quận/Huyện --</option>
                             @foreach (var item in ViewBag.Districts)
 
                             {
@@ -92,7 +81,7 @@
                     </div>
                     <div class="col-9">
                         <select id="wardSelect" class="form-select" disabled>
-                            <option value="value">Nhập tên Xã/Phường</option>
+                            <option value="value">-- Chọn Xã/Phường --</option>
                             @foreach (var item in ViewBag.Wards)
 
                             {
@@ -157,6 +146,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-6">
                 <div class="  d-flex align-items-center justify-content-between   mb-4">
                     <div class="col-3 ">
                         <label class="form-label">
@@ -175,44 +166,14 @@
 
                 </div>
 
-
-
-
             </div>
-            <div class="col-6">
-                <div class="  d-flex align-items-center justify-content-between   mb-4">
-                    <div class="col-3 ">
-                        <label class="form-label">
-                            Hướng nhà
-                        </label>
-                    </div>
-                    <div class="col-9">
-                        <select id="provinceSelect" class="form-select">
-                            <option value="value"></option>
-                            @foreach (var item in ViewBag.Provinces)
 
-                            {
-                                <option value="@item.code">@item.name</option>
 
-                            }
-                        </select>
-                    </div>
-                </div>
-            </div>
+
+
 
         </div>
-        <div class="  d-flex align-items-center justify-content-between   mb-4">
-            <div class="col-1" style="margin-right:50px">
-                <label class="form-label">
-                    Tiêu đề*
-                </label>
-            </div>
 
-            <div class="w-100">
-                <input type="text" class="form-control" name="name" value="" placeholder="Diện tích Max" />
-            </div>
-
-        </div>
         <div class="  d-flex   justify-content-between   mb-4">
             <div class="col-1" style="margin-right:50px">
                 <label class="form-label">
@@ -247,7 +208,7 @@
             </label>
         </div>
 
-        <div class="border p-4 text-center rounded mb-2" style="min-height: 200px;">
+        <div id="dropZone" class="border p-4 text-center rounded mb-2" style="min-height: 200px;">
             <p class="text-secondary mb-3">
                 Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.
                 <br />
@@ -265,7 +226,9 @@
                     onclick="document.getElementById('imageInput').click()">
                 THÊM ẢNH
             </button>
-           
+        </div>
+
+        <div id="imagePreviewContainer" class="d-flex flex-wrap mt-3">
         </div>
 
         <p class="text-danger small mt-2">
@@ -368,16 +331,31 @@
     </div>
 </div>
 @section scripts {
+    <script src="https://cdn.tiny.cloud/1/kx77sij2dvxtzmlriaqeroor4p6s6t2k96kubu8bjs7d6zbp/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-     
-    <script src="https://cdn.ckeditor.com/4.25.1/standard/ckeditor.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            CKEDITOR.replace('editor1', {
-                height: 300
-            });
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                // Core editing features
+                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+                // Your account includes a free trial of TinyMCE premium features
+                // Try the most popular premium features until Nov 14, 2025:
+                'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'advtemplate', 'ai', 'uploadcare', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
+            ],
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+            uploadcare_public_key: '97d038c425905e6e43e4',
         });
     </script>
 
@@ -461,13 +439,13 @@
 
                 console.log("fullAddress", fullAddress)
                 if (fullAddress) searchLocation(fullAddress);
+
             });
 
             // === LOAD HUYỆN / XÃ THEO AJAX ===
             $('#provinceSelect').change(function () {
                 const provinceCode = $(this).val();
-                $('#districtSelect').html("");
-                $('#wardSelect').html("");
+                $('#districtSelect').html('<option value="">-- Chọn Quận/Huyện --</option>');
                 if (provinceCode) {
                     $.getJSON('/Agent/Districts', { provinceCode: provinceCode }, function (data) {
                         $.each(data, function (i, item) {
@@ -501,5 +479,252 @@
             });
 
         });
+
     </script>
+
+
+
+
+    <script>
+
+        // 💡 Hàm mới: Tải ảnh lên Cloudinary và trả về danh sách URL
+        async function uploadImagesToCloudinaryAndGetUrls(files) {
+            const cloudName = "djt5vwtjm"; // <-- THAY THẾ bằng Cloud Name của bạn
+            const uploadPreset = "Real-Estate"; // <-- THAY THẾ bằng Upload Preset của bạn
+
+            const uploadedUrls = [];
+            const uploadPromises = [];
+
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', uploadPreset);
+
+                const uploadPromise = fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.secure_url) {
+                            uploadedUrls.push(data.secure_url);
+                            return data.secure_url;
+                        } else {
+                            console.error('Lỗi upload ảnh:', data);
+                            return null;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi mạng khi upload ảnh:', error);
+                        return null;
+                    });
+
+                uploadPromises.push(uploadPromise);
+            }
+
+            await Promise.all(uploadPromises);
+            return uploadedUrls;
+        }
+
+
+        // 💡 Hàm mới: Hiển thị ảnh preview và Tải lên Cloudinary
+        let filesToUpload = []; // Lưu trữ các file đã chọn
+
+        function previewImages(event) {
+            filesToUpload = Array.from(event.target.files);
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            if (!previewContainer) return; // Đảm bảo container tồn tại
+
+            previewContainer.innerHTML = ''; // Xóa preview cũ
+
+            if (filesToUpload.length > 7) {
+                alert('Chỉ có thể tải lên tối đa 7 ảnh.');
+                filesToUpload = filesToUpload.slice(0, 7);
+            }
+
+            filesToUpload.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'image-preview-item me-2 mb-2 position-relative';
+                    imgDiv.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                    `;
+                    previewContainer.appendChild(imgDiv);
+                }
+                reader.readAsDataURL(file);
+            });
+
+            // Cập nhật giao diện tải ảnh:
+            const dropZone = document.getElementById('dropZone');
+            if (dropZone) {
+                dropZone.innerHTML = `
+                    <p class="text-secondary mb-3">
+                        Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.
+                        <br/>
+                        Đã chọn **${filesToUpload.length}** ảnh. (Tối thiểu 3 ảnh)
+                    </p>
+                    <button type="button"
+                         class="btn btn-outline-primary px-4"
+                         onclick="document.getElementById('imageInput').click()">
+                         CHỌN LẠI ẢNH
+                    </button>
+                `;
+            }
+        }
+
+
+        // 💡 Hàm mới: Xử lý sự kiện khi nhấn nút "Đăng tin"
+        $('.btn-primary:contains("Đăng tin")').click(async function (e) {
+            e.preventDefault(); // Ngăn chặn submit form mặc định
+            $(this).attr('disabled', true).text('Đang tải...'); // Vô hiệu hóa nút
+
+            try {
+                // 1. Tải ảnh lên Cloudinary
+                const imageUrls = await uploadImagesToCloudinaryAndGetUrls(filesToUpload);
+
+                if (filesToUpload.length > 0 && imageUrls.length === 0) {
+                    alert('Có lỗi xảy ra trong quá trình tải ảnh. Vui lòng thử lại.');
+                    return;
+                }
+
+                // 2. Chuẩn bị dữ liệu form để gửi lên server
+                const formData = {
+                    TenDuAn: $('input[name="name"][placeholder="Nhập tên dự án"]').val(),
+                    LoaiBDS: $('#propertyTypeSelect').val(), // Giả sử bạn thêm ID cho select này
+                    ... // Thêm các trường dữ liệu khác ở đây
+                    MoTa: tinymce.get("editor1").getContent(),
+                    GiaMin: $('input[placeholder="Giá Min"]').eq(0).val(),
+                    GiaMax: $('input[placeholder="Giá Max"]').eq(1).val(),
+                    DienTichMin: $('input[placeholder="Giá Min"]').eq(2).val(),
+                    DienTichMax: $('input[placeholder="Giá Max"]').eq(3).val(),
+
+                    // Gắn các URL ảnh vào dữ liệu gửi lên DB
+                    ImageUrls: imageUrls
+                };
+
+                console.log('Dữ liệu gửi lên server:', formData);
+
+
+                // 3. Gửi dữ liệu đã có URL ảnh về Server (Controller) để lưu vào DB
+                /*
+                const response = await fetch('/Agent/PostNews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Đăng tin thành công!');
+                    // Chuyển hướng hoặc hành động sau khi thành công
+                } else {
+                    alert('Lỗi khi lưu tin đăng vào DB.');
+                }
+                */
+
+                alert('Quá trình upload ảnh và chuẩn bị dữ liệu hoàn tất. Dữ liệu đã sẵn sàng để gửi lên DB.');
+
+            } catch (error) {
+                console.error('Lỗi tổng thể:', error);
+                alert('Đã xảy ra lỗi không mong muốn.');
+            } finally {
+                $(this).attr('disabled', false).text('Đăng tin'); // Bật lại nút
+            }
+
+        });
+
+        // ... (Code Map và AJAX load địa lý)
+        $('.btn-primary:contains("Đăng tin")').click(async function (e) {
+            e.preventDefault();
+            $(this).attr('disabled', true).text('Đang tải...');
+
+            // Thu thập các giá trị từ form
+            const tenDuAn = $('input[placeholder="Nhập tên dự án"]').val();
+            const loaiBDS = $('#propertyTypeSelect').val(); // Cần đảm bảo select này có ID: 'propertyTypeSelect'
+            const giaMin = $('input[placeholder="Giá Min"]').eq(0).val();
+            const giaMax = $('input[placeholder="Giá Max"]').eq(1).val();
+            const dienTichMin = $('input[placeholder="Giá Min"]').eq(2).val();
+            const dienTichMax = $('input[placeholder="Giá Max"]').eq(3).val();
+            const moTa = tinymce.get("editor1").getContent();
+
+            const provinceCode = $('#provinceSelect').val();
+            const districtCode = $('#districtSelect').val();
+            const wardCode = $('#wardSelect').val() || null;
+            const streetName = $('input[placeholder="Nhập tên đường phố"]').val();
+            const addressDetail = $('input[placeholder="Nhập địa chỉ"]').val();
+            const latitude = $('#latitude').val();
+            const longitude = $('#longitude').val();
+
+            // Lấy thông tin gói tin
+            const thoiGianTuan = parseInt($('div.col-md-3:eq(1) select').val().replace(' tuần', '')); // 4/8/12
+            const ngayBatDau = $('div.col-md-3:eq(2) input[type="date"]').val();
+
+            try {
+                // 1. Tải ảnh lên Cloudinary
+                const imageUrls = await uploadImagesToCloudinaryAndGetUrls(filesToUpload);
+
+                if (filesToUpload.length > 0 && imageUrls.length === 0) {
+                    alert('Có lỗi xảy ra trong quá trình tải ảnh. Vui lòng thử lại.');
+                    return;
+                }
+
+                // 2. Chuẩn bị dữ liệu DTO để gửi lên Server
+                const formData = {
+                    TenDuAn: tenDuAn,
+                    LoaiBDS: parseInt(loaiBDS),
+                    GiaMin: parseFloat(giaMin || 0),
+                    GiaMax: parseFloat(giaMax || 0),
+                    DienTichMin: parseFloat(dienTichMin || 0),
+                    DienTichMax: parseFloat(dienTichMax || 0),
+                    MoTa: moTa,
+
+                    ProvinceCode: parseInt(provinceCode),
+                    DistrictCode: parseInt(districtCode),
+                    WardCode: wardCode ? parseInt(wardCode) : null,
+                    StreetName: streetName,
+                    AddressDetail: addressDetail,
+                    Latitude: parseFloat(latitude),
+                    Longitude: parseFloat(longitude),
+
+                    LoaiTin: loaiTin,
+                    ThoiGianTuan: thoiGianTuan,
+                    NgayBatDau: ngayBatDau,
+
+                    ImageUrls: imageUrls
+                };
+
+                // 3. Gửi dữ liệu về Server (Controller) để lưu vào DB
+                const response = await fetch('/Agent/PostNews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(data.message);
+                    // Có thể chuyển hướng đến trang quản lý tin đăng của tôi
+                    // window.location.href = '/Agent/MyPosts'; 
+                } else {
+                    alert('Lỗi: ' + data.message);
+                }
+
+            } catch (error) {
+                console.error('Lỗi tổng thể:', error);
+                alert('Đã xảy ra lỗi không mong muốn. Vui lòng kiểm tra console.');
+            } finally {
+                $(this).attr('disabled', false).text('Đăng tin'); // Bật lại nút
+            }
+        });
+    </script>
+
+
+
+
 }
+

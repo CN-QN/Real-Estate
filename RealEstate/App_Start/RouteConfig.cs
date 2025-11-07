@@ -9,9 +9,9 @@ namespace RealEstate
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
-                name :"Properties",
+                name :"Home",
                 url : "{controller}/{action}/{id}",
-                defaults : new {controller = "Property", action = "Index",id = UrlParameter.Optional}
+                defaults : new {controller = "Home", action = "Index",id = UrlParameter.Optional}
                 );
             
         }

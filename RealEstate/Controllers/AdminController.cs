@@ -26,13 +26,12 @@ namespace RealEstate.Controllers
             ViewBag.PageNumber = PageNumber ?? 1;
             return View();
         }
-
         public ActionResult DanhSachNguoiDung(int? PageNumber)
         {
             List<DanhSachNguoiDung> DanhSachNguoiDung = _AdminService.DanhSachNguoiDung(PageNumber);
             ViewBag.Count = Math.Ceiling(Convert.ToDouble(DanhSachNguoiDung[0].TongSoNguoiDung / 30));
             ViewBag.PageNumber = PageNumber;
-            @ViewBag.Mode = "QuanLyNguoiDung";
+            ViewBag.Mode = "QuanLyNguoiDung";
             return PartialView("_DanhSachNguoiDung", DanhSachNguoiDung); 
         }
 
@@ -49,7 +48,7 @@ namespace RealEstate.Controllers
             {
                 ViewBag.Count = Math.Ceiling(Convert.ToDouble(RecentPosts[0].TongSoPost / 30));
                 ViewBag.PageNumber = PageNumber;
-                @ViewBag.Mode = "QuanLyTin";
+                ViewBag.Mode = "QuanLyTin";
 
             }
             else

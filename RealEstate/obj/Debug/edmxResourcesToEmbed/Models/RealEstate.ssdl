@@ -55,19 +55,6 @@
     <Property Name="Status" Type="nvarchar" MaxLength="50" />
     <Property Name="CreatedAt" Type="datetime" />
   </EntityType>
-  <EntityType Name="News">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
-    <Property Name="Content" Type="nvarchar(max)" />
-    <Property Name="CategoryId" Type="int" />
-    <Property Name="AuthorId" Type="int" />
-    <Property Name="PublishedAt" Type="datetime" />
-    <Property Name="CreatedAt" Type="datetime" />
-    <Property Name="UpdatedAt" Type="datetime" />
-  </EntityType>
   <EntityType Name="Payments">
     <Key>
       <PropertyRef Name="Id" />
@@ -203,6 +190,34 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Property Name="CreatedAt" Type="datetime" />
     <Property Name="UpdatedAt" Type="datetime" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'RealEstate.dbo.Urban_Attributes' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Urban_Attributes">
+          <Property Name="Urban_id" Type="int" />
+          <Property Name="Key" Type="nvarchar(max)" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>-->
+  <EntityType Name="Urban_Images">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UrlImage" Type="nvarchar" MaxLength="200" />
+    <Property Name="Urban_id" Type="int" />
+    <Property Name="Created_At" Type="date" />
+    <Property Name="Updated_At" Type="date" />
+  </EntityType>
+  <EntityType Name="Urbans">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="User_id" Type="int" />
+    <Property Name="Created_At" Type="date" />
+    <Property Name="Updated_At" Type="date" />
+  </EntityType>
   <EntityType Name="UserProfiles">
     <Key>
       <PropertyRef Name="UserId" />
@@ -311,6 +326,33 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <!--Errors Found During Generation:
+error 6004: The table 'RealEstate.dbo.Urban_Attributes' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__Urban_Att__Urban__43A1090D" />-->
+  <Association Name="FK__Urban_Ima__Urban__3FD07829">
+    <End Role="Urbans" Type="Self.Urbans" Multiplicity="0..1" />
+    <End Role="Urban_Images" Type="Self.Urban_Images" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Urbans">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Urban_Images">
+        <PropertyRef Name="Urban_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Urbans__User_id__3B0BC30C">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Urbans" Type="Self.Urbans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Urbans">
+        <PropertyRef Name="User_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__Wards__district___29E1370A">
     <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
     <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
@@ -392,30 +434,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       </Principal>
       <Dependent Role="Messages">
         <PropertyRef Name="SenderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_News_Categories">
-    <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
-    <End Role="News" Type="Self.News" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Categories">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="News">
-        <PropertyRef Name="CategoryId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_News_Users">
-    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-    <End Role="News" Type="Self.News" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="News">
-        <PropertyRef Name="AuthorId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -587,7 +605,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <EntitySet Name="Furnitures" EntityType="Self.Furnitures" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Properties" EntityType="Self.Properties" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyFurnitures" EntityType="Self.PropertyFurnitures" Schema="dbo" store:Type="Tables" />
@@ -600,6 +617,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Urban_Images" EntityType="Self.Urban_Images" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Urbans" EntityType="Self.Urbans" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserProfiles" EntityType="Self.UserProfiles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
@@ -634,6 +653,14 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       <End Role="Users" EntitySet="Users" />
       <End Role="ResetPassword" EntitySet="ResetPassword" />
     </AssociationSet>
+    <AssociationSet Name="FK__Urban_Ima__Urban__3FD07829" Association="Self.FK__Urban_Ima__Urban__3FD07829">
+      <End Role="Urbans" EntitySet="Urbans" />
+      <End Role="Urban_Images" EntitySet="Urban_Images" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Urbans__User_id__3B0BC30C" Association="Self.FK__Urbans__User_id__3B0BC30C">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Urbans" EntitySet="Urbans" />
+    </AssociationSet>
     <AssociationSet Name="FK__Wards__district___29E1370A" Association="Self.FK__Wards__district___29E1370A">
       <End Role="Districts" EntitySet="Districts" />
       <End Role="Wards" EntitySet="Wards" />
@@ -661,14 +688,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <AssociationSet Name="FK_Messages_Sender" Association="Self.FK_Messages_Sender">
       <End Role="Users" EntitySet="Users" />
       <End Role="Messages" EntitySet="Messages" />
-    </AssociationSet>
-    <AssociationSet Name="FK_News_Categories" Association="Self.FK_News_Categories">
-      <End Role="Categories" EntitySet="Categories" />
-      <End Role="News" EntitySet="News" />
-    </AssociationSet>
-    <AssociationSet Name="FK_News_Users" Association="Self.FK_News_Users">
-      <End Role="Users" EntitySet="Users" />
-      <End Role="News" EntitySet="News" />
     </AssociationSet>
     <AssociationSet Name="FK_Payments_Transactions" Association="Self.FK_Payments_Transactions">
       <End Role="Transactions" EntitySet="Transactions" />

@@ -1,6 +1,7 @@
 ﻿@model List<RealEstate.Models.ViewModels.PropertyViewModel>
 
-<div id="featuredProperties" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+
+<div id="ListProperty" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
     <div class="carousel-inner">
         @{
             var itemsPerRow = 4;
@@ -21,25 +22,24 @@
                         var start = i * itemsPerSlide + r * itemsPerRow;
                         var rowItems = propertyList.Skip(start).Take(itemsPerRow);
 
-                        
-                            <div class="row g-3 pt-3 ">
-                                @foreach (var p in rowItems)
-                                {
-                                    <div class="col-md-3 col-sm-6">
-                                        @Html.Partial("_PropertyCard", p)
-                                    </div>
-                                }
-                            </div>
+                        <div class="row g-3 pt-3">
+                            @foreach (var p in rowItems)
+                            {
+                                <div class="col-md-3 col-sm-6">
+                                    @Html.Partial("_PropertyCard", p)
+                                </div>
+                            }
+                        </div>
                     }
                 </div>
             </div>
         }
     </div>
 
-    <button class="carousel-control-prev" type="button" data-bs-target="#featuredProperties" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#ListProperty" data-bs-slide="prev">
         <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#featuredProperties" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#ListProperty" data-bs-slide="next">
         <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
     </button>
 </div>

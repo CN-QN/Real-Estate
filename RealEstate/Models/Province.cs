@@ -18,6 +18,7 @@ namespace RealEstate.Models
         public Province()
         {
             this.Districts = new HashSet<District>();
+            this.Addresses = new HashSet<Address>();
         }
     
         public int id { get; set; }
@@ -26,5 +27,7 @@ namespace RealEstate.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<District> Districts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Address> Addresses { get; set; }
     }
 }

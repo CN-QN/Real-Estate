@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.ModelBinding;
 using System.Web.Mvc;
 using RealEstate.Models;
+using RealEstate.Models.ViewModels;
 using RealEstate.Services;
 
 namespace RealEstate.Controllers
@@ -52,10 +53,38 @@ namespace RealEstate.Controllers
         {
             return View();
         }
-        //public ActionResult AddPost()
-        //{
-        //    return View();
-        //}
+
+        [HttpPost]
+        [ValidateInput(false)] // Cho phép nhận HTML từ TinyMCE (Mô tả)
+        public JsonResult PostNews(PostViewModels request)
+        {
+            // GIẢ ĐỊNH: Lấy UserID của Agent đang đăng nhập.
+            // Trong thực tế, bạn cần xác thực và lấy ID từ Session/Cookie/Identity.
+            int currentUserId = 1; // THAY THẾ BẰNG ID THỰC TẾ
+
+            if (request == null)
+            {
+                return Json(new { success = false, message = "Dữ liệu gửi lên không hợp lệ." });
+            }
+
+            // Kiểm tra tối thiểu 3 ảnh
+            if (request.ImageUrls == null || request.ImageUrls.Count < 3)
+            {
+                return Json(new { success = false, message = "Vui lòng tải lên ít nhất 3 ảnh." });
+            }
+
+            bool result = _AgentService.AddPost(request, currentUserId);
+
+            if (result)
+            {
+                return Json(new { success = true, message = "Đăng tin thành công. Tin của bạn đang chờ duyệt." });
+            }
+            else
+            {
+                // Thông báo lỗi chung, lỗi chi tiết đã được log ở Repo
+                return Json(new { success = false, message = "Lỗi hệ thống khi lưu tin đăng. Vui lòng thử lại." });
+            }
+        }
         public ActionResult MyPosts()
         {
             return View();

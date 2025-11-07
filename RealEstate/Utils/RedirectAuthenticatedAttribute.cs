@@ -14,7 +14,7 @@ namespace RealEstate.Utils
             {
                 filterContext.Result = new RedirectToRouteResult(
                        new System.Web.Routing.RouteValueDictionary(
-                    new { controller = "Property", action = "Index" }
+                    new { controller = "Home", action = "Index" }
                 ));
             }
 

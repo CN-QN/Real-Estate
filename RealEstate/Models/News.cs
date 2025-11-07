@@ -14,6 +14,12 @@ namespace RealEstate.Models
     
     public partial class News
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public News()
+        {
+            this.NewImages = new HashSet<NewImage>();
+        }
+    
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
@@ -25,5 +31,7 @@ namespace RealEstate.Models
     
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NewImage> NewImages { get; set; }
     }
 }

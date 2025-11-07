@@ -1,52 +1,112 @@
 ﻿@using RealEstate.Utils
 @model RealEstate.Models.ViewModels.PropertyDetailViewModel
 
-@{
-    ViewBag.Title = Model.Title;
-}
+<div class="container my-4">
+    <div class="row">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <div class="row">
 
-<div class="container my-5">
-    <div class="row g-4">
-        <!-- MAIN LEFT -->
-        <div class="col-lg-8">
-            <!-- ẢNH CHÍNH -->
-            <div id="mainCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    @for (int i = 0; i < Model.ImageGallery.Count; i++)
+            <div id="propertyGallery" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+                <div class="carousel-inner rounded shadow-sm overflow-hidden">
+
+                    @{
+                        int totalImages = Model.ImageGallery.Count;
+                    }
+
+                    @if (totalImages > 0)
                     {
-                        var img = Model.ImageGallery[i];
-                        <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <img src="@img.ImageUrl" class="d-block w-100 rounded" style="height:420px;object-fit:cover" alt="Ảnh bất động sản" />
+                        <div class="carousel-item active gallery-type-main">
+                            <div class="d-flex">
+
+                                <div class="w-50">
+                                    <div class="p-1 clickable-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-index="0" style="height: 330px; cursor: pointer;">
+                                        <img src="@Model.ImageGallery[0].ImageUrl"
+                                             class="d-block w-100 h-100"
+                                             style="object-fit: cover;"
+                                             alt="Ảnh bất động sản" />
+                                    </div>
+                                </div>
+
+                                <div class="d-flex w-50 p-0 flex-wrap">
+                                    @for (int i = 1; i <= 4 && i < totalImages; i++)
+                                    {
+                                        var img = Model.ImageGallery[i];
+                                        <div class="thumb-wrapper p-1" style="width:50%; height: 50%;">
+                                            <div class="clickable-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-index="@i" style="cursor: pointer;">
+                                                <img src="@img.ImageUrl"
+                                                     class="d-block w-100 h-100"
+                                                     style="object-fit: cover;"
+                                                     alt="Ảnh bất động sản" />
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @{ int remainingSlots = 4 - (Math.Min(totalImages, 5) - 1); }
+                                    @for (int j = 0; j < remainingSlots; j++)
+                                    {
+                                        <div class="thumb-wrapper p-1" style="width:50%; height: 50%; background-color: #f8f9fa;"></div>
+                                    }
+                                </div>
+
+                            </div>
                         </div>
                     }
+
+                    @{
+                        int startIndex = 5;
+                        int imagesPerSubSlide = 8;
+
+                        while (startIndex < totalImages)
+                        {
+                            <div class="carousel-item gallery-type-grid">
+                                <div class="d-flex flex-wrap p-1" style="height: 330px; overflow: hidden;">
+                                    @for (int i = startIndex; i < startIndex + imagesPerSubSlide && i < totalImages; i++)
+                                    {
+                                        var img = Model.ImageGallery[i];
+                                        <div class="grid-item p-1" style="width:25%; height: 50%;">
+                                            <div class="clickable-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-index="@i" style="cursor: pointer;">
+                                                <img src="@img.ImageUrl"
+                                                     class="d-block w-100 h-100"
+                                                     style="object-fit: cover;"
+                                                     alt="Ảnh bất động sản" />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            startIndex += imagesPerSubSlide;
+                        }
+                    }
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-            </div>
 
-            <!-- ẢNH NHỎ -->
-            <div class="row g-2">
-                @for (int i = 0; i < Model.ImageGallery.Count; i++)
+                @if (totalImages > 5)
                 {
-                    <div class="col-3">
-                        <img src="@Model.ImageGallery[i].ImageUrl" class="img-fluid rounded thumb-img" style="height:100px;object-fit:cover;cursor:pointer" data-index="@i" />
-                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#propertyGallery" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-danger p-2 rounded-4" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#propertyGallery" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-danger p-2 rounded-4" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 }
+
+            </div>
+            <div class="row mt-4">
             </div>
 
-            <!-- THÔNG TIN CƠ BẢN -->
-            <h4 class="fw-bold mt-4">@Model.Title</h4>
-            <p class="text-muted">Bán Nhà riêng Đường Bông Sao - Phường 5, Quận 8, TP Hồ Chí Minh</p>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <h4 class="fw-bold">@Model.Title</h4>
+            <p class="text-muted">@Model.Address</p>
 
             <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
                 <div class="fs-5 fw-bold text-danger">
+                    Giá
                     @{
                         if (Model.PriceMin == 0 && Model.PriceMax == 0)
                         {
@@ -68,27 +128,24 @@
             </div>
 
             <div class="d-flex gap-2 mb-4">
-                <button class="btn btn-outline-primary"><i class="fa-regular fa-heart"></i> Lưu tin</button>
-                <button class="btn btn-outline-secondary"><i class="fa-solid fa-share-nodes"></i> Chia sẻ</button>
-                <button class="btn btn-outline-danger"><i class="fa-solid fa-flag"></i> Báo xấu</button>
+                <button class="btn btn-outline-primary"><i class="fa-regular fa-heart me-1"></i> Lưu tin</button>
+                <button class="btn btn-outline-secondary"><i class="fa-solid fa-share-nodes me-1"></i> Chia sẻ</button>
+                <button class="btn btn-outline-danger"><i class="fa-solid fa-flag me-1"></i> Báo xấu</button>
             </div>
 
-            <!-- MÔ TẢ -->
             <h5 class="fw-bold mb-3">Thông tin mô tả</h5>
             <div class="border p-3 rounded bg-light">
-                <div id="descBox" class="desc-limit">@Html.Raw(Model.Description)</div>
-                <button class="btn btn-link p-0 mt-2" id="toggleDesc">Thu gọn ▲</button>
+                <div id="descBox">@Html.Raw(Model.Description)</div>
             </div>
         </div>
-
-        <!-- SIDEBAR -->
-        <div class="col-lg-4">
-            <div class="card shadow-sm text-center">
+        <div class="col-lg-4 mt-3 mt-lg-0">
+            <div class="card shadow-sm text-center mb-4">
                 <div class="card-body">
                     <img src="@Model.Avatar" class="rounded-circle mb-3" width="90" height="90" alt="avatar" />
-                    <h6 class="fw-bold">@Model.NameUser</h6>
+                    <h6 class="fw-bold mb-0">@Model.NameUser</h6>
 
-                    <div class="d-flex align-items-center justify-content-center gap-2 mt-3 phone-btn" onclick="showPhone('@Model.Phone')">
+                    <div class="d-flex align-items-center justify-content-center gap-2 mt-3 phone-btn"
+                         onclick="showPhone('@Model.Phone')">
                         <i class="fa-solid fa-phone text-danger fs-5"></i>
                         <div>
                             <div class="fw-bold phone">@($"{Model.Phone.Substring(0, Model.Phone.Length - 3)}***")</div>
@@ -98,10 +155,10 @@
                 </div>
             </div>
 
-            <div class="card shadow-sm mt-4">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <h6 class="fw-bold text-primary mb-3">Bán Nhà riêng tại Quận 8, TP Hồ Chí Minh</h6>
-                    <ul class="list-unstyled small">
+                    <ul class="list-unstyled small mb-0">
                         <li><a href="#" class="text-decoration-none text-primary">Bán Nhà riêng Phường 1</a></li>
                         <li><a href="#" class="text-decoration-none text-primary">Bán Nhà riêng Phường 10</a></li>
                         <li><a href="#" class="text-decoration-none text-primary">Bán Nhà riêng Phường 11</a></li>
@@ -111,56 +168,115 @@
             </div>
         </div>
     </div>
+    @Html.Action("RelatedProperty", "Property", new { Id = Model.Id, TypeId = Model.TypeId })
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content bg-dark">
+            
+            <div class="modal-body d-flex align-items-center justify-content-center">
 
+                <div id="modalCarousel" class="carousel slide w-100 h-100" data-bs-interval="false">
+                    <div class="carousel-inner  ">
+
+                        @for (int i = 0; i < Model.ImageGallery.Count; i++)
+                        {
+                            @*var img = Model.ImageGallery[i];
+
+                                <div class="carousel-item text-center">
+                                    <img src="@img.ImageUrl" class="d-block mx-auto h-100" style="object-fit: contain;" alt="Ảnh chi tiết" />
+                                </div>*@
+
+
+                            var img = Model.ImageGallery[i];
+                            var activeClass = i == 0 ? "active" : ""; // ✅ chỉ ảnh đầu tiên active
+                            <div class="carousel-item text-center @activeClass">
+                                <img src="@img.ImageUrl" class="d-block mx-auto h-100" style="object-fit: contain;" alt="Ảnh chi tiết" />
+                            </div>
+                        }
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+ 
 <script>
     // Hiện số điện thoại
     function showPhone(phone) {
         document.querySelector('.phone-btn .phone').innerText = phone;
     }
 
-    // Thu gọn / mở rộng mô tả
-    const descBox = document.getElementById("descBox");
-    const toggleBtn = document.getElementById("toggleDesc");
-    toggleBtn.addEventListener("click", () => {
-        descBox.classList.toggle("desc-limit");
-        toggleBtn.innerText = descBox.classList.contains("desc-limit") ? "Xem thêm ▼" : "Thu gọn ▲";
-    });
+    
+    const imageModal = document.getElementById('imageModal');
 
-    // Click thumbnail đổi ảnh chính
-    document.querySelectorAll(".thumb-img").forEach(img => {
-        img.addEventListener("click", e => {
-            const index = e.target.getAttribute("data-index");
-            const carousel = document.querySelector("#mainCarousel");
-            const bsCarousel = bootstrap.Carousel.getOrCreateInstance(carousel);
-            bsCarousel.to(index);
+    if (imageModal && typeof bootstrap !== 'undefined') {
+
+        let clickedIndex = 0;
+        const modalCarousel = document.getElementById('modalCarousel');
+
+        // 1. Lắng nghe sự kiện show.bs.modal (lưu index)
+        imageModal.addEventListener('show.bs.modal', function (event) {
+            const relatedTarget = event.relatedTarget;
+            if (relatedTarget) {
+                clickedIndex = parseInt(relatedTarget.getAttribute('data-index'));
+            }
         });
-    });
+
+        // 2. Lắng nghe sự kiện shown.bs.modal (chuyển slide tức thì)
+        imageModal.addEventListener('shown.bs.modal', function () {
+
+            const bsCarousel = bootstrap.Carousel.getOrCreateInstance(modalCarousel);
+
+            // Chuyển ngay lập tức, vô hiệu hóa transition bằng tham số 'false'
+            bsCarousel.to(clickedIndex, false);
+        });
+    }
 </script>
 
 <style>
-    body {
-        background-color: #f8f9fa;
+    .thumb-list {
+        overflow-y: auto;
+        max-height: 420px;
+        overflow-x: hidden;
     }
 
-    .thumb-img:hover {
-        opacity: 0.85;
-        border: 2px solid #0d6efd;
+    /* Đảm bảo vùng click có hiệu ứng */
+    .clickable-img {
+        transition: all 0.2s ease-in-out;
+        width: 100%; /* Đảm bảo wrapper chiếm toàn bộ không gian của div cha */
+        height: 100%;
     }
+
+        .clickable-img:hover {
+            opacity: 0.85; /* Thêm hiệu ứng hover nhẹ */
+        }
+
+
+    /* Các style cũ vẫn giữ nguyên */
+    .thumb-img {
+        border: 2px solid transparent;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .thumb-img:hover {
+            transform: scale(1.05);
+            border-color: #0d6efd;
+        }
+
+        .thumb-img.active {
+            border-color: #0d6efd;
+            box-shadow: 0 0 6px rgba(13, 110, 253, 0.5);
+        }
 
     .desc-limit {
-        max-height: 200px;
+        max-height: 150px;
         overflow: hidden;
     }
-
-    .btn-link {
-        font-weight: 500;
-        color: #0d6efd;
-    }
-
-        .btn-link:hover {
-            text-decoration: underline;
-        }
 </style>

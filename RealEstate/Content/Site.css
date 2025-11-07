@@ -80,9 +80,27 @@ body {
 
 
 
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 
 
 
+
+
+
+
+ 
+
+
+.test1{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
 
 
 
@@ -566,8 +584,7 @@ input[type="text"], input[type="password"] {
 
 
 
-
-
+ 
 
 /*Account*/
 
@@ -588,12 +605,63 @@ input[type="text"], input[type="password"] {
 
 
 
+/* ========================================================= */
+/* QUY TẮC GHI ĐÈ CSS CHO MODAL CAROUSEL */
+/* ========================================================= */
+
+/* Đảm bảo carousel-inner là container cho các item */
+#modalCarousel .carousel-inner {
+    height: 100%;
+    position: relative;
+    /* Dùng block để các item xếp chồng, GHI ĐÈ d-flex nếu có */
+    display: block !important;
+}
+
+/* Thiết lập trạng thái cơ bản cho TẤT CẢ item */
+#modalCarousel .carousel-item {
+    height: 100%;
+    width: 100%;
+    position: absolute; /* Xếp chồng lên nhau */
+    left: 0;
+    top: 0;
+    /* 1. VÔ HIỆU HÓA HOÀN TOÀN TRƯỢT/CHUYỂN ĐỘNG */
+    transition: none !important;
+    transform: none !important;
+    /* 2. Ẩn item MẶC ĐỊNH (Không active) */
+    opacity: 0;
+    visibility: hidden;
+    /* 3. Căn giữa ảnh bên trong item */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+    /* Quy tắc cho item HIỆN HÀNH (Active) */
+    #modalCarousel .carousel-item.active {
+        opacity: 1; /* HIỂN THỊ */
+        visibility: visible;
+        /* Dùng position: relative để item active chiếm chỗ và không bị trắng màn hình */
+        position: relative;
+    }
+
+/* Quy tắc TẮT HOÀN TOÀN animation cho các lớp chuyển tiếp của Bootstrap */
+#modalCarousel .carousel-item-next,
+#modalCarousel .carousel-item-prev,
+#modalCarousel .carousel-item-start,
+#modalCarousel .carousel-item-end {
+    transform: none !important;
+}
+
+/* Đảm bảo ảnh bên trong vừa khung */
+#modalCarousel .carousel-item img {
+    max-width: 100%;
+    max-height: 100%;
+}
 
 
 
 
-
-
+ 
 
 
 

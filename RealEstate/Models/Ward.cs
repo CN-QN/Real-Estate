@@ -14,11 +14,19 @@ namespace RealEstate.Models
     
     public partial class Ward
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Ward()
+        {
+            this.Addresses = new HashSet<Address>();
+        }
+    
         public int id { get; set; }
         public string code { get; set; }
         public string name { get; set; }
         public Nullable<int> district_code { get; set; }
     
         public virtual District District { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Address> Addresses { get; set; }
     }
 }

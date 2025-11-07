@@ -79,6 +79,7 @@
     <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
     <NavigationProperty Name="Category" Relationship="Self.FK_News_Categories" FromRole="News" ToRole="Categories" />
     <NavigationProperty Name="User" Relationship="Self.FK_News_Users" FromRole="News" ToRole="Users" />
+    <NavigationProperty Name="NewImages" Relationship="RealEstateModel.FK__NewImages__NewId__2EA5EC27" FromRole="News" ToRole="NewImage" />
   </EntityType>
   <EntityType Name="Payment">
     <Key>
@@ -254,6 +255,7 @@
     <NavigationProperty Name="Role" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
     <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Users" FromRole="Users" ToRole="Transactions" />
     <NavigationProperty Name="UserProfile" Relationship="Self.FK_UserProfiles_Users" FromRole="Users" ToRole="UserProfiles" />
+    <NavigationProperty Name="Urbans" Relationship="RealEstateModel.FK__Urbans__User_id__3B0BC30C" FromRole="User" ToRole="Urban" />
   </EntityType>
   <EntityType Name="Ward">
     <Key>
@@ -716,6 +718,21 @@
     <FunctionImport Name="VerifyLogin" ReturnType="Collection(RealEstateModel.VerifyLogin_Result)">
       <Parameter Name="Email" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="NewImages" EntityType="RealEstateModel.NewImage" />
+    <AssociationSet Name="FK__NewImages__NewId__2EA5EC27" Association="RealEstateModel.FK__NewImages__NewId__2EA5EC27">
+      <End Role="News" EntitySet="News" />
+      <End Role="NewImage" EntitySet="NewImages" />
+    </AssociationSet>
+    <EntitySet Name="Urban_Images" EntityType="RealEstateModel.Urban_Images" />
+    <EntitySet Name="Urbans" EntityType="RealEstateModel.Urban" />
+    <AssociationSet Name="FK__Urban_Ima__Urban__3FD07829" Association="RealEstateModel.FK__Urban_Ima__Urban__3FD07829">
+      <End Role="Urban" EntitySet="Urbans" />
+      <End Role="Urban_Images" EntitySet="Urban_Images" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Urbans__User_id__3B0BC30C" Association="RealEstateModel.FK__Urbans__User_id__3B0BC30C">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Urban" EntitySet="Urbans" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="GetProperty_Result">
     <Property Type="Int32" Name="Id" Nullable="false" />
@@ -776,4 +793,74 @@
     <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
     <Property Type="String" Name="Avatar" Nullable="true" />
   </ComplexType>
+  <EntityType Name="NewImage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="NewId" Type="Int32" />
+    <Property Name="ImageUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="News" Relationship="RealEstateModel.FK__NewImages__NewId__2EA5EC27" FromRole="NewImage" ToRole="News" />
+  </EntityType>
+  <Association Name="FK__NewImages__NewId__2EA5EC27">
+    <End Type="RealEstateModel.News" Role="News" Multiplicity="0..1" />
+    <End Type="RealEstateModel.NewImage" Role="NewImage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="News">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NewImage">
+        <PropertyRef Name="NewId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Urban_Images">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UrlImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Urban_id" Type="Int32" />
+    <Property Name="Created_At" Type="DateTime" Precision="0" />
+    <Property Name="Updated_At" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Urban" Relationship="RealEstateModel.FK__Urban_Ima__Urban__3FD07829" FromRole="Urban_Images" ToRole="Urban" />
+  </EntityType>
+  <EntityType Name="Urban">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="User_id" Type="Int32" />
+    <Property Name="Created_At" Type="DateTime" Precision="0" />
+    <Property Name="Updated_At" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Urban_Images" Relationship="RealEstateModel.FK__Urban_Ima__Urban__3FD07829" FromRole="Urban" ToRole="Urban_Images" />
+    <NavigationProperty Name="User" Relationship="RealEstateModel.FK__Urbans__User_id__3B0BC30C" FromRole="Urban" ToRole="User" />
+  </EntityType>
+  <Association Name="FK__Urban_Ima__Urban__3FD07829">
+    <End Type="RealEstateModel.Urban" Role="Urban" Multiplicity="0..1" />
+    <End Type="RealEstateModel.Urban_Images" Role="Urban_Images" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Urban">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Urban_Images">
+        <PropertyRef Name="Urban_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Urbans__User_id__3B0BC30C">
+    <End Type="RealEstateModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="RealEstateModel.Urban" Role="Urban" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Urban">
+        <PropertyRef Name="User_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

@@ -1,86 +1,90 @@
-﻿@model List<RealEstate.Models.ViewModels.PropertyViewModel>
+﻿@model List<RealEstate.Models.ViewModels.PropertyDetailViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 @{
     ViewBag.Title = "Danh sách bất động sản";
 }
-<div class="bg-light py-4 hero-section d-flex align-items-center">
-    <div class="container position-relative ">
-        <div class="mx-auto bg-white shadow-lg rounded-2 p-4 container">
 
-            <ul class="nav nav-tabs mb-3 border-0">
-                <li class="nav-item">
-                    <a class="nav-link active fw-semibold" href="#">Mua bán</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold" href="#">Cho thuê</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold" href="#">Dự án</a>
-                </li>
-            </ul>
+<div class="container my-5">
+    <h3 class="fw-bold mb-4">Tin đăng bất động sản</h3>
+    <div>
+        @if(Model.Count==0)
+            {
+                <p>Sản phẩm không tồn tại</p>
+            }
+    </div>
+    <div class=" g-4">
+        @foreach (var item in Model)
+        {
+                <div style="height:200px;width:780px" class="my-3 property-card ">
+                    <a class="text-decoration-none  " href="/Property/Details/@item.Id">
 
-            <!-- Search row -->
-            <div class="d-flex flex-wrap gap-2">
-                <div class="input-group    ">
-                    <input type="text" style="width:85%" placeholder="Tìm kiếm theo khu vực, dự án, tên đường..." />
+                        <div class=" d-flex  border-0 shadow-lg  ">
+
+
+
+                            <div >
+                                <img loading="lazy" style="width:200px;height:200px" src="@item.ImageGallery[0].ImageUrl"  />
+                            </div>
+                            <div class="p-2">
+                                <h5 style="height:48px" class="text-primary fw-bold">@item.Title</h5>
+                                <p class="line-clamp-2 lh-1 my-2 text-danger m-0">@item.Description</p>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-cash-coin me-2 text-success"></i>
+                                    @if (item.PriceMin == item.PriceMax)
+                                    {
+                                        <span class="fw-bold">@item.PriceMin @item.PriceUnit</span>
+
+                                    }
+                                    else
+                                    {
+                                        <span class="fw-bold">@item.PriceMin - @item.PriceMax @item.PriceUnit</span>
+
+                                    }
+                                    <span class="mx-3 text-secondary">|</span>
+                                    <i class="bi bi-aspect-ratio me-2"></i>
+                                    @if (item.AreaMax == item.AreaMin)
+
+                                    {
+                                        <span>@item.AreaMin @item.AreaUnit</span>
+
+                                    }
+                                    else
+                                    {
+                                        <span>@item.AreaMin - @item.AreaMax @item.AreaUnit</span>
+
+                                    }
+                                </div>
+
+                                <div class="text-secondary mb-1">
+                                    <i class="bi bi-geo-alt"></i> @item.Address
+                                </div>
+
+                                <small class="text-muted">
+                                    <i class="bi bi-clock"></i>
+                                    @(item.CreatedAt > DateTime.Now.AddDays(-1)
+                    ? $"{(DateTime.Now - item.CreatedAt).Hours} giờ trước"
+                    : $"{(DateTime.Now - item.CreatedAt).Days} ngày trước")
+                                </small>
+                            </div>
+
+                        </div>
+                    </a>
 
                 </div>
-                <div style="right:140px;width:50px" class="position-absolute  ">
-                    <button class="btn btn-danger ">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-                <div style="right:50px" class="position-absolute  ">
-                    <button class="btn btn-outline-primary">
-                        <i class="bi bi-map"></i> Bản đồ
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- Filter row -->
-            <div class="d-flex flex-wrap gap-2 mt-3">
-                <select class="form-select w-auto">
-                    <option selected>Toàn quốc</option>
-                    <option>TP. Hồ Chí Minh</option>
-                    <option>Hà Nội</option>
-                </select>
-
-                <select class="form-select w-auto">
-                    <option selected>Dự án</option>
-                    <option>Chung cư</option>
-                    <option>Nhà phố</option>
-                </select>
-
-                <select class="form-select w-auto">
-                    <option selected>Loại BĐS</option>
-                </select>
-
-                <select class="form-select w-auto">
-                    <option selected>Mức giá</option>
-                </select>
-
-                <select class="form-select w-auto">
-                    <option selected>Diện tích</option>
-                </select>
-
-
-            </div>
-        </div>
+        }
     </div>
 </div>
-<div class="container">
-    <div class="title-home mt-4">
-        <h3>Bất động sản dành cho bạn</h3>
 
-    </div>
-    <div class="list-item">
-
-        
-            <div>
-                @Html.Partial("_ListProperty", Model)
-            </div>
-    </div>
-
-     
-
-</div>
+<style>
+    .property-card:hover {
+        transform: translateY(-4px);
+        transition: all 0.2s ease;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+</style>
