@@ -19,7 +19,5 @@ namespace RealEstate.Models
         public string Password { get; set; }
         public int RoleId { get; set; }
         public string RoleName { get; set; }
-        public string Phone { get; set; }
-        public string Avatar { get; set; }
     }
 }

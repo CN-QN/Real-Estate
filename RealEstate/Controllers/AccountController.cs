@@ -84,10 +84,10 @@ namespace RealEstate.Controllers
                 var Name = loginInfo.ExternalIdentity?.Name;
 
 
-                var user = _UserService.FindEmail(Email);
-                if (user != null && user.User.ProviderName != "Google")
+                var user = _AuthService.FindEmail(Email);
+                if (user != null && user.ProviderName != "Google")
                 {
-                    if (_UserService.FindEmail(Email) == null)
+                    if (_AuthService.FindEmail(Email) == null)
                     {
                         ModelState.AddModelError("Email", "Email này đã đăng ký tài khoản khác !");
                         return View();
@@ -95,8 +95,8 @@ namespace RealEstate.Controllers
                 }
                 if (user == null)
                 {
-                    _UserService.CreateUser(Email, Name, null, providerName, providerKey);
-                    user = _UserService.FindEmail(Email);
+                    _AuthService.CreateUser(Email, Name, null, providerName, providerKey);
+                    user = _AuthService.FindEmail(Email);
 
 
 
@@ -109,8 +109,8 @@ namespace RealEstate.Controllers
                 }
                 var identity = new ClaimsIdentity(new[]
                      {
-                      new Claim(ClaimTypes.Name,user.User.Email),
-                    new Claim(ClaimTypes.NameIdentifier,user.User.Id.ToString())
+                      new Claim(ClaimTypes.Name,user.Email),
+                    new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
                   }, DefaultAuthenticationTypes.ApplicationCookie);
 
                 HttpContext.GetOwinContext().Authentication.SignIn(
@@ -150,7 +150,7 @@ namespace RealEstate.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = _UserService.VerifyLogin(model.Email, model.Password);
+                    var user = _AuthService.VerifyLogin(model.Email, model.Password);
                     if (user != null)
                     {
                         var identity = new ClaimsIdentity(new[]
@@ -198,9 +198,9 @@ namespace RealEstate.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (_UserService.FindEmail(model.Email) ==null)
+                    if (_AuthService.FindEmail(model.Email) ==null)
                     {
-                        _UserService.CreateUser(model.Email, model.Name, model.Password, null, null);
+                        _AuthService.CreateUser(model.Email, model.Name, model.Password, null, null);
                         return RedirectToAction("Login", "Account");
                     
                     }
@@ -226,9 +226,9 @@ namespace RealEstate.Controllers
         {
             try
             {
-                var user = _UserService.FindEmail(model.Email);
+                var user = _AuthService.FindEmail(model.Email);
 
-                if (user == null || user.User.ProviderName == "Google")
+                if (user == null || user.ProviderName == "Google")
                 {
                     ModelState.AddModelError("", "Email này chưa tồn tại");
                     return View();
@@ -241,7 +241,7 @@ namespace RealEstate.Controllers
                 var token = HttpServerUtility.UrlTokenEncode(bytes);
                 ResetPassword resetPassword = new ResetPassword()
                 {
-                    User_id = user.User.Id,
+                    User_id = user.Id,
                     Token = token,
                     Expires = DateTime.Now.AddHours(1)
                 };

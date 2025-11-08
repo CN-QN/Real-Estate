@@ -19,12 +19,9 @@ namespace RealEstate.Models
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string Bio { get; set; }
         public string Address { get; set; }
-        public string Facebook { get; set; }
-        public string Instagram { get; set; }
-        public string Website { get; set; }
-        public string CoverPhoto { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
         public string Phone { get; set; }
+        public Nullable<System.DateTime> CreatedAt { get; set; }
     
         public virtual User User { get; set; }
     }

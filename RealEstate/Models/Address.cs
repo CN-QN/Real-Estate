@@ -26,10 +26,10 @@ namespace RealEstate.Models
         public Nullable<int> District_Id { get; set; }
         public string Ward_Id { get; set; }
         public Nullable<decimal> lon { get; set; }
+        public string StreetName { get; set; }
         public Nullable<decimal> lat { get; set; }
         public Nullable<System.DateTime> Created_At { get; set; }
         public Nullable<System.DateTime> Updated_At { get; set; }
-        public string StreetName { get; set; }
     
         public virtual District District { get; set; }
         public virtual Province Province { get; set; }

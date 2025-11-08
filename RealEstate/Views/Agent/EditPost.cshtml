@@ -1,0 +1,184 @@
+﻿@model RealEstate.Models.GetPropertyDetail_Result
+
+@{
+    ViewBag.Title = "EditPost";
+    Layout = "~/Views/Shared/_LayoutAgent.cshtml";
+}
+
+<div class="edit-post-container">
+    <h2>Chỉnh sửa Bài Đăng</h2>
+
+    @using (Html.BeginForm("EditPost", "Agent", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="form-section">
+            <label for="Title">Tiêu đề:</label>
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Nhập tiêu đề" })
+        </div>
+
+        <div class="form-section">
+            <label for="Description">Mô tả:</label>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4, placeholder = "Nhập mô tả" })
+        </div>
+
+        <div class="form-section">
+            <label>Giá:</label>
+            <div class="price-inputs">
+                @Html.TextBoxFor(m => m.PriceMin, new { @class = "form-control", placeholder = "Giá tối thiểu" })
+                @Html.TextBoxFor(m => m.PriceMax, new { @class = "form-control", placeholder = "Giá tối đa" })
+                @Html.TextBoxFor(m => m.PriceUnit, new { @class = "form-control", placeholder = "Đơn vị" })
+            </div>
+        </div>
+
+        <div class="form-section">
+            <label>Diện tích:</label>
+            <div class="area-inputs">
+                @Html.TextBoxFor(m => m.AreaMin, new { @class = "form-control", placeholder = "Diện tích tối thiểu" })
+                @Html.TextBoxFor(m => m.AreaMax, new { @class = "form-control", placeholder = "Diện tích tối đa" })
+                @Html.TextBoxFor(m => m.AreaUnit, new { @class = "form-control", placeholder = "Đơn vị" })
+            </div>
+        </div>
+
+        <div class="form-section">
+            <label for="Address">Địa chỉ:</label>
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
+        </div>
+
+        <div class="form-section">
+            <label for="TypeId">Loại BĐS:</label>
+            @Html.DropDownList("LoaiBDS", (SelectList)ViewBag.Type, "-- Chọn loại BĐS --", new { @class = "form-control" })
+
+        </div>
+
+        <div class="form-section">
+            <label>Avatar hiện tại:</label>
+            <img src="@Model.Avatar" class="main-image" />
+            <input type="file" name="AvatarFile" class="form-control" />
+        </div>
+
+        <div class="form-section">
+            <label>Gallery hiện tại:</label>
+            <div class="property-images">
+                @if (!string.IsNullOrEmpty(Model.ImageGallery))
+                {
+                    var images = Model.ImageGallery.Split(',');
+                    foreach (var img in images)
+                    {
+                        <img src="@img" class="gallery-image" />
+                    }
+                }
+            </div>
+            <input type="file" name="GalleryFiles" multiple class="form-control" />
+        </div>
+
+        <div class="action-buttons">
+            <button type="submit" class="btn-save">Lưu</button>
+            <a href="@Url.Action("Index", "Agent")" class="btn-cancel">Hủy</a>
+        </div>
+    }
+</div>
+
+<style>
+    .edit-post-container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        font-family: Arial, sans-serif;
+    }
+
+        .edit-post-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0275d8; /* xanh chỉnh sửa */
+        }
+
+    .form-section {
+        margin-bottom: 15px;
+    }
+
+        .form-section label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .price-inputs,
+    .area-inputs {
+        display: flex;
+        gap: 10px;
+    }
+
+    .property-images {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+        .property-images .main-image {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .property-images .gallery-image {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            .property-images .gallery-image:hover {
+                transform: scale(1.1);
+            }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .btn-save {
+        background-color: #0275d8;
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+        .btn-save:hover {
+            background-color: #025aa5;
+        }
+
+    .btn-cancel {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 10px 25px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+</style>

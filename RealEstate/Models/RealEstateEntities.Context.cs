@@ -27,12 +27,14 @@ namespace RealEstate.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<Furniture> Furnitures { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Property> Properties { get; set; }
         public virtual DbSet<PropertyImage> PropertyImages { get; set; }
         public virtual DbSet<PropertyType> PropertyTypes { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
@@ -45,24 +47,92 @@ namespace RealEstate.Models
         public virtual DbSet<UrbanAttribute> UrbanAttributes { get; set; }
         public virtual DbSet<UrbanImage> UrbanImages { get; set; }
         public virtual DbSet<Urban> Urbans { get; set; }
+        public virtual DbSet<UserProfile> UserProfiles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Ward> Wards { get; set; }
         public virtual DbSet<PropertyAttribute> PropertyAttributes { get; set; }
-        public virtual DbSet<UserProfile> UserProfiles { get; set; }
-        public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<Property> Properties { get; set; }
-        public virtual DbSet<User> Users { get; set; }
     
-        public virtual ObjectResult<GetProperty_Result> GetProperty(Nullable<int> pageSize, Nullable<int> pageNumber)
+        public virtual ObjectResult<Nullable<int>> CreatePost(Nullable<int> userId, Nullable<int> provinceCode, Nullable<int> districtCode, string wardCode, string addressDetail, Nullable<decimal> latitude, Nullable<decimal> longitude, string streetName, string tenDuAn, string moTa, Nullable<decimal> giaMin, Nullable<decimal> giaMax, Nullable<decimal> dienTichMin, Nullable<decimal> dienTichMax, Nullable<int> loaiBDS)
         {
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
     
+            var provinceCodeParameter = provinceCode.HasValue ?
+                new ObjectParameter("ProvinceCode", provinceCode) :
+                new ObjectParameter("ProvinceCode", typeof(int));
+    
+            var districtCodeParameter = districtCode.HasValue ?
+                new ObjectParameter("DistrictCode", districtCode) :
+                new ObjectParameter("DistrictCode", typeof(int));
+    
+            var wardCodeParameter = wardCode != null ?
+                new ObjectParameter("WardCode", wardCode) :
+                new ObjectParameter("WardCode", typeof(string));
+    
+            var addressDetailParameter = addressDetail != null ?
+                new ObjectParameter("AddressDetail", addressDetail) :
+                new ObjectParameter("AddressDetail", typeof(string));
+    
+            var latitudeParameter = latitude.HasValue ?
+                new ObjectParameter("Latitude", latitude) :
+                new ObjectParameter("Latitude", typeof(decimal));
+    
+            var longitudeParameter = longitude.HasValue ?
+                new ObjectParameter("Longitude", longitude) :
+                new ObjectParameter("Longitude", typeof(decimal));
+    
+            var streetNameParameter = streetName != null ?
+                new ObjectParameter("StreetName", streetName) :
+                new ObjectParameter("StreetName", typeof(string));
+    
+            var tenDuAnParameter = tenDuAn != null ?
+                new ObjectParameter("TenDuAn", tenDuAn) :
+                new ObjectParameter("TenDuAn", typeof(string));
+    
+            var moTaParameter = moTa != null ?
+                new ObjectParameter("MoTa", moTa) :
+                new ObjectParameter("MoTa", typeof(string));
+    
+            var giaMinParameter = giaMin.HasValue ?
+                new ObjectParameter("GiaMin", giaMin) :
+                new ObjectParameter("GiaMin", typeof(decimal));
+    
+            var giaMaxParameter = giaMax.HasValue ?
+                new ObjectParameter("GiaMax", giaMax) :
+                new ObjectParameter("GiaMax", typeof(decimal));
+    
+            var dienTichMinParameter = dienTichMin.HasValue ?
+                new ObjectParameter("DienTichMin", dienTichMin) :
+                new ObjectParameter("DienTichMin", typeof(decimal));
+    
+            var dienTichMaxParameter = dienTichMax.HasValue ?
+                new ObjectParameter("DienTichMax", dienTichMax) :
+                new ObjectParameter("DienTichMax", typeof(decimal));
+    
+            var loaiBDSParameter = loaiBDS.HasValue ?
+                new ObjectParameter("LoaiBDS", loaiBDS) :
+                new ObjectParameter("LoaiBDS", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreatePost", userIdParameter, provinceCodeParameter, districtCodeParameter, wardCodeParameter, addressDetailParameter, latitudeParameter, longitudeParameter, streetNameParameter, tenDuAnParameter, moTaParameter, giaMinParameter, giaMaxParameter, dienTichMinParameter, dienTichMaxParameter, loaiBDSParameter);
+        }
+    
+        public virtual ObjectResult<GetProfile_Result> GetProfile(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProfile_Result>("GetProfile", emailParameter);
+        }
+    
+        public virtual ObjectResult<GetProperty_Result> GetProperty(Nullable<int> pageNumber)
+        {
             var pageNumberParameter = pageNumber.HasValue ?
                 new ObjectParameter("PageNumber", pageNumber) :
                 new ObjectParameter("PageNumber", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProperty_Result>("GetProperty", pageSizeParameter, pageNumberParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProperty_Result>("GetProperty", pageNumberParameter);
         }
     
         public virtual ObjectResult<GetPropertyById_Result> GetPropertyById(Nullable<int> id)
@@ -72,6 +142,28 @@ namespace RealEstate.Models
                 new ObjectParameter("Id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPropertyById_Result>("GetPropertyById", idParameter);
+        }
+    
+        public virtual ObjectResult<GetPropertyByUser_Result> GetPropertyByUser(Nullable<int> user_id, Nullable<int> pageNumber)
+        {
+            var user_idParameter = user_id.HasValue ?
+                new ObjectParameter("user_id", user_id) :
+                new ObjectParameter("user_id", typeof(int));
+    
+            var pageNumberParameter = pageNumber.HasValue ?
+                new ObjectParameter("PageNumber", pageNumber) :
+                new ObjectParameter("PageNumber", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPropertyByUser_Result>("GetPropertyByUser", user_idParameter, pageNumberParameter);
+        }
+    
+        public virtual ObjectResult<GetPropertySearch_Result> GetPropertySearch(string keyword)
+        {
+            var keywordParameter = keyword != null ?
+                new ObjectParameter("Keyword", keyword) :
+                new ObjectParameter("Keyword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPropertySearch_Result>("GetPropertySearch", keywordParameter);
         }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
@@ -186,13 +278,17 @@ namespace RealEstate.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerifyLogin_Result>("VerifyLogin", emailParameter);
         }
     
-        public virtual ObjectResult<GetPropertySearch_Result> GetPropertySearch(string keyword)
+        public virtual ObjectResult<GetPropertyDetail_Result> GetPropertyDetail(Nullable<int> propertyId, Nullable<int> userId)
         {
-            var keywordParameter = keyword != null ?
-                new ObjectParameter("Keyword", keyword) :
-                new ObjectParameter("Keyword", typeof(string));
+            var propertyIdParameter = propertyId.HasValue ?
+                new ObjectParameter("propertyId", propertyId) :
+                new ObjectParameter("propertyId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPropertySearch_Result>("GetPropertySearch", keywordParameter);
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("userId", userId) :
+                new ObjectParameter("userId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPropertyDetail_Result>("GetPropertyDetail", propertyIdParameter, userIdParameter);
         }
     }
 }

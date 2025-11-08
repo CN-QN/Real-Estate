@@ -1,11 +1,14 @@
-﻿using RealEstate.Models.ViewModels;
+﻿using RealEstate.Models;
+using RealEstate.Models.ViewModels;
 using RealEstate.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace RealEstate.Controllers
 {
+    [Authorize(Roles = "Agents")]
     public class AdminController : Controller
     {
         private readonly AdminService _AdminService = new AdminService();
@@ -73,7 +76,7 @@ namespace RealEstate.Controllers
          
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult XoaTin(int id)
+        public ActionResult DeletePost(int id)
         {
             bool result = _AdminService.XoaTin(id);
             TempData["Message"] = result
@@ -103,7 +106,7 @@ namespace RealEstate.Controllers
                 if (result)
                 {
                     TempData["Message"] = "Update successful!";
-                    return RedirectToAction("ManagePosts");
+                    return RedirectToAction("QuanLyTin","Admin");
                 }
             }
 
@@ -111,17 +114,7 @@ namespace RealEstate.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int id)
-        {
-            bool result = _AdminService.DeletePost(id);
-            TempData["Message"] = result
-                ? "Post deleted successfully!"
-                : "Unable to delete this post!";
-
-            return RedirectToAction("QuanLyTin");
-        }
+        
         [HttpGet]
         public ActionResult EditUser(int id)
         {

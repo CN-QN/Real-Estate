@@ -17,10 +17,10 @@ namespace RealEstate.Repository
         RealEstateEntities db = new RealEstateEntities();
 
 		 
-		public List<PropertyViewModel> GetPropertyAll( int PageNumber, int PageSize = 40 ) 
+		public List<PropertyViewModel> GetPropertyAll( int PageNumber ) 
 		{
               
-            List<PropertyViewModel> ProperyList = db.GetProperty(PageSize, PageNumber)
+            List<PropertyViewModel> ProperyList = db.GetProperty(  PageNumber)
                  .Select(o => new PropertyViewModel
                  {
                      Id = o.Id,
@@ -44,6 +44,11 @@ namespace RealEstate.Repository
 
 
              return ProperyList;
+        }
+
+        public List<PropertyType> GetPropertyTypes()
+        {
+            return db.PropertyTypes.ToList();
         }
         public List<PropertyDetailViewModel> GetPropertySearch(string Keyword)
         {
@@ -81,8 +86,8 @@ namespace RealEstate.Repository
         public List<PropertyViewModel> GetRelatedProperty(int Id ,int Id_Type)
         {
 
-            int PageNumber = 1, PageSize = 40;
-            List<PropertyViewModel> ProperyList = db.GetProperty(PageSize, PageNumber)
+            int PageNumber = 1;
+            List<PropertyViewModel> ProperyList = db.GetProperty( PageNumber)
                .Select(o => new PropertyViewModel
                {
                    Id = o.Id,

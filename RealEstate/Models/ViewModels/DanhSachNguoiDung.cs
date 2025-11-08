@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace RealEstate.Models.ViewModels
 {
@@ -13,6 +10,6 @@ namespace RealEstate.Models.ViewModels
         public string Role { get; set; }
         public DateTime Created_at { get; set; }
 
-        public int TongSoNguoiDung {  get; set; }
+        public int TongSoNguoiDung { get; set; }
     }
 }
