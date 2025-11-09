@@ -33,20 +33,17 @@ namespace RealEstate.Models
         public string Description { get; set; }
         public Nullable<decimal> PriceMin { get; set; }
         public Nullable<decimal> PriceMax { get; set; }
-        public string Address { get; set; }
         public int TypeId { get; set; }
         public Nullable<decimal> AreaMin { get; set; }
         public Nullable<decimal> AreaMax { get; set; }
         public string AreaUnit { get; set; }
         public Nullable<int> Address_id { get; set; }
         public string PriceUnit { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public string Status { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
     
-        public virtual Address Address1 { get; set; }
+        public virtual Address Address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Favorite> Favorites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -54,6 +51,7 @@ namespace RealEstate.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PropertyAttribute> PropertyAttributes { get; set; }
         public virtual PropertyType PropertyType { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PropertyImage> PropertyImages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -64,6 +62,5 @@ namespace RealEstate.Models
         public virtual ICollection<Urban> Urbans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Furniture> Furnitures { get; set; }
-        public virtual User User { get; set; }
     }
 }

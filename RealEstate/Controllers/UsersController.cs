@@ -14,7 +14,7 @@ namespace RealEstate.Controllers
     {
         // GET: Users
         private UserService _UserService = new UserService();
-
+        private AuthService _AuthService = new AuthService();
 
         [Authorize]
         public ActionResult ProfileUser()
@@ -22,39 +22,23 @@ namespace RealEstate.Controllers
             try
             {
                 var email = User.Identity.Name;
-                var user = _UserService.FindEmail(email);
-                if (user == null) return RedirectToAction("Login");
+                var user = _UserService.GetProfile(email);
+                if (user == null) return RedirectToAction("Login", "Account");
+ 
 
-                var model = new ProfileViewModel
-                { 
-                   Id = user.UserId,
-                   Bio = user.Bio,
-                   Email = user.User.Email,
-                   Address = user.Address,
-                   Website = user.Website,
-                   Facebook = user.Facebook,
-                   Instagram = user.Instagram,
-                   Name = user.User.Name,
-                   Gender = user.Gender,
-                   CoverPhoto = user.CoverPhoto,
-                   DateOfBirth = user.DateOfBirth,
-                   ProviderName = user.User.ProviderName
-                   
-                };
-
-                return View(model);
+                return View(user);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", "Account");
             }
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ProfileUser(ProfileViewModel model)
+        public ActionResult ProfileUser(UserProfileVIewModel model)
         {
             try
             {
@@ -62,7 +46,7 @@ namespace RealEstate.Controllers
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var id =Convert.ToInt32(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var email = User.Identity.Name;
-                var user = _UserService.FindEmail(email);
+                var user = _AuthService.FindEmail(email);
                 if (user == null) return RedirectToAction("Login");
                 _UserService.UpdateFullProfile(id,model);
 
@@ -71,7 +55,7 @@ namespace RealEstate.Controllers
                     _UserService.UpdateName(email, model.Name);
 
                 // Nếu không phải tài khoản Google thì cho đổi mật khẩu
-                if (!user.User.ProviderName?.Equals("Google", StringComparison.OrdinalIgnoreCase) == true)
+                if (!user.ProviderName?.Equals("Google", StringComparison.OrdinalIgnoreCase) == true)
                 {
                     if (!string.IsNullOrEmpty(model.NewPassword))
                     {

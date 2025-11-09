@@ -17,10 +17,10 @@ namespace RealEstate.Repository
         RealEstateEntities db = new RealEstateEntities();
 
 		 
-		public List<PropertyViewModel> GetPropertyAll( int PageNumber, int PageSize = 40 ) 
+		public List<PropertyViewModel> GetPropertyAll( int PageNumber ) 
 		{
               
-            List<PropertyViewModel> ProperyList = db.GetProperty(PageSize, PageNumber)
+            List<PropertyViewModel> ProperyList = db.GetProperty(PageNumber)
                  .Select(o => new PropertyViewModel
                  {
                      Id = o.Id,
@@ -45,6 +45,11 @@ namespace RealEstate.Repository
 
              return ProperyList;
         }
+       
+        public List<PropertyType> GetPropertyTypes()
+        {
+            return db.PropertyTypes.ToList();
+        }
         public List<PropertyDetailViewModel> GetPropertySearch(string Keyword)
         {
 
@@ -64,7 +69,7 @@ namespace RealEstate.Repository
                 PriceMax = Convert.ToInt32(i.PriceMax),
                 PriceMin = Convert.ToInt32(i.PriceMin),
                 PriceUnit = Convert.ToString(i.PriceUnit),
-                Address = i.Address ?? "",
+                //Address = i.Address ?? "",
                 Phone = i.Phone ?? "",
                 CreatedAt = Convert.ToDateTime(i.CreatedAt),
                 ImageGallery = JsonConvert.DeserializeObject<List<PropertyImage>>(Convert.ToString(i.ImageGallery)),
@@ -81,8 +86,8 @@ namespace RealEstate.Repository
         public List<PropertyViewModel> GetRelatedProperty(int Id ,int Id_Type)
         {
 
-            int PageNumber = 1, PageSize = 40;
-            List<PropertyViewModel> ProperyList = db.GetProperty(PageSize, PageNumber)
+            int PageNumber = 1;
+            List<PropertyViewModel> ProperyList = db.GetProperty( PageNumber)
                .Select(o => new PropertyViewModel
                {
                    Id = o.Id,
@@ -142,7 +147,9 @@ namespace RealEstate.Repository
             return propertyDetailViewModel;
 
         }
-        
+
+       
+
 
 
 

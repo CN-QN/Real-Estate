@@ -1,36 +1,66 @@
-﻿@{
-    ViewBag.Title = "Bài đăng của tôi";
+﻿@model List<RealEstate.Models.ViewModels.PropertyViewModel>
+
+@{
+    ViewBag.Title = "Tin của tôi";
     Layout = "~/Views/Shared/_LayoutAgent.cshtml";
+
 }
 
-<div class="container-fluid">
-    <h3 class="fw-bold mb-4">Bài đăng của tôi</h3>
+<h2 class="mb-3">Tin của tôi</h2>
 
-    <table class="table table-hover shadow-sm">
-        <thead class="table-primary">
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">@ViewBag.Message</div>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
             <tr>
-                <th>#</th>
                 <th>Tiêu đề</th>
-                <th>Loại</th>
                 <th>Giá</th>
-                <th>Ngày đăng</th>
+                <th>Diện tích</th>
                 <th>Trạng thái</th>
-                <th>Thao tác</th>
+                <th>Ngày đăng</th>
+                <th>Hành động</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Căn hộ Vinhomes Central Park</td>
-                <td>Bán</td>
-                <td>5.2 tỷ</td>
-                <td>21/10/2025</td>
-                <td><span class="badge bg-success">Hiển thị</span></td>
-                <td>
-                    <a href="#" class="btn btn-sm btn-outline-primary">Sửa</a>
-                    <a href="#" class="btn btn-sm btn-outline-danger">Xóa</a>
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@String.Format("{0:N0}", item.PriceMin) - @String.Format("{0:N0}", item.PriceMax) @item.PriceUnit</td>
+                    <td>@item.AreaMin - @item.AreaMax @item.AreaUnit </td>
+                    <td>
+                        @if (item.Status == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                        }
+                        else if (item.Status == "Active")
+                        {
+                            <span class="badge bg-success">Đã duyệt</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Từ chối</span>
+                        }
+                    </td>
+                    <td>@string.Format("{0:dd/MM/yyy}", item.CreatedAt)</td>
+                    <td>
+                        <a href="@Url.Action("MyPostDetail", "Agent", new { id = item.Id })" class="btn btn-sm btn-primary">
+                            Xem
+                        </a>
+                        <a href="@Url.Action("EditPost", "Agent", new { id = item.Id })" class="btn btn-sm btn-warning">
+                            Sửa
+                        </a>
+                        <a href="@Url.Action("DeletePost", "Agent", new { id = item.Id })" class="btn btn-sm btn-danger"
+                           >
+                            Xóa
+                        </a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-</div>
+}

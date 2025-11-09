@@ -25,8 +25,9 @@ namespace RealEstate.Models.ViewModels
         public string PriceUnit { get; set; }
         public string Address { get; set; }
   
-
+        public int Address_id { get; set; }
         public List<PropertyImage> ImageGallery { get; set; }
+
         public string Phone { get; set; }
         public DateTime CreatedAt { get; set; }
     }

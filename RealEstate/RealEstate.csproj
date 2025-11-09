@@ -229,7 +229,16 @@
     <Compile Include="Models\Furniture.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetProfile_Result.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GetPropertyById_Result.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetPropertyByUser_Result.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetPropertyDetail_Result.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GetPropertySearch_Result.cs">
@@ -324,7 +333,6 @@
     <Compile Include="Models\ViewModels\HomePageViewModel.cs" />
     <Compile Include="Models\ViewModels\ListBaseViewModel.cs" />
     <Compile Include="Models\ViewModels\PostViewModels.cs" />
-    <Compile Include="Models\ViewModels\ProfileViewModel.cs" />
     <Compile Include="Models\ViewModels\PropertyListViewModel.cs" />
     <Compile Include="Models\ViewModels\TangTruongViewModel.cs" />
     <Compile Include="Models\ViewModels\LoginViewModels.cs" />
@@ -335,6 +343,7 @@
     <Compile Include="Models\ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="Models\ViewModels\UrbanDetailViewModel.cs" />
     <Compile Include="Models\ViewModels\UrbanViewModel.cs" />
+    <Compile Include="Models\ViewModels\UserProfileVIewModel.cs" />
     <Compile Include="Models\Ward.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
@@ -376,6 +385,26 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\css\all.css" />
+    <Content Include="Content\css\all.min.css" />
+    <Content Include="Content\css\brands.css" />
+    <Content Include="Content\css\brands.min.css" />
+    <Content Include="Content\css\fontawesome.css" />
+    <Content Include="Content\css\fontawesome.min.css" />
+    <Content Include="Content\css\regular.css" />
+    <Content Include="Content\css\regular.min.css" />
+    <Content Include="Content\css\solid.css" />
+    <Content Include="Content\css\solid.min.css" />
+    <Content Include="Content\css\svg-with-js.css" />
+    <Content Include="Content\css\svg-with-js.min.css" />
+    <Content Include="Content\css\svg.css" />
+    <Content Include="Content\css\svg.min.css" />
+    <Content Include="Content\css\v4-font-face.css" />
+    <Content Include="Content\css\v4-font-face.min.css" />
+    <Content Include="Content\css\v4-shims.css" />
+    <Content Include="Content\css\v4-shims.min.css" />
+    <Content Include="Content\css\v5-font-face.css" />
+    <Content Include="Content\css\v5-font-face.min.css" />
     <Content Include="Content\Images\back-ground.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
@@ -429,6 +458,10 @@
     <Content Include="Scripts\ckeditor\ckeditor_php4.php" />
     <Content Include="Scripts\ckeditor\ckeditor.php" />
     <Content Include="Scripts\ckeditor\ckeditor.pack" />
+    <Content Include="Content\webfonts\fa-brands-400.woff2" />
+    <Content Include="Content\webfonts\fa-regular-400.woff2" />
+    <Content Include="Content\webfonts\fa-solid-900.woff2" />
+    <Content Include="Content\webfonts\fa-v4compatibility.woff2" />
     <EntityDeploy Include="Models\RealEstateEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>RealEstateEntities.Designer.cs</LastGenOutput>
@@ -818,6 +851,7 @@
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
     <Content Include="Views\Users\ProfileUser.cshtml" />
+    <Content Include="Views\Admin\ChiTietTin.cshtml" />
     <None Include="Views\Admin\EditPost.cshtml" />
     <Content Include="Views\Admin\_DanhSachNguoiDung.cshtml" />
     <Content Include="Views\Admin\EditUser.cshtml" />
@@ -828,10 +862,14 @@
     <Content Include="Views\Shared\_ListUrban.cshtml" />
     <Content Include="Views\Shared\_UrbanCard.cshtml" />
     <Content Include="Views\Property\Index.cshtml" />
+    <Content Include="Views\Agent\MyPostDetail.cshtml" />
+    <Content Include="Views\Agent\DeletePost.cshtml" />
+    <Content Include="Views\Agent\EditPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Common\" />
+    <Folder Include="Content\Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

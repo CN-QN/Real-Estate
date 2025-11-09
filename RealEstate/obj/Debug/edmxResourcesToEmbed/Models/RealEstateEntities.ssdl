@@ -83,15 +83,12 @@
     <Property Name="Description" Type="nvarchar(max)" />
     <Property Name="PriceMin" Type="decimal" Precision="18" Scale="2" />
     <Property Name="PriceMax" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="Address" Type="nvarchar" MaxLength="255" />
     <Property Name="TypeId" Type="int" Nullable="false" />
     <Property Name="AreaMin" Type="decimal" Precision="18" Scale="2" />
     <Property Name="AreaMax" Type="decimal" Precision="18" Scale="2" />
     <Property Name="AreaUnit" Type="nvarchar" MaxLength="10" />
     <Property Name="Address_id" Type="int" />
     <Property Name="PriceUnit" Type="nvarchar" MaxLength="10" />
-    <Property Name="StartDate" Type="date" />
-    <Property Name="EndDate" Type="date" />
     <Property Name="CreatedAt" Type="date" />
     <Property Name="Status" Type="nvarchar" MaxLength="50" />
     <Property Name="UpdatedAt" Type="date" />
@@ -248,12 +245,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Property Name="DateOfBirth" Type="date" />
     <Property Name="Bio" Type="nvarchar" MaxLength="500" />
     <Property Name="Address" Type="nvarchar" MaxLength="255" />
-    <Property Name="Facebook" Type="nvarchar" MaxLength="255" />
-    <Property Name="Instagram" Type="nvarchar" MaxLength="255" />
-    <Property Name="Website" Type="nvarchar" MaxLength="255" />
-    <Property Name="CoverPhoto" Type="nvarchar" MaxLength="255" />
     <Property Name="UpdatedAt" Type="datetime" />
     <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+    <Property Name="CreatedAt" Type="date" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -551,7 +545,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_PropertyImages_Properties">
-    <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
+    <End Role="Properties" Type="Self.Properties" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="PropertyImages" Type="Self.PropertyImages" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Properties">
@@ -646,16 +642,44 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="CreatePost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserId" Type="int" Mode="In" />
+    <Parameter Name="ProvinceCode" Type="int" Mode="In" />
+    <Parameter Name="DistrictCode" Type="int" Mode="In" />
+    <Parameter Name="WardCode" Type="nvarchar" Mode="In" />
+    <Parameter Name="AddressDetail" Type="nvarchar" Mode="In" />
+    <Parameter Name="Latitude" Type="decimal" Mode="In" />
+    <Parameter Name="Longitude" Type="decimal" Mode="In" />
+    <Parameter Name="StreetName" Type="nvarchar" Mode="In" />
+    <Parameter Name="TenDuAn" Type="nvarchar" Mode="In" />
+    <Parameter Name="MoTa" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="GiaMin" Type="decimal" Mode="In" />
+    <Parameter Name="GiaMax" Type="decimal" Mode="In" />
+    <Parameter Name="DienTichMin" Type="decimal" Mode="In" />
+    <Parameter Name="DienTichMax" Type="decimal" Mode="In" />
+    <Parameter Name="LoaiBDS" Type="int" Mode="In" />
+    <Parameter Name="DonViDienTich" Type="nvarchar" Mode="In" />
+    <Parameter Name="DonViGia" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="Get_Property_Count_By_District" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
     <Parameter Name="DistrictID" Type="int" Mode="In" />
   </Function>
+  <Function Name="GetProfile" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="email" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="GetProperty" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="PageSize" Type="int" Mode="In" />
     <Parameter Name="PageNumber" Type="int" Mode="In" />
   </Function>
   <Function Name="GetPropertyById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetPropertyByUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="user_id" Type="int" Mode="In" />
+    <Parameter Name="PageNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetPropertyDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="propertyId" Type="int" Mode="In" />
   </Function>
   <Function Name="GetPropertySearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
@@ -690,6 +714,20 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="UpdateProperty" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="Title" Type="nvarchar" Mode="In" />
+    <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="AreaMax" Type="decimal" Mode="In" />
+    <Parameter Name="AreaMin" Type="decimal" Mode="In" />
+    <Parameter Name="AreaUnit" Type="nvarchar" Mode="In" />
+    <Parameter Name="TypeId" Type="int" Mode="In" />
+    <Parameter Name="PriceMax" Type="int" Mode="In" />
+    <Parameter Name="PriceMin" Type="int" Mode="In" />
+    <Parameter Name="PriceUnit" Type="nvarchar" Mode="In" />
+    <Parameter Name="AddressId" Type="int" Mode="In" />
+    <Parameter Name="AddressDetail" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="VerifyLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Email" Type="nvarchar" Mode="In" />
   </Function>

@@ -1,7 +1,9 @@
-﻿using RealEstate.Models.ViewModels;
+﻿using RealEstate.Models;
+using RealEstate.Models.ViewModels;
 using RealEstate.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace RealEstate.Controllers
@@ -9,6 +11,7 @@ namespace RealEstate.Controllers
     public class AdminController : Controller
     {
         private readonly AdminService _AdminService = new AdminService();
+        private readonly AgentService _AgentService = new AgentService();
 
         public ActionResult Index()
         {
@@ -20,7 +23,11 @@ namespace RealEstate.Controllers
             ViewBag.PageNumber = PageNumber ?? 1;
             return View();
         }
-
+        public ActionResult ChiTietTin(int id)
+        {
+            var post = _AgentService.GetMyPostDetail(id);
+            return View(post);
+        }
         public ActionResult QuanLyNguoiDung(int? PageNumber)
         {
             ViewBag.PageNumber = PageNumber ?? 1;
@@ -73,7 +80,7 @@ namespace RealEstate.Controllers
          
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult XoaTin(int id)
+        public ActionResult DeletePost(int id)
         {
             bool result = _AdminService.XoaTin(id);
             TempData["Message"] = result
@@ -103,7 +110,7 @@ namespace RealEstate.Controllers
                 if (result)
                 {
                     TempData["Message"] = "Update successful!";
-                    return RedirectToAction("ManagePosts");
+                    return RedirectToAction("QuanLyTin","Admin");
                 }
             }
 
@@ -111,17 +118,7 @@ namespace RealEstate.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int id)
-        {
-            bool result = _AdminService.DeletePost(id);
-            TempData["Message"] = result
-                ? "Post deleted successfully!"
-                : "Unable to delete this post!";
-
-            return RedirectToAction("QuanLyTin");
-        }
+        
         [HttpGet]
         public ActionResult EditUser(int id)
         {

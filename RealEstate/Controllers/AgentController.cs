@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using RealEstate.Models;
+using RealEstate.Models.ViewModels;
+using RealEstate.Services;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -7,21 +11,21 @@ using System.Net;
 using System.Web;
 using System.Web.ModelBinding;
 using System.Web.Mvc;
-using RealEstate.Models;
-using RealEstate.Models.ViewModels;
-using RealEstate.Services;
 
 namespace RealEstate.Controllers
 {
     public class AgentController : Controller
     {
         private AgentService _AgentService = new AgentService();
-         
+        private PropertyService _PropertyService = new PropertyService();
+
+
         public ActionResult Index()
         {
             ViewBag.Provinces = _AgentService.Provinces();
             ViewBag.Districts = new List<District>();
             ViewBag.Wards = new List<Ward>();
+            ViewBag.Type = new SelectList(_PropertyService.GetPropertyTypes(), "Id", "Name", null); 
             return View();
         }
         [HttpGet]
@@ -54,41 +58,65 @@ namespace RealEstate.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateInput(false)] // Cho phép nhận HTML từ TinyMCE (Mô tả)
-        public JsonResult PostNews(PostViewModels request)
+        public ActionResult MyPosts(int pageNumber = 1)
         {
-            // GIẢ ĐỊNH: Lấy UserID của Agent đang đăng nhập.
-            // Trong thực tế, bạn cần xác thực và lấy ID từ Session/Cookie/Identity.
-            int currentUserId = 1; // THAY THẾ BẰNG ID THỰC TẾ
+            int userId = Convert.ToInt32(User.Identity.GetUserId());
+            var posts = _AgentService.GetMyPosts(userId, pageNumber);
 
-            if (request == null)
+            if (posts == null || !posts.Any())
             {
-                return Json(new { success = false, message = "Dữ liệu gửi lên không hợp lệ." });
+                ViewBag.Message = "Bạn chưa đăng bài viết nào.";
             }
 
-            // Kiểm tra tối thiểu 3 ảnh
-            if (request.ImageUrls == null || request.ImageUrls.Count < 3)
-            {
-                return Json(new { success = false, message = "Vui lòng tải lên ít nhất 3 ảnh." });
-            }
-
-            bool result = _AgentService.AddPost(request, currentUserId);
-
-            if (result)
-            {
-                return Json(new { success = true, message = "Đăng tin thành công. Tin của bạn đang chờ duyệt." });
-            }
-            else
-            {
-                // Thông báo lỗi chung, lỗi chi tiết đã được log ở Repo
-                return Json(new { success = false, message = "Lỗi hệ thống khi lưu tin đăng. Vui lòng thử lại." });
-            }
+            return View(posts);
         }
-        public ActionResult MyPosts()
+
+
+        [HttpPost]
+        [ValidateInput(false)]  
+        public ActionResult CreatePost(PostViewModels request, List<HttpPostedFileBase> ImageUrls)
         {
+
+            int currentUserId = Convert.ToInt32(User.Identity.GetUserId());
+            if (ModelState.IsValid)
+            {
+                bool result = _AgentService.CreatePost(request, ImageUrls.ToList(), currentUserId);
+
+                if (result)
+                {
+                    TempData["ToastrType"] = "success";
+                    TempData["ToastrMessage"] = "Đăng tin thành công. Tin của bạn đang chờ duyệt.";
+                    return RedirectToAction("MyPosts", "Agent");
+                }
+            }
+
+
+            ViewBag.Provinces = _AgentService.Provinces();
+            ViewBag.Districts = new List<District>();
+            ViewBag.Wards = new List<Ward>();
+            ViewBag.Type = new SelectList(_PropertyService.GetPropertyTypes(), "Id", "Name", null);
+            return View("Index", request);
+
+
+        }
+        public ActionResult MyPostDetail(int? id)
+        {
+            if(id ==null)
+            {
+                return RedirectToAction("Index", "Agent");
+            }
+            int userId = Convert.ToInt32(User.Identity.GetUserId());
+            //var post = _AgentService.GetMyPostDetail(id.Value, userId);
+            //if (post == null)
+            //{
+            //    TempData["ToastrType"] = "error";
+            //    TempData["ToastrMessage"] = "Không tìm thấy bài viết.";
+            //    return RedirectToAction("MyPosts");
+            //}
             return View();
         }
+
+
         public ActionResult TinCuaToi()
         {
             return View();
@@ -97,5 +125,56 @@ namespace RealEstate.Controllers
         {
             return View();
         }
+
+        public ActionResult EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Agent");
+            }
+            ViewBag.Provinces = _AgentService.Provinces();
+            ViewBag.Districts = new List<District>();
+            ViewBag.Wards = new List<Ward>();
+            ViewBag.Type = new SelectList(_PropertyService.GetPropertyTypes(), "Id", "Name", null);
+            //var item = _AgentService.GetMyPostDetail(id.Value, Convert.ToInt32(User.Identity.GetUserId()));
+
+            return View();
+        }
+
+        [HttpPost , ActionName("EditPost"),ValidateInput(false)]
+        public ActionResult EditPosts(GetPropertyDetail_Result model , int id)
+        {
+            _AgentService.EditPost(model, id);
+            return RedirectToAction("MyPosts","Agent");
+        }
+
+        public ActionResult DeletePost(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Agent");
+            }
+            //var item = _AgentService.GetMyPostDetail(id.Value, Convert.ToInt32(User.Identity.GetUserId()));
+            return View();
+        }
+        [HttpPost, ActionName("DeletePost")]
+        public ActionResult DeletePosts(int id)
+        {
+            var isSuccess = _AgentService.DeletePost(id);
+            if(isSuccess == true)
+            {
+                TempData["ToastrType"] = "success";
+                TempData["ToastrMessage"] = "Xóa bài viết thành công.";
+
+            }
+            else
+            {
+                TempData["ToastrType"] = "error";
+                TempData["ToastrMessage"] = "Xóa bài viết thất bại.";
+            }
+            return RedirectToAction("MyPosts", "Agent");
+
+        }
+
     }
 }

@@ -9,7 +9,6 @@ namespace RealEstate
     {
         public void Configuration(IAppBuilder app)
         {
-            // Lời gọi này sẽ hoạt động sau khi bạn định nghĩa ConfigureAuth trong Startup.Auth.cs
             ConfigureAuth(app);
         }
     }

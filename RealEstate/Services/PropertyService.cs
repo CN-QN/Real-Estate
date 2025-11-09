@@ -21,7 +21,7 @@ namespace RealEstate.Services
             return _repo.GetPropertySearch(Keyword);
         }
         
-        public  PropertyDetailViewModel GetPropertyById   (int Id) 
+        public  PropertyDetailViewModel GetPropertyById(int Id) 
         {
             return _repo.GetPropertyById(Id);
 
@@ -31,6 +31,11 @@ namespace RealEstate.Services
             return _repo.GetRelatedProperty(Id, Id_Type);
 
         }
-        
+        public List<PropertyType> GetPropertyTypes()
+        {
+            return _repo.GetPropertyTypes();
+
+        }
+       
     }
 }

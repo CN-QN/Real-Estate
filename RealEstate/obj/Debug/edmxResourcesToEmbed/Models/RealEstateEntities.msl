@@ -1,6 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="RealEstateModelStoreContainer" CdmEntityContainer="RealEstateEntities">
+    <EntitySetMapping Name="Addresses">
+      <EntityTypeMapping TypeName="RealEstateModel.Address">
+        <MappingFragment StoreEntitySet="Address">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Address_detail" ColumnName="Address_detail" />
+          <ScalarProperty Name="Province_Id" ColumnName="Province_Id" />
+          <ScalarProperty Name="District_Id" ColumnName="District_Id" />
+          <ScalarProperty Name="Ward_Id" ColumnName="Ward_Id" />
+          <ScalarProperty Name="lon" ColumnName="lon" />
+          <ScalarProperty Name="StreetName" ColumnName="StreetName" />
+          <ScalarProperty Name="lat" ColumnName="lat" />
+          <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+          <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Districts">
       <EntityTypeMapping TypeName="RealEstateModel.District">
         <MappingFragment StoreEntitySet="Districts">
@@ -61,6 +77,27 @@
           <ScalarProperty Name="Amount" ColumnName="Amount" />
           <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
           <ScalarProperty Name="PaidAt" ColumnName="PaidAt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Properties">
+      <EntityTypeMapping TypeName="RealEstateModel.Property">
+        <MappingFragment StoreEntitySet="Properties">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+          <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+          <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+          <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+          <ScalarProperty Name="Address_id" ColumnName="Address_id" />
+          <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -200,6 +237,37 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="UserProfiles">
+      <EntityTypeMapping TypeName="RealEstateModel.UserProfile">
+        <MappingFragment StoreEntitySet="UserProfiles">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="Bio" ColumnName="Bio" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="RealEstateModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Wards">
       <EntityTypeMapping TypeName="RealEstateModel.Ward">
         <MappingFragment StoreEntitySet="Wards">
@@ -219,6 +287,31 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <AssociationSetMapping Name="PropertyFurnitures" TypeName="RealEstateModel.PropertyFurnitures" StoreEntitySet="PropertyFurnitures">
+      <EndProperty Name="Furnitures">
+        <ScalarProperty Name="Id" ColumnName="FurnituresId" />
+      </EndProperty>
+      <EndProperty Name="Properties">
+        <ScalarProperty Name="Id" ColumnName="PropertyId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <FunctionImportMapping FunctionImportName="CreatePost" FunctionName="RealEstateModel.Store.CreatePost" />
+    <FunctionImportMapping FunctionImportName="GetProfile" FunctionName="RealEstateModel.Store.GetProfile">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="RealEstateModel.GetProfile_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Bio" ColumnName="Bio" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="GetProperty" FunctionName="RealEstateModel.Store.GetProperty">
       <ResultMapping>
         <ComplexTypeMapping TypeName="RealEstateModel.GetProperty_Result">
@@ -248,7 +341,84 @@
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
           <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+          <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+          <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+          <ScalarProperty Name="Address_id" ColumnName="Address_id" />
+          <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
           <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="NameUser" ColumnName="NameUser" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
+          <ScalarProperty Name="NameType" ColumnName="NameType" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetPropertyByUser" FunctionName="RealEstateModel.Store.GetPropertyByUser">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="RealEstateModel.GetPropertyByUser_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="TotalPage" ColumnName="TotalPage" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+          <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+          <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+          <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetPropertyDetail" FunctionName="RealEstateModel.Store.GetPropertyDetail">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="RealEstateModel.GetPropertyDetail_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+          <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+          <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+          <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+          <ScalarProperty Name="Address_id" ColumnName="Address_id" />
+          <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="NameUser" ColumnName="NameUser" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
+          <ScalarProperty Name="NameType" ColumnName="NameType" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetPropertySearch" FunctionName="RealEstateModel.Store.GetPropertySearch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="RealEstateModel.GetPropertySearch_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+          <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
           <ScalarProperty Name="TypeId" ColumnName="TypeId" />
           <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
           <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
@@ -300,120 +470,9 @@
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="RoleId" ColumnName="RoleId" />
           <ScalarProperty Name="RoleName" ColumnName="RoleName" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <EntitySetMapping Name="UserProfiles">
-      <EntityTypeMapping TypeName="RealEstateModel.UserProfile">
-        <MappingFragment StoreEntitySet="UserProfiles">
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-          <ScalarProperty Name="CoverPhoto" ColumnName="CoverPhoto" />
-          <ScalarProperty Name="Website" ColumnName="Website" />
-          <ScalarProperty Name="Instagram" ColumnName="Instagram" />
-          <ScalarProperty Name="Facebook" ColumnName="Facebook" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="Bio" ColumnName="Bio" />
-          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-          <ScalarProperty Name="Gender" ColumnName="Gender" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="GetPropertySearch" FunctionName="RealEstateModel.Store.GetPropertySearch">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="RealEstateModel.GetPropertySearch_Result">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
-          <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-          <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
-          <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
-          <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
-          <ScalarProperty Name="Address_id" ColumnName="Address_id" />
-          <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-          <ScalarProperty Name="NameUser" ColumnName="NameUser" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
-          <ScalarProperty Name="NameType" ColumnName="NameType" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <EntitySetMapping Name="Addresses">
-      <EntityTypeMapping TypeName="RealEstateModel.Address">
-        <MappingFragment StoreEntitySet="Address">
-          <ScalarProperty Name="StreetName" ColumnName="StreetName" />
-          <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
-          <ScalarProperty Name="Created_At" ColumnName="Created_At" />
-          <ScalarProperty Name="lat" ColumnName="lat" />
-          <ScalarProperty Name="lon" ColumnName="lon" />
-          <ScalarProperty Name="Ward_Id" ColumnName="Ward_Id" />
-          <ScalarProperty Name="District_Id" ColumnName="District_Id" />
-          <ScalarProperty Name="Province_Id" ColumnName="Province_Id" />
-          <ScalarProperty Name="Address_detail" ColumnName="Address_detail" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Properties">
-      <EntityTypeMapping TypeName="RealEstateModel.Property">
-        <MappingFragment StoreEntitySet="Properties">
-          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-          <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
-          <ScalarProperty Name="Address_id" ColumnName="Address_id" />
-          <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
-          <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
-          <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
-          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
-          <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <AssociationSetMapping Name="PropertyFurnitures" TypeName="RealEstateModel.PropertyFurnitures" StoreEntitySet="PropertyFurnitures">
-      <EndProperty Name="Property">
-        <ScalarProperty Name="Id" ColumnName="PropertyId" />
-      </EndProperty>
-      <EndProperty Name="Furniture">
-        <ScalarProperty Name="Id" ColumnName="FurnituresId" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <EntitySetMapping Name="Users">
-      <EntityTypeMapping TypeName="RealEstateModel.User">
-        <MappingFragment StoreEntitySet="Users">
-          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
-          <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="UpdateProperty" FunctionName="RealEstateModel.Store.UpdateProperty" />
   </EntityContainerMapping>
 </Mapping>

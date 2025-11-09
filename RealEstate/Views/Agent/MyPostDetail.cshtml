@@ -1,0 +1,69 @@
+﻿@model RealEstate.Models.GetPropertyDetail_Result
+@{
+    ViewBag.Title = "Chi tiết tin đăng";
+    Layout = "~/Views/Shared/_LayoutAgent.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="row">
+         
+        <div class="col-md-9">
+            <h3 class="mb-3">@Model.Title</h3>
+
+            <div class="mb-2">
+                <strong>Địa chỉ:</strong> @Model.Address
+            </div>
+            <div class="mb-2">
+                <strong>Giá:</strong>
+                @if (Model.PriceMin.HasValue && Model.PriceMax.HasValue)
+                {
+                    @($"{Model.PriceMin:N0} - {Model.PriceMax:N0} {Model.PriceUnit}")
+                }
+                else if (Model.PriceMin.HasValue)
+                {
+                    @($"{Model.PriceMin:N0} {Model.PriceUnit}")
+                }
+                else
+                {
+                    @("Liên hệ")
+                }
+            </div>
+            <div class="mb-2">
+                <strong>Diện tích:</strong>
+                @if (Model.AreaMin.HasValue && Model.AreaMax.HasValue)
+                {
+                    @($"{Model.AreaMin:N0} - {Model.AreaMax:N0} {Model.AreaUnit}")
+                }
+                else if (Model.AreaMin.HasValue)
+                {
+                    @($"{Model.AreaMin:N0} {Model.AreaUnit}")
+                }
+                else
+                {
+                    @("Không xác định")
+                }
+            </div>
+            <div class="mb-3">
+                <strong>Loại bất động sản:</strong> @Model.NameType
+            </div>
+            <div class="mb-3">
+                <strong>Mô tả:</strong>
+                <p>@Html.Raw(Model.Description)</p>
+            </div>
+
+            <div class="mb-3">
+                <strong>Ngày đăng:</strong> @(Model.CreatedAt?.ToString("dd/MM/yyyy")) <br />
+                <strong>Trạng thái:</strong> @Model.Status
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.ImageGallery))
+            {
+                foreach (var img in Model.ImageGallery.Split(','))
+                {
+                    <img src="~/Content/Uploads/@img" style="width:200px;" />
+                }
+            }
+
+        </div>
+    </div>
+</div>

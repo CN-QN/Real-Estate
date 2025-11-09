@@ -27,6 +27,8 @@ namespace RealEstate.Models.ViewModels
         public string Avatar { get; set; }
  
         public  int Count { get;set ; }
+        public DateTime CreatedAt { get; set; }
+        public string Status { get; set; }
 
 
     }

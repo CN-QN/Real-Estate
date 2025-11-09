@@ -10,15 +10,18 @@
 namespace RealEstate.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class NewImage
+    public partial class GetProfile_Result
     {
         public int Id { get; set; }
-        public Nullable<int> NewId { get; set; }
-        public string ImageUrl { get; set; }
-        public Nullable<System.DateTime> CreatedAt { get; set; }
-    
-        public virtual News News { get; set; }
+        public string Name { get; set; }
+        public string Bio { get; set; }
+        public Nullable<System.DateTime> DateOfBirth { get; set; }
+        public string Address { get; set; }
+        public string Email { get; set; }
+        public string ProviderName { get; set; }
+        public string Avatar { get; set; }
+        public string Gender { get; set; }
+        public string Phone { get; set; }
     }
 }

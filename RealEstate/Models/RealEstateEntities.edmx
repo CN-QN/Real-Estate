@@ -88,15 +88,12 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="PriceMin" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PriceMax" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Address" Type="nvarchar" MaxLength="255" />
           <Property Name="TypeId" Type="int" Nullable="false" />
           <Property Name="AreaMin" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AreaMax" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AreaUnit" Type="nvarchar" MaxLength="10" />
           <Property Name="Address_id" Type="int" />
           <Property Name="PriceUnit" Type="nvarchar" MaxLength="10" />
-          <Property Name="StartDate" Type="date" />
-          <Property Name="EndDate" Type="date" />
           <Property Name="CreatedAt" Type="date" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="UpdatedAt" Type="date" />
@@ -253,12 +250,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="DateOfBirth" Type="date" />
           <Property Name="Bio" Type="nvarchar" MaxLength="500" />
           <Property Name="Address" Type="nvarchar" MaxLength="255" />
-          <Property Name="Facebook" Type="nvarchar" MaxLength="255" />
-          <Property Name="Instagram" Type="nvarchar" MaxLength="255" />
-          <Property Name="Website" Type="nvarchar" MaxLength="255" />
-          <Property Name="CoverPhoto" Type="nvarchar" MaxLength="255" />
           <Property Name="UpdatedAt" Type="datetime" />
           <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="CreatedAt" Type="date" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -556,7 +550,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PropertyImages_Properties">
-          <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
+          <End Role="Properties" Type="Self.Properties" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PropertyImages" Type="Self.PropertyImages" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Properties">
@@ -651,16 +647,44 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CreatePost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="ProvinceCode" Type="int" Mode="In" />
+          <Parameter Name="DistrictCode" Type="int" Mode="In" />
+          <Parameter Name="WardCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="AddressDetail" Type="nvarchar" Mode="In" />
+          <Parameter Name="Latitude" Type="decimal" Mode="In" />
+          <Parameter Name="Longitude" Type="decimal" Mode="In" />
+          <Parameter Name="StreetName" Type="nvarchar" Mode="In" />
+          <Parameter Name="TenDuAn" Type="nvarchar" Mode="In" />
+          <Parameter Name="MoTa" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="GiaMin" Type="decimal" Mode="In" />
+          <Parameter Name="GiaMax" Type="decimal" Mode="In" />
+          <Parameter Name="DienTichMin" Type="decimal" Mode="In" />
+          <Parameter Name="DienTichMax" Type="decimal" Mode="In" />
+          <Parameter Name="LoaiBDS" Type="int" Mode="In" />
+          <Parameter Name="DonViDienTich" Type="nvarchar" Mode="In" />
+          <Parameter Name="DonViGia" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="Get_Property_Count_By_District" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="DistrictID" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetProfile" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetProperty" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="PageSize" Type="int" Mode="In" />
           <Parameter Name="PageNumber" Type="int" Mode="In" />
         </Function>
         <Function Name="GetPropertyById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetPropertyByUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_id" Type="int" Mode="In" />
+          <Parameter Name="PageNumber" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetPropertyDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="propertyId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetPropertySearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
@@ -695,6 +719,20 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UpdateProperty" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="Title" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="AreaMax" Type="decimal" Mode="In" />
+          <Parameter Name="AreaMin" Type="decimal" Mode="In" />
+          <Parameter Name="AreaUnit" Type="nvarchar" Mode="In" />
+          <Parameter Name="TypeId" Type="int" Mode="In" />
+          <Parameter Name="PriceMax" Type="int" Mode="In" />
+          <Parameter Name="PriceMin" Type="int" Mode="In" />
+          <Parameter Name="PriceUnit" Type="nvarchar" Mode="In" />
+          <Parameter Name="AddressId" Type="int" Mode="In" />
+          <Parameter Name="AddressDetail" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="VerifyLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Email" Type="nvarchar" Mode="In" />
         </Function>
@@ -855,6 +893,25 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RealEstateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address_detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Province_Id" Type="Int32" />
+          <Property Name="District_Id" Type="Int32" />
+          <Property Name="Ward_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lon" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StreetName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="lat" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Created_At" Type="DateTime" Precision="3" />
+          <Property Name="Updated_At" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="District" Relationship="Self.FK__Address__Distric__61316BF4" FromRole="Address" ToRole="Districts" />
+          <NavigationProperty Name="Province" Relationship="Self.FK__Address__Provinc__603D47BB" FromRole="Address" ToRole="Provinces" />
+          <NavigationProperty Name="Ward" Relationship="Self.FK__Address__Ward_Id__6225902D" FromRole="Address" ToRole="Wards" />
+          <NavigationProperty Name="Properties" Relationship="Self.FK_Properties_Address" FromRole="Address" ToRole="Properties" />
+        </EntityType>
         <EntityType Name="District">
           <Key>
             <PropertyRef Name="code" />
@@ -863,9 +920,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="code" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="province_code" Type="Int32" />
+          <NavigationProperty Name="Addresses" Relationship="Self.FK__Address__Distric__61316BF4" FromRole="Districts" ToRole="Address" />
           <NavigationProperty Name="Province" Relationship="Self.FK__Districts__provi__2704CA5F" FromRole="Districts" ToRole="Provinces" />
           <NavigationProperty Name="Wards" Relationship="Self.FK__Wards__district___29E1370A" FromRole="Districts" ToRole="Wards" />
-          <NavigationProperty Name="Addresses" Relationship="RealEstateModel.FK__Address__Distric__61316BF4" FromRole="District" ToRole="Address" />
         </EntityType>
         <EntityType Name="Favorite">
           <Key>
@@ -875,8 +932,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="PropertyId" Type="Int32" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Property" Relationship="RealEstateModel.FK_Favorites_Properties" FromRole="Favorite" ToRole="Property" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Favorites_Users" FromRole="Favorite" ToRole="User" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_Favorites_Properties" FromRole="Favorites" ToRole="Properties" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Favorites_Users" FromRole="Favorites" ToRole="Users" />
         </EntityType>
         <EntityType Name="Furniture">
           <Key>
@@ -884,7 +941,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Properties" Relationship="RealEstateModel.PropertyFurnitures" FromRole="Furniture" ToRole="Property" />
+          <NavigationProperty Name="Properties" Relationship="Self.PropertyFurnitures" FromRole="Furnitures" ToRole="Properties" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -895,7 +952,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="Action" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Target" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Logs_Users" FromRole="Log" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Logs_Users" FromRole="Logs" ToRole="Users" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -908,9 +965,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Property" Relationship="RealEstateModel.FK_Messages_Property" FromRole="Message" ToRole="Property" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Messages_Receiver" FromRole="Message" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="RealEstateModel.FK_Messages_Sender" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_Messages_Property" FromRole="Messages" ToRole="Properties" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Messages_Receiver" FromRole="Messages" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_Messages_Sender" FromRole="Messages" ToRole="Users" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -924,6 +981,37 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="PaidAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Transaction" Relationship="Self.FK_Payments_Transactions" FromRole="Payments" ToRole="Transactions" />
         </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PriceMin" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PriceMax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="AreaMin" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AreaMax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AreaUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Address_id" Type="Int32" />
+          <Property Name="PriceUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Address" Relationship="Self.FK_Properties_Address" FromRole="Properties" ToRole="Address" />
+          <NavigationProperty Name="Favorites" Relationship="Self.FK_Favorites_Properties" FromRole="Properties" ToRole="Favorites" />
+          <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_Property" FromRole="Properties" ToRole="Messages" />
+          <NavigationProperty Name="PropertyAttributes" Relationship="Self.FK__PropertyA__Prope__1BC821DD" FromRole="Properties" ToRole="PropertyAttributes" />
+          <NavigationProperty Name="PropertyType" Relationship="Self.FK_Properties_Types" FromRole="Properties" ToRole="PropertyTypes" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Properties_Users" FromRole="Properties" ToRole="Users" />
+          <NavigationProperty Name="PropertyImages" Relationship="Self.FK_PropertyImages_Properties" FromRole="Properties" ToRole="PropertyImages" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Properties" FromRole="Properties" ToRole="Reviews" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Properties" FromRole="Properties" ToRole="Transactions" />
+          <NavigationProperty Name="Urbans" Relationship="Self.FK_Urbans_Properties" FromRole="Properties" ToRole="Urbans" />
+          <NavigationProperty Name="Furnitures" Relationship="Self.PropertyFurnitures" FromRole="Properties" ToRole="Furnitures" />
+        </EntityType>
         <EntityType Name="PropertyImage">
           <Key>
             <PropertyRef Name="Id" />
@@ -932,7 +1020,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="PropertyId" Type="Int32" Nullable="false" />
           <Property Name="ImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Property" Relationship="RealEstateModel.FK_PropertyImages_Properties" FromRole="PropertyImage" ToRole="Property" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_PropertyImages_Properties" FromRole="PropertyImages" ToRole="Properties" />
         </EntityType>
         <EntityType Name="PropertyType">
           <Key>
@@ -940,7 +1028,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Properties" Relationship="RealEstateModel.FK_Properties_Types" FromRole="PropertyType" ToRole="Property" />
+          <NavigationProperty Name="Properties" Relationship="Self.FK_Properties_Types" FromRole="PropertyTypes" ToRole="Properties" />
         </EntityType>
         <EntityType Name="Province">
           <Key>
@@ -949,8 +1037,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Addresses" Relationship="Self.FK__Address__Provinc__603D47BB" FromRole="Provinces" ToRole="Address" />
           <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__provi__2704CA5F" FromRole="Provinces" ToRole="Districts" />
-          <NavigationProperty Name="Addresses" Relationship="RealEstateModel.FK__Address__Provinc__603D47BB" FromRole="Province" ToRole="Address" />
         </EntityType>
         <EntityType Name="RefreshToken">
           <Key>
@@ -961,7 +1049,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="Token" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Expires" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Created_At" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK__RefreshTo__User___2A164134" FromRole="RefreshToken" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Self.FK__RefreshTo__User___2A164134" FromRole="RefreshTokens" ToRole="Users" />
         </EntityType>
         <EntityType Name="ResetPassword">
           <Key>
@@ -972,7 +1060,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="User_id" Type="Int32" />
           <Property Name="Expires" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Created_at" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK__ResetPass__User___40058253" FromRole="ResetPassword" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Self.FK__ResetPass__User___40058253" FromRole="ResetPassword" ToRole="Users" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -984,8 +1072,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="Rating" Type="Int32" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Property" Relationship="RealEstateModel.FK_Reviews_Properties" FromRole="Review" ToRole="Property" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Reviews_Users" FromRole="Review" ToRole="User" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_Reviews_Properties" FromRole="Reviews" ToRole="Properties" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Reviews_Users" FromRole="Reviews" ToRole="Users" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -993,7 +1081,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="RealEstateModel.FK_Users_Roles" FromRole="Role" ToRole="User" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -1018,8 +1106,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Payments" Relationship="Self.FK_Payments_Transactions" FromRole="Transactions" ToRole="Payments" />
-          <NavigationProperty Name="Property" Relationship="RealEstateModel.FK_Transactions_Properties" FromRole="Transaction" ToRole="Property" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Transactions_Users" FromRole="Transaction" ToRole="User" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_Transactions_Properties" FromRole="Transactions" ToRole="Properties" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Transactions_Users" FromRole="Transactions" ToRole="Users" />
         </EntityType>
         <EntityType Name="UrbanAttribute">
           <Key>
@@ -1061,9 +1149,50 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="Created_At" Type="DateTime" Precision="3" />
           <Property Name="Updated_At" Type="DateTime" Precision="3" />
           <Property Name="PropertyId" Type="Int32" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_Urbans_Properties" FromRole="Urbans" ToRole="Properties" />
           <NavigationProperty Name="UrbanAttributes" Relationship="Self.FK__Urban_Att__Urban__73501C2F" FromRole="Urbans" ToRole="UrbanAttributes" />
           <NavigationProperty Name="UrbanImages" Relationship="Self.FK__Urban_Ima__Urban__7BE56230" FromRole="Urbans" ToRole="UrbanImages" />
-          <NavigationProperty Name="Property" Relationship="RealEstateModel.FK_Urbans_Properties" FromRole="Urban" ToRole="Property" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="Bio" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserProfiles_Users" FromRole="UserProfiles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Favorites" Relationship="Self.FK_Favorites_Users" FromRole="Users" ToRole="Favorites" />
+          <NavigationProperty Name="Logs" Relationship="Self.FK_Logs_Users" FromRole="Users" ToRole="Logs" />
+          <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_Receiver" FromRole="Users" ToRole="Messages" />
+          <NavigationProperty Name="Messages1" Relationship="Self.FK_Messages_Sender" FromRole="Users" ToRole="Messages" />
+          <NavigationProperty Name="Properties" Relationship="Self.FK_Properties_Users" FromRole="Users" ToRole="Properties" />
+          <NavigationProperty Name="RefreshTokens" Relationship="Self.FK__RefreshTo__User___2A164134" FromRole="Users" ToRole="RefreshTokens" />
+          <NavigationProperty Name="ResetPasswords" Relationship="Self.FK__ResetPass__User___40058253" FromRole="Users" ToRole="ResetPassword" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Users" FromRole="Users" ToRole="Reviews" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Users" FromRole="Users" ToRole="Transactions" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.FK_UserProfiles_Users" FromRole="Users" ToRole="UserProfiles" />
         </EntityType>
         <EntityType Name="Ward">
           <Key>
@@ -1073,8 +1202,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="district_code" Type="Int32" />
+          <NavigationProperty Name="Addresses" Relationship="Self.FK__Address__Ward_Id__6225902D" FromRole="Wards" ToRole="Address" />
           <NavigationProperty Name="District" Relationship="Self.FK__Wards__district___29E1370A" FromRole="Wards" ToRole="Districts" />
-          <NavigationProperty Name="Addresses" Relationship="RealEstateModel.FK__Address__Ward_Id__6225902D" FromRole="Ward" ToRole="Address" />
         </EntityType>
         <EntityType Name="PropertyAttribute">
           <Key>
@@ -1084,8 +1213,56 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="PropertyId" Type="Int32" />
           <Property Name="key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Property" Relationship="RealEstateModel.FK__PropertyA__Prope__1BC821DD" FromRole="PropertyAttribute" ToRole="Property" />
+          <NavigationProperty Name="Property" Relationship="Self.FK__PropertyA__Prope__1BC821DD" FromRole="PropertyAttributes" ToRole="Properties" />
         </EntityType>
+        <Association Name="FK__Address__Distric__61316BF4">
+          <End Role="Districts" Type="Self.District" Multiplicity="0..1" />
+          <End Role="Address" Type="Self.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Districts">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="District_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Address__Provinc__603D47BB">
+          <End Role="Provinces" Type="Self.Province" Multiplicity="0..1" />
+          <End Role="Address" Type="Self.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provinces">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="Province_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Address__Ward_Id__6225902D">
+          <End Role="Wards" Type="Self.Ward" Multiplicity="0..1" />
+          <End Role="Address" Type="Self.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Wards">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="Ward_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Properties_Address">
+          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+          <End Role="Properties" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Properties">
+              <PropertyRef Name="Address_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Districts__provi__2704CA5F">
           <End Role="Provinces" Type="Self.Province" Multiplicity="0..1" />
           <End Role="Districts" Type="Self.District" Multiplicity="*" />
@@ -1110,6 +1287,78 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Favorites_Properties">
+          <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorites_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Logs_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Logs" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Logs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_Property">
+          <End Role="Properties" Type="Self.Property" Multiplicity="0..1" />
+          <End Role="Messages" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_Receiver">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="ReceiverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_Sender">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="SenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Payments_Transactions">
           <End Role="Transactions" Type="Self.Transaction" Multiplicity="1" />
           <End Role="Payments" Type="Self.Payment" Multiplicity="*" />
@@ -1119,6 +1368,154 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             </Principal>
             <Dependent Role="Payments">
               <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PropertyA__Prope__1BC821DD">
+          <End Role="Properties" Type="Self.Property" Multiplicity="0..1" />
+          <End Role="PropertyAttributes" Type="Self.PropertyAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PropertyAttributes">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Properties_Types">
+          <End Role="PropertyTypes" Type="Self.PropertyType" Multiplicity="1" />
+          <End Role="Properties" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PropertyTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Properties">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Properties_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Properties" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Properties">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PropertyImages_Properties">
+          <End Role="Properties" Type="Self.Property" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PropertyImages" Type="Self.PropertyImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PropertyImages">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Properties">
+          <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Properties">
+          <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Urbans_Properties">
+          <End Role="Properties" Type="Self.Property" Multiplicity="0..1" />
+          <End Role="Urbans" Type="Self.Urban" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Urbans">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RefreshTo__User___2A164134">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="RefreshTokens" Type="Self.RefreshToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RefreshTokens">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ResetPass__User___40058253">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResetPassword" Type="Self.ResetPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResetPassword">
+              <PropertyRef Name="User_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1150,13 +1547,31 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserProfiles_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="UserProfiles" Type="Self.UserProfile" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfiles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PropertyFurnitures">
+          <End Role="Furnitures" Type="Self.Furniture" Multiplicity="*" />
+          <End Role="Properties" Type="Self.Property" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="RealEstateEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="Self.Address" />
           <EntitySet Name="Districts" EntityType="Self.District" />
           <EntitySet Name="Favorites" EntityType="Self.Favorite" />
           <EntitySet Name="Furnitures" EntityType="Self.Furniture" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
           <EntitySet Name="Messages" EntityType="Self.Message" />
           <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="Properties" EntityType="Self.Property" />
           <EntitySet Name="PropertyImages" EntityType="Self.PropertyImage" />
           <EntitySet Name="PropertyTypes" EntityType="Self.PropertyType" />
           <EntitySet Name="Provinces" EntityType="Self.Province" />
@@ -1169,8 +1584,26 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <EntitySet Name="UrbanAttributes" EntityType="Self.UrbanAttribute" />
           <EntitySet Name="UrbanImages" EntityType="Self.UrbanImage" />
           <EntitySet Name="Urbans" EntityType="Self.Urban" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
+          <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="Wards" EntityType="Self.Ward" />
           <EntitySet Name="PropertyAttributes" EntityType="Self.PropertyAttribute" />
+          <AssociationSet Name="FK__Address__Distric__61316BF4" Association="Self.FK__Address__Distric__61316BF4">
+            <End Role="Districts" EntitySet="Districts" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Address__Provinc__603D47BB" Association="Self.FK__Address__Provinc__603D47BB">
+            <End Role="Provinces" EntitySet="Provinces" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Address__Ward_Id__6225902D" Association="Self.FK__Address__Ward_Id__6225902D">
+            <End Role="Wards" EntitySet="Wards" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Properties_Address" Association="Self.FK_Properties_Address">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Properties" EntitySet="Properties" />
+          </AssociationSet>
           <AssociationSet Name="FK__Districts__provi__2704CA5F" Association="Self.FK__Districts__provi__2704CA5F">
             <End Role="Provinces" EntitySet="Provinces" />
             <End Role="Districts" EntitySet="Districts" />
@@ -1179,9 +1612,81 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             <End Role="Districts" EntitySet="Districts" />
             <End Role="Wards" EntitySet="Wards" />
           </AssociationSet>
+          <AssociationSet Name="FK_Favorites_Properties" Association="Self.FK_Favorites_Properties">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorites_Users" Association="Self.FK_Favorites_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Logs_Users" Association="Self.FK_Logs_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Logs" EntitySet="Logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_Property" Association="Self.FK_Messages_Property">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_Receiver" Association="Self.FK_Messages_Receiver">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_Sender" Association="Self.FK_Messages_Sender">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
           <AssociationSet Name="FK_Payments_Transactions" Association="Self.FK_Payments_Transactions">
             <End Role="Transactions" EntitySet="Transactions" />
             <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PropertyA__Prope__1BC821DD" Association="Self.FK__PropertyA__Prope__1BC821DD">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="PropertyAttributes" EntitySet="PropertyAttributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Properties_Types" Association="Self.FK_Properties_Types">
+            <End Role="PropertyTypes" EntitySet="PropertyTypes" />
+            <End Role="Properties" EntitySet="Properties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Properties_Users" Association="Self.FK_Properties_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Properties" EntitySet="Properties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PropertyImages_Properties" Association="Self.FK_PropertyImages_Properties">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="PropertyImages" EntitySet="PropertyImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Properties" Association="Self.FK_Reviews_Properties">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Properties" Association="Self.FK_Transactions_Properties">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Urbans_Properties" Association="Self.FK_Urbans_Properties">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="Urbans" EntitySet="Urbans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RefreshTo__User___2A164134" Association="Self.FK__RefreshTo__User___2A164134">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RefreshTokens" EntitySet="RefreshTokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ResetPass__User___40058253" Association="Self.FK__ResetPass__User___40058253">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ResetPassword" EntitySet="ResetPasswords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Users" Association="Self.FK_Reviews_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Users" Association="Self.FK_Transactions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Transactions" EntitySet="Transactions" />
           </AssociationSet>
           <AssociationSet Name="FK__Urban_Att__Urban__73501C2F" Association="Self.FK__Urban_Att__Urban__73501C2F">
             <End Role="Urbans" EntitySet="Urbans" />
@@ -1191,12 +1696,51 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             <End Role="Urbans" EntitySet="Urbans" />
             <End Role="UrbanImages" EntitySet="UrbanImages" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserProfiles_Users" Association="Self.FK_UserProfiles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProfiles" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="PropertyFurnitures" Association="Self.PropertyFurnitures">
+            <End Role="Furnitures" EntitySet="Furnitures" />
+            <End Role="Properties" EntitySet="Properties" />
+          </AssociationSet>
+          <FunctionImport Name="CreatePost" ReturnType="Collection(Int32)">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="ProvinceCode" Mode="In" Type="Int32" />
+            <Parameter Name="DistrictCode" Mode="In" Type="Int32" />
+            <Parameter Name="WardCode" Mode="In" Type="String" />
+            <Parameter Name="AddressDetail" Mode="In" Type="String" />
+            <Parameter Name="Latitude" Mode="In" Type="Decimal" />
+            <Parameter Name="Longitude" Mode="In" Type="Decimal" />
+            <Parameter Name="StreetName" Mode="In" Type="String" />
+            <Parameter Name="TenDuAn" Mode="In" Type="String" />
+            <Parameter Name="MoTa" Mode="In" Type="String" />
+            <Parameter Name="GiaMin" Mode="In" Type="Decimal" />
+            <Parameter Name="GiaMax" Mode="In" Type="Decimal" />
+            <Parameter Name="DienTichMin" Mode="In" Type="Decimal" />
+            <Parameter Name="DienTichMax" Mode="In" Type="Decimal" />
+            <Parameter Name="LoaiBDS" Mode="In" Type="Int32" />
+            <Parameter Name="DonViDienTich" Mode="In" Type="String" />
+            <Parameter Name="DonViGia" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetProfile" ReturnType="Collection(RealEstateModel.GetProfile_Result)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="GetProperty" ReturnType="Collection(RealEstateModel.GetProperty_Result)">
-            <Parameter Name="PageSize" Mode="In" Type="Int32" />
-            <Parameter Name="PageNumber" Mode="In" Type="Int32" />
+          <Parameter Name="PageNumber" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetPropertyById" ReturnType="Collection(RealEstateModel.GetPropertyById_Result)">
           <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetPropertyByUser" ReturnType="Collection(RealEstateModel.GetPropertyByUser_Result)">
+            <Parameter Name="user_id" Mode="In" Type="Int32" />
+            <Parameter Name="PageNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetPropertyDetail" ReturnType="Collection(RealEstateModel.GetPropertyDetail_Result)">
+            <Parameter Name="propertyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetPropertySearch" ReturnType="Collection(RealEstateModel.GetPropertySearch_Result)">
+          <Parameter Name="Keyword" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
@@ -1231,110 +1775,33 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <FunctionImport Name="VerifyLogin" ReturnType="Collection(RealEstateModel.VerifyLogin_Result)">
           <Parameter Name="Email" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="UserProfiles" EntityType="RealEstateModel.UserProfile" />
-          <FunctionImport Name="GetPropertySearch" ReturnType="Collection(RealEstateModel.GetPropertySearch_Result)">
-          <Parameter Name="Keyword" Mode="In" Type="String" />
+          <FunctionImport Name="UpdateProperty">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Title" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="AreaMax" Mode="In" Type="Decimal" />
+            <Parameter Name="AreaMin" Mode="In" Type="Decimal" />
+            <Parameter Name="AreaUnit" Mode="In" Type="String" />
+            <Parameter Name="TypeId" Mode="In" Type="Int32" />
+            <Parameter Name="PriceMax" Mode="In" Type="Int32" />
+            <Parameter Name="PriceMin" Mode="In" Type="Int32" />
+            <Parameter Name="PriceUnit" Mode="In" Type="String" />
+            <Parameter Name="AddressId" Mode="In" Type="Int32" />
+            <Parameter Name="AddressDetail" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="Addresses" EntityType="RealEstateModel.Address" />
-          <AssociationSet Name="FK__Address__Distric__61316BF4" Association="RealEstateModel.FK__Address__Distric__61316BF4">
-            <End Role="District" EntitySet="Districts" />
-            <End Role="Address" EntitySet="Addresses" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Address__Provinc__603D47BB" Association="RealEstateModel.FK__Address__Provinc__603D47BB">
-            <End Role="Province" EntitySet="Provinces" />
-            <End Role="Address" EntitySet="Addresses" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Address__Ward_Id__6225902D" Association="RealEstateModel.FK__Address__Ward_Id__6225902D">
-            <End Role="Ward" EntitySet="Wards" />
-            <End Role="Address" EntitySet="Addresses" />
-          </AssociationSet>
-          <EntitySet Name="Properties" EntityType="RealEstateModel.Property" />
-          <AssociationSet Name="FK_Properties_Address" Association="RealEstateModel.FK_Properties_Address">
-            <End Role="Address" EntitySet="Addresses" />
-            <End Role="Property" EntitySet="Properties" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Favorites_Properties" Association="RealEstateModel.FK_Favorites_Properties">
-            <End Role="Property" EntitySet="Properties" />
-            <End Role="Favorite" EntitySet="Favorites" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Messages_Property" Association="RealEstateModel.FK_Messages_Property">
-            <End Role="Property" EntitySet="Properties" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PropertyA__Prope__1BC821DD" Association="RealEstateModel.FK__PropertyA__Prope__1BC821DD">
-            <End Role="Property" EntitySet="Properties" />
-            <End Role="PropertyAttribute" EntitySet="PropertyAttributes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Properties_Types" Association="RealEstateModel.FK_Properties_Types">
-            <End Role="PropertyType" EntitySet="PropertyTypes" />
-            <End Role="Property" EntitySet="Properties" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PropertyImages_Properties" Association="RealEstateModel.FK_PropertyImages_Properties">
-            <End Role="Property" EntitySet="Properties" />
-            <End Role="PropertyImage" EntitySet="PropertyImages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reviews_Properties" Association="RealEstateModel.FK_Reviews_Properties">
-            <End Role="Property" EntitySet="Properties" />
-            <End Role="Review" EntitySet="Reviews" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transactions_Properties" Association="RealEstateModel.FK_Transactions_Properties">
-            <End Role="Property" EntitySet="Properties" />
-            <End Role="Transaction" EntitySet="Transactions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Urbans_Properties" Association="RealEstateModel.FK_Urbans_Properties">
-            <End Role="Property" EntitySet="Properties" />
-            <End Role="Urban" EntitySet="Urbans" />
-          </AssociationSet>
-          <AssociationSet Name="PropertyFurnitures" Association="RealEstateModel.PropertyFurnitures">
-            <End Role="Furniture" EntitySet="Furnitures" />
-            <End Role="Property" EntitySet="Properties" />
-          </AssociationSet>
-          <EntitySet Name="Users" EntityType="RealEstateModel.User" />
-          <AssociationSet Name="FK_Favorites_Users" Association="RealEstateModel.FK_Favorites_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Favorite" EntitySet="Favorites" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Logs_Users" Association="RealEstateModel.FK_Logs_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Log" EntitySet="Logs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Messages_Receiver" Association="RealEstateModel.FK_Messages_Receiver">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Messages_Sender" Association="RealEstateModel.FK_Messages_Sender">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Properties_Users" Association="RealEstateModel.FK_Properties_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Property" EntitySet="Properties" />
-          </AssociationSet>
-          <AssociationSet Name="FK__RefreshTo__User___2A164134" Association="RealEstateModel.FK__RefreshTo__User___2A164134">
-            <End Role="User" EntitySet="Users" />
-            <End Role="RefreshToken" EntitySet="RefreshTokens" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ResetPass__User___40058253" Association="RealEstateModel.FK__ResetPass__User___40058253">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ResetPassword" EntitySet="ResetPasswords" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reviews_Users" Association="RealEstateModel.FK_Reviews_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Review" EntitySet="Reviews" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Users_Roles" Association="RealEstateModel.FK_Users_Roles">
-            <End Role="Role" EntitySet="Roles" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transactions_Users" Association="RealEstateModel.FK_Transactions_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Transaction" EntitySet="Transactions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserProfiles_Users" Association="RealEstateModel.FK_UserProfiles_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserProfile" EntitySet="UserProfiles" />
-          </AssociationSet>
         </EntityContainer>
+        <ComplexType Name="GetProfile_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Bio" Nullable="true" MaxLength="500" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="true" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ProviderName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Avatar" Nullable="true" />
+          <Property Type="String" Name="Gender" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+        </ComplexType>
         <ComplexType Name="GetProperty_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="TypeId" Nullable="false" />
@@ -1349,7 +1816,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
           <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Address" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GetPropertyById_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -1358,16 +1825,81 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Description" Nullable="true" />
           <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="TypeId" Nullable="false" />
           <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
           <Property Type="Int32" Name="Address_id" Nullable="true" />
           <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
-          <Property Type="DateTime" Name="CreatedAt" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
           <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="UpdatedAt" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Avatar" Nullable="true" />
+          <Property Type="String" Name="Address" Nullable="true" />
+          <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ImageGallery" Nullable="true" />
+          <Property Type="String" Name="NameType" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetPropertyByUser_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="TypeId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="Double" Name="TotalPage" Nullable="true" />
+          <Property Type="String" Name="Avatar" Nullable="true" />
+          <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ImageUrl" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
+          <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
+          <Property Type="String" Name="Address" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetPropertyDetail_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="TypeId" Nullable="false" />
+          <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="Address_id" Nullable="true" />
+          <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" />
+          <Property Type="String" Name="Avatar" Nullable="true" />
+          <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ImageGallery" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="NameType" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetPropertySearch_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="TypeId" Nullable="false" />
+          <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="Address_id" Nullable="true" />
+          <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Avatar" Nullable="true" />
           <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
@@ -1393,418 +1925,29 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Password" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="RoleId" Nullable="false" />
           <Property Type="String" Name="RoleName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="Avatar" Nullable="true" />
         </ComplexType>
-        <EntityType Name="UserProfile">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
-          <Property Name="Bio" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Facebook" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Instagram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Website" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CoverPhoto" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK_UserProfiles_Users" FromRole="UserProfile" ToRole="User" />
-        </EntityType>
-        <ComplexType Name="GetPropertySearch_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="Int32" Name="UserId" Nullable="false" />
-          <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="Description" Nullable="true" />
-          <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
-          <Property Type="Int32" Name="TypeId" Nullable="false" />
-          <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
-          <Property Type="Int32" Name="Address_id" Nullable="true" />
-          <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
-          <Property Type="DateTime" Name="CreatedAt" Nullable="true" Precision="23" />
-          <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="UpdatedAt" Nullable="true" Precision="23" />
-          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Avatar" Nullable="true" />
-          <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="ImageGallery" Nullable="true" />
-          <Property Type="String" Name="NameType" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <EntityType Name="Address">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Address_detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Province_Id" Type="Int32" />
-          <Property Name="District_Id" Type="Int32" />
-          <Property Name="Ward_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="lon" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="lat" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Created_At" Type="DateTime" Precision="3" />
-          <Property Name="Updated_At" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="District" Relationship="RealEstateModel.FK__Address__Distric__61316BF4" FromRole="Address" ToRole="District" />
-          <NavigationProperty Name="Province" Relationship="RealEstateModel.FK__Address__Provinc__603D47BB" FromRole="Address" ToRole="Province" />
-          <NavigationProperty Name="Ward" Relationship="RealEstateModel.FK__Address__Ward_Id__6225902D" FromRole="Address" ToRole="Ward" />
-          <Property Name="StreetName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Properties" Relationship="RealEstateModel.FK_Properties_Address" FromRole="Address" ToRole="Property" />
-        </EntityType>
-        <Association Name="FK__Address__Distric__61316BF4">
-          <End Type="RealEstateModel.District" Role="District" Multiplicity="0..1" />
-          <End Type="RealEstateModel.Address" Role="Address" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="District">
-              <PropertyRef Name="code" />
-            </Principal>
-            <Dependent Role="Address">
-              <PropertyRef Name="District_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Address__Provinc__603D47BB">
-          <End Type="RealEstateModel.Province" Role="Province" Multiplicity="0..1" />
-          <End Type="RealEstateModel.Address" Role="Address" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Province">
-              <PropertyRef Name="code" />
-            </Principal>
-            <Dependent Role="Address">
-              <PropertyRef Name="Province_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Address__Ward_Id__6225902D">
-          <End Type="RealEstateModel.Ward" Role="Ward" Multiplicity="0..1" />
-          <End Type="RealEstateModel.Address" Role="Address" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Ward">
-              <PropertyRef Name="code" />
-            </Principal>
-            <Dependent Role="Address">
-              <PropertyRef Name="Ward_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Property">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PriceMin" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="PriceMax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TypeId" Type="Int32" Nullable="false" />
-          <Property Name="AreaMin" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AreaMax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AreaUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Address_id" Type="Int32" />
-          <Property Name="PriceUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" />
-          <Property Name="CreatedAt" Type="DateTime" Precision="0" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Address1" Relationship="RealEstateModel.FK_Properties_Address" FromRole="Property" ToRole="Address" />
-          <NavigationProperty Name="Favorites" Relationship="RealEstateModel.FK_Favorites_Properties" FromRole="Property" ToRole="Favorite" />
-          <NavigationProperty Name="Messages" Relationship="RealEstateModel.FK_Messages_Property" FromRole="Property" ToRole="Message" />
-          <NavigationProperty Name="PropertyAttributes" Relationship="RealEstateModel.FK__PropertyA__Prope__1BC821DD" FromRole="Property" ToRole="PropertyAttribute" />
-          <NavigationProperty Name="PropertyType" Relationship="RealEstateModel.FK_Properties_Types" FromRole="Property" ToRole="PropertyType" />
-          <NavigationProperty Name="PropertyImages" Relationship="RealEstateModel.FK_PropertyImages_Properties" FromRole="Property" ToRole="PropertyImage" />
-          <NavigationProperty Name="Reviews" Relationship="RealEstateModel.FK_Reviews_Properties" FromRole="Property" ToRole="Review" />
-          <NavigationProperty Name="Transactions" Relationship="RealEstateModel.FK_Transactions_Properties" FromRole="Property" ToRole="Transaction" />
-          <NavigationProperty Name="Urbans" Relationship="RealEstateModel.FK_Urbans_Properties" FromRole="Property" ToRole="Urban" />
-          <NavigationProperty Name="Furnitures" Relationship="RealEstateModel.PropertyFurnitures" FromRole="Property" ToRole="Furniture" />
-          <NavigationProperty Name="User" Relationship="RealEstateModel.FK_Properties_Users" FromRole="Property" ToRole="User" />
-        </EntityType>
-        <Association Name="FK_Properties_Address">
-          <End Type="RealEstateModel.Address" Role="Address" Multiplicity="0..1" />
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Address">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Property">
-              <PropertyRef Name="Address_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Favorites_Properties">
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="1" />
-          <End Type="RealEstateModel.Favorite" Role="Favorite" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Property">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Favorite">
-              <PropertyRef Name="PropertyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Messages_Property">
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="0..1" />
-          <End Type="RealEstateModel.Message" Role="Message" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Property">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Message">
-              <PropertyRef Name="PropertyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PropertyA__Prope__1BC821DD">
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="0..1" />
-          <End Type="RealEstateModel.PropertyAttribute" Role="PropertyAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Property">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PropertyAttribute">
-              <PropertyRef Name="PropertyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Properties_Types">
-          <End Type="RealEstateModel.PropertyType" Role="PropertyType" Multiplicity="1" />
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PropertyType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Property">
-              <PropertyRef Name="TypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PropertyImages_Properties">
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="1" />
-          <End Type="RealEstateModel.PropertyImage" Role="PropertyImage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Property">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PropertyImage">
-              <PropertyRef Name="PropertyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Reviews_Properties">
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="1" />
-          <End Type="RealEstateModel.Review" Role="Review" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Property">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Review">
-              <PropertyRef Name="PropertyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transactions_Properties">
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="1" />
-          <End Type="RealEstateModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Property">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="PropertyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Urbans_Properties">
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="0..1" />
-          <End Type="RealEstateModel.Urban" Role="Urban" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Property">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Urban">
-              <PropertyRef Name="PropertyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="PropertyFurnitures">
-          <End Type="RealEstateModel.Furniture" Role="Furniture" Multiplicity="*" />
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="*" />
-        </Association>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ProviderName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProviderKey" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="RoleId" Type="Int32" Nullable="false" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Favorites" Relationship="RealEstateModel.FK_Favorites_Users" FromRole="User" ToRole="Favorite" />
-          <NavigationProperty Name="Logs" Relationship="RealEstateModel.FK_Logs_Users" FromRole="User" ToRole="Log" />
-          <NavigationProperty Name="Messages" Relationship="RealEstateModel.FK_Messages_Receiver" FromRole="User" ToRole="Message" />
-          <NavigationProperty Name="Messages1" Relationship="RealEstateModel.FK_Messages_Sender" FromRole="User" ToRole="Message" />
-          <NavigationProperty Name="Properties" Relationship="RealEstateModel.FK_Properties_Users" FromRole="User" ToRole="Property" />
-          <NavigationProperty Name="RefreshTokens" Relationship="RealEstateModel.FK__RefreshTo__User___2A164134" FromRole="User" ToRole="RefreshToken" />
-          <NavigationProperty Name="ResetPasswords" Relationship="RealEstateModel.FK__ResetPass__User___40058253" FromRole="User" ToRole="ResetPassword" />
-          <NavigationProperty Name="Reviews" Relationship="RealEstateModel.FK_Reviews_Users" FromRole="User" ToRole="Review" />
-          <NavigationProperty Name="Role" Relationship="RealEstateModel.FK_Users_Roles" FromRole="User" ToRole="Role" />
-          <NavigationProperty Name="Transactions" Relationship="RealEstateModel.FK_Transactions_Users" FromRole="User" ToRole="Transaction" />
-          <NavigationProperty Name="UserProfile" Relationship="RealEstateModel.FK_UserProfiles_Users" FromRole="User" ToRole="UserProfile" />
-        </EntityType>
-        <Association Name="FK_Favorites_Users">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
-          <End Type="RealEstateModel.Favorite" Role="Favorite" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Favorite">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Logs_Users">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
-          <End Type="RealEstateModel.Log" Role="Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Log">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Messages_Receiver">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
-          <End Type="RealEstateModel.Message" Role="Message" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Message">
-              <PropertyRef Name="ReceiverId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Messages_Sender">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
-          <End Type="RealEstateModel.Message" Role="Message" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Message">
-              <PropertyRef Name="SenderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Properties_Users">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
-          <End Type="RealEstateModel.Property" Role="Property" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Property">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__RefreshTo__User___2A164134">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="RealEstateModel.RefreshToken" Role="RefreshToken" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RefreshToken">
-              <PropertyRef Name="User_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ResetPass__User___40058253">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="RealEstateModel.ResetPassword" Role="ResetPassword" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ResetPassword">
-              <PropertyRef Name="User_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Reviews_Users">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
-          <End Type="RealEstateModel.Review" Role="Review" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Review">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Users_Roles">
-          <End Type="RealEstateModel.Role" Role="Role" Multiplicity="1" />
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transactions_Users">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
-          <End Type="RealEstateModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserProfiles_Users">
-          <End Type="RealEstateModel.User" Role="User" Multiplicity="1" />
-          <End Type="RealEstateModel.UserProfile" Role="UserProfile" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserProfile">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RealEstateModelStoreContainer" CdmEntityContainer="RealEstateEntities">
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="RealEstateModel.Address">
+              <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Address_detail" ColumnName="Address_detail" />
+                <ScalarProperty Name="Province_Id" ColumnName="Province_Id" />
+                <ScalarProperty Name="District_Id" ColumnName="District_Id" />
+                <ScalarProperty Name="Ward_Id" ColumnName="Ward_Id" />
+                <ScalarProperty Name="lon" ColumnName="lon" />
+                <ScalarProperty Name="StreetName" ColumnName="StreetName" />
+                <ScalarProperty Name="lat" ColumnName="lat" />
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Districts">
             <EntityTypeMapping TypeName="RealEstateModel.District">
               <MappingFragment StoreEntitySet="Districts">
@@ -1865,6 +2008,27 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
                 <ScalarProperty Name="PaidAt" ColumnName="PaidAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Properties">
+            <EntityTypeMapping TypeName="RealEstateModel.Property">
+              <MappingFragment StoreEntitySet="Properties">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+                <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+                <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+                <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+                <ScalarProperty Name="Address_id" ColumnName="Address_id" />
+                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2004,6 +2168,37 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="RealEstateModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfiles">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Bio" ColumnName="Bio" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="RealEstateModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Wards">
             <EntityTypeMapping TypeName="RealEstateModel.Ward">
               <MappingFragment StoreEntitySet="Wards">
@@ -2023,6 +2218,31 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="PropertyFurnitures" TypeName="RealEstateModel.PropertyFurnitures" StoreEntitySet="PropertyFurnitures">
+            <EndProperty Name="Furnitures">
+              <ScalarProperty Name="Id" ColumnName="FurnituresId" />
+            </EndProperty>
+            <EndProperty Name="Properties">
+              <ScalarProperty Name="Id" ColumnName="PropertyId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="CreatePost" FunctionName="RealEstateModel.Store.CreatePost" />
+          <FunctionImportMapping FunctionImportName="GetProfile" FunctionName="RealEstateModel.Store.GetProfile">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RealEstateModel.GetProfile_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Bio" ColumnName="Bio" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetProperty" FunctionName="RealEstateModel.Store.GetProperty">
             <ResultMapping>
               <ComplexTypeMapping TypeName="RealEstateModel.GetProperty_Result">
@@ -2052,7 +2272,84 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
                 <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+                <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+                <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+                <ScalarProperty Name="Address_id" ColumnName="Address_id" />
+                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="NameUser" ColumnName="NameUser" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
+                <ScalarProperty Name="NameType" ColumnName="NameType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPropertyByUser" FunctionName="RealEstateModel.Store.GetPropertyByUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RealEstateModel.GetPropertyByUser_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TotalPage" ColumnName="TotalPage" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+                <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+                <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPropertyDetail" FunctionName="RealEstateModel.Store.GetPropertyDetail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RealEstateModel.GetPropertyDetail_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+                <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+                <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+                <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+                <ScalarProperty Name="Address_id" ColumnName="Address_id" />
+                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="NameUser" ColumnName="NameUser" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
+                <ScalarProperty Name="NameType" ColumnName="NameType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPropertySearch" FunctionName="RealEstateModel.Store.GetPropertySearch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RealEstateModel.GetPropertySearch_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+                <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
                 <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
@@ -2104,121 +2401,10 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="UserProfiles">
-            <EntityTypeMapping TypeName="RealEstateModel.UserProfile">
-              <MappingFragment StoreEntitySet="UserProfiles">
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="CoverPhoto" ColumnName="CoverPhoto" />
-                <ScalarProperty Name="Website" ColumnName="Website" />
-                <ScalarProperty Name="Instagram" ColumnName="Instagram" />
-                <ScalarProperty Name="Facebook" ColumnName="Facebook" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Bio" ColumnName="Bio" />
-                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetPropertySearch" FunctionName="RealEstateModel.Store.GetPropertySearch">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="RealEstateModel.GetPropertySearch_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
-                <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
-                <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
-                <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
-                <ScalarProperty Name="Address_id" ColumnName="Address_id" />
-                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="NameUser" ColumnName="NameUser" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
-                <ScalarProperty Name="NameType" ColumnName="NameType" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="Addresses">
-            <EntityTypeMapping TypeName="RealEstateModel.Address">
-              <MappingFragment StoreEntitySet="Address">
-                <ScalarProperty Name="StreetName" ColumnName="StreetName" />
-                <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
-                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
-                <ScalarProperty Name="lat" ColumnName="lat" />
-                <ScalarProperty Name="lon" ColumnName="lon" />
-                <ScalarProperty Name="Ward_Id" ColumnName="Ward_Id" />
-                <ScalarProperty Name="District_Id" ColumnName="District_Id" />
-                <ScalarProperty Name="Province_Id" ColumnName="Province_Id" />
-                <ScalarProperty Name="Address_detail" ColumnName="Address_detail" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Properties">
-            <EntityTypeMapping TypeName="RealEstateModel.Property">
-              <MappingFragment StoreEntitySet="Properties">
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
-                <ScalarProperty Name="Address_id" ColumnName="Address_id" />
-                <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
-                <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
-                <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
-                <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="PropertyFurnitures" TypeName="RealEstateModel.PropertyFurnitures" StoreEntitySet="PropertyFurnitures">
-            <EndProperty Name="Property">
-              <ScalarProperty Name="Id" ColumnName="PropertyId" />
-            </EndProperty>
-            <EndProperty Name="Furniture">
-              <ScalarProperty Name="Id" ColumnName="FurnituresId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="RealEstateModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
-                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="UpdateProperty" FunctionName="RealEstateModel.Store.UpdateProperty" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

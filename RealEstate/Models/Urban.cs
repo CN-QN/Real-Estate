@@ -37,10 +37,10 @@ namespace RealEstate.Models
         public Nullable<System.DateTime> Updated_At { get; set; }
         public Nullable<int> PropertyId { get; set; }
     
+        public virtual Property Property { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UrbanAttribute> UrbanAttributes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UrbanImage> UrbanImages { get; set; }
-        public virtual Property Property { get; set; }
     }
 }

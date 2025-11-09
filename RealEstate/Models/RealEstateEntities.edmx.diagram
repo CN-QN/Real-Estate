@@ -4,60 +4,60 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="38fabda73f494a8dbf1e7373e53e7685" Name="Diagram1" ZoomLevel="103">
-        <EntityTypeShape EntityType="RealEstateModel.District" Width="1.5" PointX="6.75" PointY="11.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Favorite" Width="1.5" PointX="5.25" PointY="21.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Furniture" Width="1.5" PointX="9" PointY="23.125" IsExpanded="true" />
+      <Diagram DiagramId="b6810a6cde244b79b74084f53ec2901b" Name="Diagram1">
+        <EntityTypeShape EntityType="RealEstateModel.Address" Width="1.5" PointX="3" PointY="25.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.District" Width="1.5" PointX="0.75" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Favorite" Width="1.5" PointX="5.25" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Furniture" Width="1.5" PointX="3" PointY="33.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.Log" Width="1.5" PointX="5.25" PointY="17.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Message" Width="1.5" PointX="8.25" PointY="18.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Payment" Width="1.5" PointX="18.75" PointY="19" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.PropertyImage" Width="1.5" PointX="13.5" PointY="15" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.PropertyType" Width="1.5" PointX="9" PointY="25.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Province" Width="1.5" PointX="4.5" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Message" Width="1.5" PointX="8.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Payment" Width="1.5" PointX="9.75" PointY="26.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Property" Width="1.5" PointX="5.25" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.PropertyImage" Width="1.5" PointX="7.5" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.PropertyType" Width="1.5" PointX="3" PointY="36" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Province" Width="1.5" PointX="1.5" PointY="30.875" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.RefreshToken" Width="1.5" PointX="5.25" PointY="35.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.ResetPassword" Width="1.5" PointX="5.25" PointY="38" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Review" Width="1.5" PointX="13.5" PointY="18.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Role" Width="1.5" PointX="0.75" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.ResetPassword" Width="1.5" PointX="5.25" PointY="38.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Review" Width="1.5" PointX="10.5" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Role" Width="1.5" PointX="0.75" PointY="19.875" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Transaction" Width="1.5" PointX="16.5" PointY="18.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.UrbanAttribute" Width="1.5" PointX="15.75" PointY="25" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.UrbanImage" Width="1.5" PointX="15.75" PointY="27.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Urban" Width="1.5" PointX="13.5" PointY="25.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Ward" Width="1.5" PointX="6.75" PointY="14.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.PropertyAttribute" Width="1.5" PointX="13.5" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Transaction" Width="1.5" PointX="7.5" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.UrbanAttribute" Width="1.5" PointX="9.75" PointY="31.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.UrbanImage" Width="1.5" PointX="9.75" PointY="34.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Urban" Width="1.5" PointX="7.5" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.UserProfile" Width="1.5" PointX="5.25" PointY="41" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.User" Width="1.5" PointX="3" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Ward" Width="1.5" PointX="0.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.PropertyAttribute" Width="1.5" PointX="7.5" PointY="37.125" IsExpanded="true" />
+        <AssociationConnector Association="RealEstateModel.FK__Address__Distric__61316BF4" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK__Address__Provinc__603D47BB" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK__Address__Ward_Id__6225902D" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Properties_Address" ManuallyRouted="false" />
         <AssociationConnector Association="RealEstateModel.FK__Districts__provi__2704CA5F" ManuallyRouted="false" />
         <AssociationConnector Association="RealEstateModel.FK__Wards__district___29E1370A" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Favorites_Properties" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Favorites_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Logs_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Messages_Property" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Messages_Receiver" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Messages_Sender" ManuallyRouted="false" />
         <AssociationConnector Association="RealEstateModel.FK_Payments_Transactions" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK__PropertyA__Prope__1BC821DD" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Properties_Types" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Properties_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_PropertyImages_Properties" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Reviews_Properties" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Transactions_Properties" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Urbans_Properties" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK__RefreshTo__User___2A164134" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK__ResetPass__User___40058253" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Reviews_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Users_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.FK_Transactions_Users" ManuallyRouted="false" />
         <AssociationConnector Association="RealEstateModel.FK__Urban_Att__Urban__73501C2F" ManuallyRouted="false" />
         <AssociationConnector Association="RealEstateModel.FK__Urban_Ima__Urban__7BE56230" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="RealEstateModel.UserProfile" Width="1.5" PointX="5.25" PointY="24.5" />
-        <EntityTypeShape EntityType="RealEstateModel.Address" Width="1.5" PointX="9" PointY="12" />
-        <AssociationConnector Association="RealEstateModel.FK__Address__Distric__61316BF4" />
-        <AssociationConnector Association="RealEstateModel.FK__Address__Provinc__603D47BB" />
-        <AssociationConnector Association="RealEstateModel.FK__Address__Ward_Id__6225902D" />
-        <EntityTypeShape EntityType="RealEstateModel.Property" Width="1.5" PointX="11.25" PointY="16.25" />
-        <AssociationConnector Association="RealEstateModel.FK_Properties_Address" />
-        <AssociationConnector Association="RealEstateModel.FK_Favorites_Properties" />
-        <AssociationConnector Association="RealEstateModel.FK_Messages_Property" />
-        <AssociationConnector Association="RealEstateModel.FK__PropertyA__Prope__1BC821DD" />
-        <AssociationConnector Association="RealEstateModel.FK_Properties_Types" />
-        <AssociationConnector Association="RealEstateModel.FK_PropertyImages_Properties" />
-        <AssociationConnector Association="RealEstateModel.FK_Reviews_Properties" />
-        <AssociationConnector Association="RealEstateModel.FK_Transactions_Properties" />
-        <AssociationConnector Association="RealEstateModel.FK_Urbans_Properties" />
-        <AssociationConnector Association="RealEstateModel.PropertyFurnitures" />
-        <EntityTypeShape EntityType="RealEstateModel.User" Width="1.5" PointX="3" PointY="17.5" />
-        <AssociationConnector Association="RealEstateModel.FK_Favorites_Users" />
-        <AssociationConnector Association="RealEstateModel.FK_Logs_Users" />
-        <AssociationConnector Association="RealEstateModel.FK_Messages_Receiver" />
-        <AssociationConnector Association="RealEstateModel.FK_Messages_Sender" />
-        <AssociationConnector Association="RealEstateModel.FK_Properties_Users" />
-        <AssociationConnector Association="RealEstateModel.FK__RefreshTo__User___2A164134" />
-        <AssociationConnector Association="RealEstateModel.FK__ResetPass__User___40058253" />
-        <AssociationConnector Association="RealEstateModel.FK_Reviews_Users" />
-        <AssociationConnector Association="RealEstateModel.FK_Users_Roles" />
-        <AssociationConnector Association="RealEstateModel.FK_Transactions_Users" />
-        <AssociationConnector Association="RealEstateModel.FK_UserProfiles_Users" />
+        <AssociationConnector Association="RealEstateModel.FK_UserProfiles_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateModel.PropertyFurnitures" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
