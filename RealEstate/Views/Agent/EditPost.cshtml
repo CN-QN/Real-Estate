@@ -42,7 +42,7 @@
 
         <div class="form-section">
             <label for="Address_detail">Địa chỉ:</label>
-            @Html.HiddenFor(m => m.Address_id)  
+            @Html.HiddenFor(m => m.Address_id)
             @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
         </div>
 
@@ -63,11 +63,18 @@
                     var images = Model.ImageGallery.Split(',');
                     foreach (var img in images)
                     {
-                        <img src="~/Content/Uploads/@img" class="gallery-image" />
+                       <form action=" " method="post">
+                           <div class="image-wrapper position-relative">
+                               <img src="~/Content/Uploads/@img" class="gallery-image" alt="Image" />
+                               <button type="submit" class="btn-delete-image"  >×</button>
+                           </div>
+                       </form>
                     }
                 }
             </div>
+
             <input type="file" name="GalleryFiles" multiple class="form-control" />
+
         </div>
 
         <div class="action-buttons">
@@ -179,4 +186,29 @@
         .btn-cancel:hover {
             background-color: #5a6268;
         }
+
+    .image-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .btn-delete-image {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+        font-weight: bold;
+        line-height: 16px;
+    }
+
+        .btn-delete-image:hover {
+            background-color: darkred;
+        }
 </style>
+ 
