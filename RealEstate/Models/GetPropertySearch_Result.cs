@@ -25,6 +25,7 @@ namespace RealEstate.Models
         public string AreaUnit { get; set; }
         public Nullable<int> Address_id { get; set; }
         public string PriceUnit { get; set; }
+        public Nullable<int> UrbanId { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public string Status { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }

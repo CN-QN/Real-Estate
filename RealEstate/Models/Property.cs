@@ -17,13 +17,9 @@ namespace RealEstate.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Property()
         {
-            this.Favorites = new HashSet<Favorite>();
             this.Messages = new HashSet<Message>();
             this.PropertyAttributes = new HashSet<PropertyAttribute>();
             this.PropertyImages = new HashSet<PropertyImage>();
-            this.Reviews = new HashSet<Review>();
-            this.Transactions = new HashSet<Transaction>();
-            this.Urbans = new HashSet<Urban>();
             this.Furnitures = new HashSet<Furniture>();
         }
     
@@ -39,27 +35,21 @@ namespace RealEstate.Models
         public string AreaUnit { get; set; }
         public Nullable<int> Address_id { get; set; }
         public string PriceUnit { get; set; }
+        public Nullable<int> UrbanId { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public string Status { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
     
         public virtual Address Address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Favorite> Favorites { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PropertyAttribute> PropertyAttributes { get; set; }
         public virtual PropertyType PropertyType { get; set; }
+        public virtual Urban Urban { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PropertyImage> PropertyImages { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Review> Reviews { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Transaction> Transactions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Urban> Urbans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Furniture> Furnitures { get; set; }
     }

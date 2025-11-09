@@ -3,6 +3,7 @@ using RealEstate.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -32,7 +33,7 @@ namespace RealEstate.Repository
             List<Ward> wards = db.Wards.Where(i =>i.district_code== district_code).ToList();
             return wards;
         }
-        public void EditPost(GetPropertyDetail_Result model, int Id)
+        public void EditPost(GetPropertyDetail_Result model,List<string> img ,  int Id)
         {
             db.Database.ExecuteSqlCommand(@"
         EXEC UpdateProperty 
@@ -61,6 +62,19 @@ namespace RealEstate.Repository
                 model.Address_id,
                 model.Address
             );
+                foreach (var url in img)
+                {
+                    if (!string.IsNullOrEmpty(url))
+                    {
+                        db.PropertyImages.Add(new PropertyImage
+                        {
+                            PropertyId = Id,
+                            ImageUrl = url,
+                            CreatedAt = DateTime.Now
+                        });
+                    }
+                }
+                db.SaveChanges();
         }
 
         public List<PropertyViewModel> GetMyPosts(int userId, int pageNumber)

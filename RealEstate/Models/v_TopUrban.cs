@@ -12,13 +12,9 @@ namespace RealEstate.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Favorite
+    public partial class v_TopUrban
     {
-        public int UserId { get; set; }
-        public int PropertyId { get; set; }
-        public Nullable<System.DateTime> CreatedAt { get; set; }
-    
-        public virtual Property Property { get; set; }
-        public virtual User User { get; set; }
+        public string UrbanName { get; set; }
+        public Nullable<int> TotalProperties { get; set; }
     }
 }

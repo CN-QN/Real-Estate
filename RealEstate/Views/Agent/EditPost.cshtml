@@ -63,19 +63,24 @@
                     var images = Model.ImageGallery.Split(',');
                     foreach (var img in images)
                     {
-                       <form action=" " method="post">
-                           <div class="image-wrapper position-relative">
-                               <img src="~/Content/Uploads/@img" class="gallery-image" alt="Image" />
-                               <button type="submit" class="btn-delete-image"  >×</button>
-                           </div>
-                       </form>
+                        <div class="image-wrapper position-relative" id="img-@img.Replace(".", "").Replace(",", "")">
+                            <img src="~/Content/Uploads/@img" class="gallery-image" alt="Image" />
+                            <button type="button"
+                                    class="btn-delete-image"
+                                    onclick="deleteImage(@Model.Id, '@img')">
+                                ×
+                            </button>
+                        </div>
                     }
                 }
             </div>
 
-            <input type="file" name="GalleryFiles" multiple class="form-control" />
+            <input type="file" name="GalleryFiles" multiple class="form-control" id="GalleryFiles" />
 
+            <!-- 🆕 Vùng preview ảnh mới -->
+            <div id="preview-container" class="property-images" style="margin-top: 10px;"></div>
         </div>
+
 
         <div class="action-buttons">
             <button type="submit" class="btn-save">Lưu</button>
@@ -211,4 +216,63 @@
             background-color: darkred;
         }
 </style>
- 
+<script>
+    function deleteImage(postId, imageName) {
+        if (!confirm("Bạn có chắc chắn muốn xóa ảnh này?")) return;
+
+        $.ajax({
+            url: '/Agent/DeleteImage',
+            type: 'POST',
+            data: { id: postId, name: imageName  },
+            success: function (res) {
+                if (res.success) {
+                    const safeId = imageName.replace(/\./g, "").replace(/,/g, "");
+                    document.getElementById("img-" + safeId)?.remove();
+                } else {
+                    alert(res.message);
+                }
+            },
+            error: function () {
+                alert("Có lỗi xảy ra khi gửi yêu cầu xóa ảnh.");
+            }
+        });
+    }
+
+    // 🆕 Hiển thị preview khi chọn ảnh mới
+    const fileInput = document.getElementById("GalleryFiles");
+    const previewContainer = document.getElementById("preview-container");
+
+    fileInput.addEventListener("change", function (e) {
+        previewContainer.innerHTML = ""; // clear preview cũ
+        const files = e.target.files;
+
+        Array.from(files).forEach((file, index) => {
+            const imgURL = URL.createObjectURL(file);
+            const wrapper = document.createElement("div");
+            wrapper.classList.add("image-wrapper", "position-relative");
+
+            const img = document.createElement("img");
+            img.src = imgURL;
+            img.classList.add("gallery-image");
+            img.alt = file.name;
+
+            const delBtn = document.createElement("button");
+            delBtn.innerText = "×";
+            delBtn.classList.add("btn-delete-image");
+            delBtn.onclick = () => {
+                wrapper.remove();
+
+                // 🧹 Xóa ảnh khỏi input nếu người dùng xóa preview
+                const dt = new DataTransfer();
+                Array.from(fileInput.files)
+                    .filter(f => f !== file)
+                    .forEach(f => dt.items.add(f));
+                fileInput.files = dt.files;
+            };
+
+            wrapper.appendChild(img);
+            wrapper.appendChild(delBtn);
+            previewContainer.appendChild(wrapper);
+        });
+    });
+</script>

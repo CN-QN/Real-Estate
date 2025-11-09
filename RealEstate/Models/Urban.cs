@@ -17,6 +17,7 @@ namespace RealEstate.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Urban()
         {
+            this.Properties = new HashSet<Property>();
             this.UrbanAttributes = new HashSet<UrbanAttribute>();
             this.UrbanImages = new HashSet<UrbanImage>();
         }
@@ -30,14 +31,15 @@ namespace RealEstate.Models
         public string Address_Details { get; set; }
         public string Description { get; set; }
         public string ProductType { get; set; }
+        public Nullable<int> PropertyCount { get; set; }
         public Nullable<decimal> Area { get; set; }
         public string Legal { get; set; }
         public string Status { get; set; }
         public Nullable<System.DateTime> Created_At { get; set; }
         public Nullable<System.DateTime> Updated_At { get; set; }
-        public Nullable<int> PropertyId { get; set; }
     
-        public virtual Property Property { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Property> Properties { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UrbanAttribute> UrbanAttributes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -24,15 +24,6 @@
     <Property Name="name" Type="nvarchar" MaxLength="50" />
     <Property Name="province_code" Type="int" />
   </EntityType>
-  <EntityType Name="Favorites">
-    <Key>
-      <PropertyRef Name="UserId" />
-      <PropertyRef Name="PropertyId" />
-    </Key>
-    <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="PropertyId" Type="int" Nullable="false" />
-    <Property Name="CreatedAt" Type="datetime" />
-  </EntityType>
   <EntityType Name="Furnitures">
     <Key>
       <PropertyRef Name="Id" />
@@ -62,17 +53,6 @@
     <Property Name="Status" Type="nvarchar" MaxLength="50" />
     <Property Name="CreatedAt" Type="datetime" />
   </EntityType>
-  <EntityType Name="Payments">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="TransactionId" Type="int" Nullable="false" />
-    <Property Name="PaymentMethod" Type="nvarchar" MaxLength="50" />
-    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="PaymentStatus" Type="nvarchar" MaxLength="50" />
-    <Property Name="PaidAt" Type="datetime" />
-  </EntityType>
   <EntityType Name="Properties">
     <Key>
       <PropertyRef Name="Id" />
@@ -89,6 +69,7 @@
     <Property Name="AreaUnit" Type="nvarchar" MaxLength="10" />
     <Property Name="Address_id" Type="int" />
     <Property Name="PriceUnit" Type="nvarchar" MaxLength="10" />
+    <Property Name="UrbanId" Type="int" />
     <Property Name="CreatedAt" Type="date" />
     <Property Name="Status" Type="nvarchar" MaxLength="50" />
     <Property Name="UpdatedAt" Type="date" />
@@ -156,17 +137,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Property Name="Expires" Type="datetime" Nullable="false" />
     <Property Name="Created_at" Type="datetime" />
   </EntityType>
-  <EntityType Name="Reviews">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="PropertyId" Type="int" Nullable="false" />
-    <Property Name="Rating" Type="int" />
-    <Property Name="Comment" Type="nvarchar(max)" />
-    <Property Name="CreatedAt" Type="datetime" />
-  </EntityType>
   <EntityType Name="Roles">
     <Key>
       <PropertyRef Name="Id" />
@@ -183,19 +153,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="version" Type="int" />
     <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
-  <EntityType Name="Transactions">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="PropertyId" Type="int" Nullable="false" />
-    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="TransactionType" Type="nvarchar" MaxLength="50" />
-    <Property Name="Status" Type="nvarchar" MaxLength="50" />
-    <Property Name="CreatedAt" Type="datetime" />
-    <Property Name="UpdatedAt" Type="datetime" />
   </EntityType>
   <EntityType Name="UrbanAttributes">
     <Key>
@@ -229,12 +186,12 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Property Name="Address_Details" Type="nvarchar(max)" />
     <Property Name="Description" Type="nvarchar(max)" />
     <Property Name="ProductType" Type="nvarchar" MaxLength="255" />
+    <Property Name="PropertyCount" Type="int" />
     <Property Name="Area" Type="decimal" Precision="18" Scale="2" />
     <Property Name="Legal" Type="nvarchar" MaxLength="255" />
     <Property Name="Status" Type="nvarchar" MaxLength="100" />
     <Property Name="Created_At" Type="datetime" />
     <Property Name="Updated_At" Type="datetime" />
-    <Property Name="PropertyId" Type="int" />
   </EntityType>
   <EntityType Name="UserProfiles">
     <Key>
@@ -273,6 +230,15 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Property Name="code" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="50" />
     <Property Name="district_code" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'RealEstate.dbo.v_TopUrban' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="v_TopUrban">
+    <Key>
+      <PropertyRef Name="UrbanName" />
+    </Key>
+    <Property Name="UrbanName" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="TotalProperties" Type="int" />
   </EntityType>
   <Association Name="FK__Address__Distric__61316BF4">
     <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
@@ -424,30 +390,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Favorites_Properties">
-    <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
-    <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Properties">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Favorites">
-        <PropertyRef Name="PropertyId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Favorites_Users">
-    <End Role="Users" Type="Self.Users" Multiplicity="1" />
-    <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Favorites">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Logs_Users">
     <End Role="Users" Type="Self.Users" Multiplicity="1" />
     <End Role="Logs" Type="Self.Logs" Multiplicity="*" />
@@ -496,18 +438,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Payments_Transactions">
-    <End Role="Transactions" Type="Self.Transactions" Multiplicity="1" />
-    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Transactions">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Payments">
-        <PropertyRef Name="TransactionId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Properties_Address">
     <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
     <End Role="Properties" Type="Self.Properties" Multiplicity="*" />
@@ -529,6 +459,18 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       </Principal>
       <Dependent Role="Properties">
         <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Properties_Urbans">
+    <End Role="Urbans" Type="Self.Urbans" Multiplicity="0..1" />
+    <End Role="Properties" Type="Self.Properties" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Urbans">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Properties">
+        <PropertyRef Name="UrbanId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -554,66 +496,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="PropertyImages">
-        <PropertyRef Name="PropertyId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Reviews_Properties">
-    <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
-    <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Properties">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Reviews">
-        <PropertyRef Name="PropertyId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Reviews_Users">
-    <End Role="Users" Type="Self.Users" Multiplicity="1" />
-    <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Reviews">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Transactions_Properties">
-    <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
-    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Properties">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Transactions">
-        <PropertyRef Name="PropertyId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Transactions_Users">
-    <End Role="Users" Type="Self.Users" Multiplicity="1" />
-    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Transactions">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Urbans_Properties">
-    <End Role="Properties" Type="Self.Properties" Multiplicity="0..1" />
-    <End Role="Urbans" Type="Self.Urbans" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Properties">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Urbans">
         <PropertyRef Name="PropertyId" />
       </Dependent>
     </ReferentialConstraint>
@@ -661,7 +543,21 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Parameter Name="DonViDienTich" Type="nvarchar" Mode="In" />
     <Parameter Name="DonViGia" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="fn_CountPropertiesByUrban" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+    <Parameter Name="UrbanId" Type="int" Mode="In" />
+  </Function>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="fn_GetPropertiesByUrbanTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UrbanId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
   <Function Name="Get_Property_Count_By_District" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
     <Parameter Name="DistrictID" Type="int" Mode="In" />
   </Function>
@@ -713,6 +609,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Parameter Name="owner_id" Type="int" Mode="In" />
     <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="sp_UpdateUrbanPropertyCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="UpdateProperty" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Id" Type="int" Mode="In" />
@@ -734,11 +631,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
   <EntityContainer Name="RealEstateModelStoreContainer">
     <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Furnitures" EntityType="Self.Furnitures" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Properties" EntityType="Self.Properties" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyFurnitures" EntityType="Self.PropertyFurnitures" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyImages" EntityType="Self.PropertyImages" Schema="dbo" store:Type="Tables" />
@@ -746,10 +641,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RefreshTokens" EntityType="Self.RefreshTokens" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ResetPassword" EntityType="Self.ResetPassword" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UrbanAttributes" EntityType="Self.UrbanAttributes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UrbanImages" EntityType="Self.UrbanImages" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Urbans" EntityType="Self.Urbans" Schema="dbo" store:Type="Tables" />
@@ -762,6 +655,12 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     [PropertyAttributes].[key] AS [key], 
     [PropertyAttributes].[value] AS [value]
     FROM [dbo].[PropertyAttributes] AS [PropertyAttributes]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="v_TopUrban" EntityType="Self.v_TopUrban" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [v_TopUrban].[UrbanName] AS [UrbanName], 
+    [v_TopUrban].[TotalProperties] AS [TotalProperties]
+    FROM [dbo].[v_TopUrban] AS [v_TopUrban]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK__Address__Distric__61316BF4" Association="Self.FK__Address__Distric__61316BF4">
       <End Role="Districts" EntitySet="Districts" />
@@ -811,14 +710,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       <End Role="Districts" EntitySet="Districts" />
       <End Role="Wards" EntitySet="Wards" />
     </AssociationSet>
-    <AssociationSet Name="FK_Favorites_Properties" Association="Self.FK_Favorites_Properties">
-      <End Role="Properties" EntitySet="Properties" />
-      <End Role="Favorites" EntitySet="Favorites" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Favorites_Users" Association="Self.FK_Favorites_Users">
-      <End Role="Users" EntitySet="Users" />
-      <End Role="Favorites" EntitySet="Favorites" />
-    </AssociationSet>
     <AssociationSet Name="FK_Logs_Users" Association="Self.FK_Logs_Users">
       <End Role="Users" EntitySet="Users" />
       <End Role="Logs" EntitySet="Logs" />
@@ -835,16 +726,16 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
       <End Role="Users" EntitySet="Users" />
       <End Role="Messages" EntitySet="Messages" />
     </AssociationSet>
-    <AssociationSet Name="FK_Payments_Transactions" Association="Self.FK_Payments_Transactions">
-      <End Role="Transactions" EntitySet="Transactions" />
-      <End Role="Payments" EntitySet="Payments" />
-    </AssociationSet>
     <AssociationSet Name="FK_Properties_Address" Association="Self.FK_Properties_Address">
       <End Role="Address" EntitySet="Address" />
       <End Role="Properties" EntitySet="Properties" />
     </AssociationSet>
     <AssociationSet Name="FK_Properties_Types" Association="Self.FK_Properties_Types">
       <End Role="PropertyTypes" EntitySet="PropertyTypes" />
+      <End Role="Properties" EntitySet="Properties" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Properties_Urbans" Association="Self.FK_Properties_Urbans">
+      <End Role="Urbans" EntitySet="Urbans" />
       <End Role="Properties" EntitySet="Properties" />
     </AssociationSet>
     <AssociationSet Name="FK_Properties_Users" Association="Self.FK_Properties_Users">
@@ -854,26 +745,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <AssociationSet Name="FK_PropertyImages_Properties" Association="Self.FK_PropertyImages_Properties">
       <End Role="Properties" EntitySet="Properties" />
       <End Role="PropertyImages" EntitySet="PropertyImages" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Reviews_Properties" Association="Self.FK_Reviews_Properties">
-      <End Role="Properties" EntitySet="Properties" />
-      <End Role="Reviews" EntitySet="Reviews" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Reviews_Users" Association="Self.FK_Reviews_Users">
-      <End Role="Users" EntitySet="Users" />
-      <End Role="Reviews" EntitySet="Reviews" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Transactions_Properties" Association="Self.FK_Transactions_Properties">
-      <End Role="Properties" EntitySet="Properties" />
-      <End Role="Transactions" EntitySet="Transactions" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Transactions_Users" Association="Self.FK_Transactions_Users">
-      <End Role="Users" EntitySet="Users" />
-      <End Role="Transactions" EntitySet="Transactions" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Urbans_Properties" Association="Self.FK_Urbans_Properties">
-      <End Role="Properties" EntitySet="Properties" />
-      <End Role="Urbans" EntitySet="Urbans" />
     </AssociationSet>
     <AssociationSet Name="FK_UserProfiles_Users" Association="Self.FK_UserProfiles_Users">
       <End Role="Users" EntitySet="Users" />

@@ -1,4 +1,5 @@
-﻿using RealEstate.Models;
+﻿using RealEstate.Common;
+using RealEstate.Models;
 using RealEstate.Models.ViewModels;
 using RealEstate.Services;
 using System;
@@ -8,10 +9,13 @@ using System.Web.Mvc;
 
 namespace RealEstate.Controllers
 {
+    [AuthorizeCustom("Admin")]
+
     public class AdminController : Controller
     {
         private readonly AdminService _AdminService = new AdminService();
         private readonly AgentService _AgentService = new AgentService();
+
 
         public ActionResult Index()
         {

@@ -27,15 +27,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Favorites">
-      <EntityTypeMapping TypeName="RealEstateModel.Favorite">
-        <MappingFragment StoreEntitySet="Favorites">
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Furnitures">
       <EntityTypeMapping TypeName="RealEstateModel.Furniture">
         <MappingFragment StoreEntitySet="Furnitures">
@@ -68,18 +59,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Payments">
-      <EntityTypeMapping TypeName="RealEstateModel.Payment">
-        <MappingFragment StoreEntitySet="Payments">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
-          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-          <ScalarProperty Name="PaidAt" ColumnName="PaidAt" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Properties">
       <EntityTypeMapping TypeName="RealEstateModel.Property">
         <MappingFragment StoreEntitySet="Properties">
@@ -95,6 +74,7 @@
           <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
           <ScalarProperty Name="Address_id" ColumnName="Address_id" />
           <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+          <ScalarProperty Name="UrbanId" ColumnName="UrbanId" />
           <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
@@ -150,18 +130,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Reviews">
-      <EntityTypeMapping TypeName="RealEstateModel.Review">
-        <MappingFragment StoreEntitySet="Reviews">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
-          <ScalarProperty Name="Rating" ColumnName="Rating" />
-          <ScalarProperty Name="Comment" ColumnName="Comment" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Roles">
       <EntityTypeMapping TypeName="RealEstateModel.Role">
         <MappingFragment StoreEntitySet="Roles">
@@ -178,20 +146,6 @@
           <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
           <ScalarProperty Name="version" ColumnName="version" />
           <ScalarProperty Name="definition" ColumnName="definition" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Transactions">
-      <EntityTypeMapping TypeName="RealEstateModel.Transaction">
-        <MappingFragment StoreEntitySet="Transactions">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -228,12 +182,12 @@
           <ScalarProperty Name="Address_Details" ColumnName="Address_Details" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+          <ScalarProperty Name="PropertyCount" ColumnName="PropertyCount" />
           <ScalarProperty Name="Area" ColumnName="Area" />
           <ScalarProperty Name="Legal" ColumnName="Legal" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Created_At" ColumnName="Created_At" />
           <ScalarProperty Name="Updated_At" ColumnName="Updated_At" />
-          <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -287,6 +241,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="v_TopUrban">
+      <EntityTypeMapping TypeName="RealEstateModel.v_TopUrban">
+        <MappingFragment StoreEntitySet="v_TopUrban">
+          <ScalarProperty Name="UrbanName" ColumnName="UrbanName" />
+          <ScalarProperty Name="TotalProperties" ColumnName="TotalProperties" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="PropertyFurnitures" TypeName="RealEstateModel.PropertyFurnitures" StoreEntitySet="PropertyFurnitures">
       <EndProperty Name="Furnitures">
         <ScalarProperty Name="Id" ColumnName="FurnituresId" />
@@ -295,6 +257,14 @@
         <ScalarProperty Name="Id" ColumnName="PropertyId" />
       </EndProperty>
     </AssociationSetMapping>
+    <FunctionImportMapping FunctionName="RealEstateModel.Store.fn_GetPropertiesByUrbanTable" FunctionImportName="fn_GetPropertiesByUrbanTable">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="RealEstateModel.fn_GetPropertiesByUrbanTable_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="CreatePost" FunctionName="RealEstateModel.Store.CreatePost" />
     <FunctionImportMapping FunctionImportName="GetProfile" FunctionName="RealEstateModel.Store.GetProfile">
       <ResultMapping>
@@ -347,6 +317,7 @@
           <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
           <ScalarProperty Name="Address_id" ColumnName="Address_id" />
           <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+          <ScalarProperty Name="UrbanId" ColumnName="UrbanId" />
           <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
@@ -397,11 +368,13 @@
           <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
           <ScalarProperty Name="Address_id" ColumnName="Address_id" />
           <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+          <ScalarProperty Name="UrbanId" ColumnName="UrbanId" />
           <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Avatar" ColumnName="Avatar" />
           <ScalarProperty Name="NameUser" ColumnName="NameUser" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
@@ -425,6 +398,7 @@
           <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
           <ScalarProperty Name="Address_id" ColumnName="Address_id" />
           <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+          <ScalarProperty Name="UrbanId" ColumnName="UrbanId" />
           <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
@@ -460,7 +434,9 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="RealEstateModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateUrbanPropertyCount" FunctionName="RealEstateModel.Store.sp_UpdateUrbanPropertyCount" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="RealEstateModel.Store.sp_upgraddiagrams" />
+    <FunctionImportMapping FunctionImportName="UpdateProperty" FunctionName="RealEstateModel.Store.UpdateProperty" />
     <FunctionImportMapping FunctionImportName="VerifyLogin" FunctionName="RealEstateModel.Store.VerifyLogin">
       <ResultMapping>
         <ComplexTypeMapping TypeName="RealEstateModel.VerifyLogin_Result">
@@ -473,6 +449,5 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="UpdateProperty" FunctionName="RealEstateModel.Store.UpdateProperty" />
   </EntityContainerMapping>
 </Mapping>

@@ -10,18 +10,10 @@
 namespace RealEstate.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Review
+    public partial class fn_GetPropertiesByUrbanTable_Result
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public int PropertyId { get; set; }
-        public Nullable<int> Rating { get; set; }
-        public string Comment { get; set; }
-        public Nullable<System.DateTime> CreatedAt { get; set; }
-    
-        public virtual Property Property { get; set; }
-        public virtual User User { get; set; }
+        public string Title { get; set; }
     }
 }

@@ -20,9 +20,24 @@ namespace RealEstate.Services
         {
             return _AgentRepo.GetMyPostDetail(propertyId);
         }
-        public void EditPost(GetPropertyDetail_Result model, int id)
+        public void EditPost(GetPropertyDetail_Result model, List<HttpPostedFileBase> files, int id)
         {
-            _AgentRepo.EditPost(model, id);
+
+            List<string> fileNames = new List<string>();
+            foreach (var file in files)
+            {
+                if (file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/Uploads/"), fileName);
+                    file.SaveAs(path);
+
+                    fileNames.Add(fileName);
+                }
+            }
+
+ 
+            _AgentRepo.EditPost(model, fileNames, id);
 
         }
         public List<District> Districts(int? province_code)

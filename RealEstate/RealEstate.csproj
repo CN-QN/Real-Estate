@@ -206,6 +206,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\AuthorizeCustomAttribute.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -223,7 +224,7 @@
     <Compile Include="Models\District.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Favorite.cs">
+    <Compile Include="Models\fn_GetPropertiesByUrbanTable_Result.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Furniture.cs">
@@ -251,9 +252,6 @@
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Message.cs">
-      <DependentUpon>RealEstateEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Payment.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Property.cs">
@@ -292,9 +290,6 @@
     <Compile Include="Models\ResetPassword.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Review.cs">
-      <DependentUpon>RealEstateEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
@@ -305,9 +300,6 @@
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>RealEstateEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Transaction.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Urban.cs">
@@ -344,10 +336,12 @@
     <Compile Include="Models\ViewModels\UrbanDetailViewModel.cs" />
     <Compile Include="Models\ViewModels\UrbanViewModel.cs" />
     <Compile Include="Models\ViewModels\UserProfileVIewModel.cs" />
+    <Compile Include="Models\v_TopUrban.cs">
+      <DependentUpon>RealEstateEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Ward.cs">
       <DependentUpon>RealEstateEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Modules\AuthModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AdminRepo.cs" />
     <Compile Include="Repository\AgentRepo.cs" />
@@ -868,7 +862,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Common\" />
     <Folder Include="Content\Uploads\" />
   </ItemGroup>
   <ItemGroup>

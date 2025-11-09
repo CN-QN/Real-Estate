@@ -17,15 +17,12 @@ namespace RealEstate.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Favorites = new HashSet<Favorite>();
             this.Logs = new HashSet<Log>();
             this.Messages = new HashSet<Message>();
             this.Messages1 = new HashSet<Message>();
             this.Properties = new HashSet<Property>();
             this.RefreshTokens = new HashSet<RefreshToken>();
             this.ResetPasswords = new HashSet<ResetPassword>();
-            this.Reviews = new HashSet<Review>();
-            this.Transactions = new HashSet<Transaction>();
         }
     
         public int Id { get; set; }
@@ -41,8 +38,6 @@ namespace RealEstate.Models
         public Nullable<System.DateTime> UpdatedAt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Favorite> Favorites { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Log> Logs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages { get; set; }
@@ -54,11 +49,7 @@ namespace RealEstate.Models
         public virtual ICollection<RefreshToken> RefreshTokens { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ResetPassword> ResetPasswords { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Review> Reviews { get; set; }
         public virtual Role Role { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual UserProfile UserProfile { get; set; }
     }
 }

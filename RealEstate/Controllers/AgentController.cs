@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using RealEstate.Common;
 using RealEstate.Models;
 using RealEstate.Models.ViewModels;
 using RealEstate.Services;
@@ -14,6 +15,7 @@ using System.Web.Mvc;
 
 namespace RealEstate.Controllers
 {
+    [AuthorizeCustom("Agents","Admin")]
     public class AgentController : Controller
     {
         private AgentService _AgentService = new AgentService();
@@ -131,30 +133,32 @@ namespace RealEstate.Controllers
             {
                 using (var db = new RealEstateEntities())
                 {
+                    var image = db.PropertyImages
+                                  .FirstOrDefault(p => p.PropertyId == id && p.ImageUrl == name);
+                    if (image == null)
+                        return Json(new { success = false, message = "Không tìm thấy ảnh cần xóa." });
 
-                    var post = db.PropertyImages.Where(p => p.PropertyId == id && p.ImageUrl == name).FirstOrDefault();
-                    if (post == null)
-                        return Json(new { success = false, message = "Không tìm thấy bài đăng." });
-
-                    db.PropertyImages.Remove(post);
+                    db.PropertyImages.Remove(image);
                     db.SaveChanges();
 
                     // Xóa file vật lý
                     var path = Server.MapPath("~/Content/Uploads/" + name);
-                    if(System.IO.File.Exists(path))
-
+                    if (System.IO.File.Exists(path))
                     {
                         System.IO.File.Delete(path);
                     }
-                    return View("EditPost", "Agent",id);
+
+                    return Json(new { success = true, message = "Đã xóa ảnh thành công!" });
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception("Error");
+                return Json(new { success = false, message = "Lỗi khi xóa ảnh: " + ex.Message });
             }
         }
 
+
+        [HttpGet]
         public ActionResult EditPost(int? id)
         {
             if (id == null)
@@ -171,9 +175,9 @@ namespace RealEstate.Controllers
         }
 
         [HttpPost , ActionName("EditPost"),ValidateInput(false)]
-        public ActionResult EditPosts(GetPropertyDetail_Result model , int id)
+        public ActionResult EditPosts(GetPropertyDetail_Result model, List<HttpPostedFileBase> GalleryFiles, int id)
         {
-            _AgentService.EditPost(model, id);
+            _AgentService.EditPost(model, GalleryFiles.ToList(), id);
             return RedirectToAction("MyPosts","Agent");
         }
 
@@ -184,7 +188,7 @@ namespace RealEstate.Controllers
                 return RedirectToAction("Index", "Agent");
             }
             var item = _AgentService.GetMyPostDetail(id.Value );
-            return View();
+            return View(item);
         }
         [HttpPost, ActionName("DeletePost")]
         public ActionResult DeletePosts(int id)

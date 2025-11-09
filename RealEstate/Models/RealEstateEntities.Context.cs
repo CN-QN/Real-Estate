@@ -29,21 +29,17 @@ namespace RealEstate.Models
     
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<District> Districts { get; set; }
-        public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<Furniture> Furnitures { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
-        public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<Property> Properties { get; set; }
         public virtual DbSet<PropertyImage> PropertyImages { get; set; }
         public virtual DbSet<PropertyType> PropertyTypes { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<ResetPassword> ResetPasswords { get; set; }
-        public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<UrbanAttribute> UrbanAttributes { get; set; }
         public virtual DbSet<UrbanImage> UrbanImages { get; set; }
         public virtual DbSet<Urban> Urbans { get; set; }
@@ -51,6 +47,17 @@ namespace RealEstate.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Ward> Wards { get; set; }
         public virtual DbSet<PropertyAttribute> PropertyAttributes { get; set; }
+        public virtual DbSet<v_TopUrban> v_TopUrban { get; set; }
+    
+        [DbFunction("RealEstateEntities", "fn_GetPropertiesByUrbanTable")]
+        public virtual IQueryable<fn_GetPropertiesByUrbanTable_Result> fn_GetPropertiesByUrbanTable(Nullable<int> urbanId)
+        {
+            var urbanIdParameter = urbanId.HasValue ?
+                new ObjectParameter("UrbanId", urbanId) :
+                new ObjectParameter("UrbanId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fn_GetPropertiesByUrbanTable_Result>("[RealEstateEntities].[fn_GetPropertiesByUrbanTable](@UrbanId)", urbanIdParameter);
+        }
     
         public virtual ObjectResult<Nullable<int>> CreatePost(Nullable<int> userId, Nullable<int> provinceCode, Nullable<int> districtCode, string wardCode, string addressDetail, Nullable<decimal> latitude, Nullable<decimal> longitude, string streetName, string tenDuAn, string moTa, Nullable<decimal> giaMin, Nullable<decimal> giaMax, Nullable<decimal> dienTichMin, Nullable<decimal> dienTichMax, Nullable<int> loaiBDS, string donViDienTich, string donViGia)
         {
@@ -281,18 +288,14 @@ namespace RealEstate.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
         }
     
+        public virtual int sp_UpdateUrbanPropertyCount()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UpdateUrbanPropertyCount");
+        }
+    
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
-        }
-    
-        public virtual ObjectResult<VerifyLogin_Result> VerifyLogin(string email)
-        {
-            var emailParameter = email != null ?
-                new ObjectParameter("Email", email) :
-                new ObjectParameter("Email", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerifyLogin_Result>("VerifyLogin", emailParameter);
         }
     
         public virtual int UpdateProperty(Nullable<int> id, string title, string description, Nullable<decimal> areaMax, Nullable<decimal> areaMin, string areaUnit, Nullable<int> typeId, Nullable<int> priceMax, Nullable<int> priceMin, string priceUnit, Nullable<int> addressId, string addressDetail)
@@ -346,6 +349,15 @@ namespace RealEstate.Models
                 new ObjectParameter("AddressDetail", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateProperty", idParameter, titleParameter, descriptionParameter, areaMaxParameter, areaMinParameter, areaUnitParameter, typeIdParameter, priceMaxParameter, priceMinParameter, priceUnitParameter, addressIdParameter, addressDetailParameter);
+        }
+    
+        public virtual ObjectResult<VerifyLogin_Result> VerifyLogin(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerifyLogin_Result>("VerifyLogin", emailParameter);
         }
     }
 }
