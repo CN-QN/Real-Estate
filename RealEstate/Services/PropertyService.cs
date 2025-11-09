@@ -36,6 +36,6 @@ namespace RealEstate.Services
             return _repo.GetPropertyTypes();
 
         }
-
+       
     }
 }

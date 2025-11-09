@@ -88,7 +88,6 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="PriceMin" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PriceMax" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Address" Type="nvarchar" MaxLength="255" />
           <Property Name="TypeId" Type="int" Nullable="false" />
           <Property Name="AreaMin" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AreaMax" Type="decimal" Precision="18" Scale="2" />
@@ -551,7 +550,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PropertyImages_Properties">
-          <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
+          <End Role="Properties" Type="Self.Properties" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PropertyImages" Type="Self.PropertyImages" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Properties">
@@ -662,6 +663,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Parameter Name="DienTichMin" Type="decimal" Mode="In" />
           <Parameter Name="DienTichMax" Type="decimal" Mode="In" />
           <Parameter Name="LoaiBDS" Type="int" Mode="In" />
+          <Parameter Name="DonViDienTich" Type="nvarchar" Mode="In" />
+          <Parameter Name="DonViGia" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="Get_Property_Count_By_District" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
@@ -682,7 +685,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
         </Function>
         <Function Name="GetPropertyDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="propertyId" Type="int" Mode="In" />
-          <Parameter Name="userId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetPropertySearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
@@ -717,6 +719,20 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UpdateProperty" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="Title" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="AreaMax" Type="decimal" Mode="In" />
+          <Parameter Name="AreaMin" Type="decimal" Mode="In" />
+          <Parameter Name="AreaUnit" Type="nvarchar" Mode="In" />
+          <Parameter Name="TypeId" Type="int" Mode="In" />
+          <Parameter Name="PriceMax" Type="int" Mode="In" />
+          <Parameter Name="PriceMin" Type="int" Mode="In" />
+          <Parameter Name="PriceUnit" Type="nvarchar" Mode="In" />
+          <Parameter Name="AddressId" Type="int" Mode="In" />
+          <Parameter Name="AddressDetail" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="VerifyLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Email" Type="nvarchar" Mode="In" />
         </Function>
@@ -975,7 +991,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PriceMin" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceMax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="TypeId" Type="Int32" Nullable="false" />
           <Property Name="AreaMin" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="AreaMax" Type="Decimal" Precision="18" Scale="2" />
@@ -985,7 +1000,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Name="CreatedAt" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Address1" Relationship="Self.FK_Properties_Address" FromRole="Properties" ToRole="Address" />
+          <NavigationProperty Name="Address" Relationship="Self.FK_Properties_Address" FromRole="Properties" ToRole="Address" />
           <NavigationProperty Name="Favorites" Relationship="Self.FK_Favorites_Properties" FromRole="Properties" ToRole="Favorites" />
           <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_Property" FromRole="Properties" ToRole="Messages" />
           <NavigationProperty Name="PropertyAttributes" Relationship="Self.FK__PropertyA__Prope__1BC821DD" FromRole="Properties" ToRole="PropertyAttributes" />
@@ -1393,7 +1408,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PropertyImages_Properties">
-          <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+          <End Role="Properties" Type="Self.Property" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PropertyImages" Type="Self.PropertyImage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Properties">
@@ -1703,6 +1720,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
             <Parameter Name="DienTichMin" Mode="In" Type="Decimal" />
             <Parameter Name="DienTichMax" Mode="In" Type="Decimal" />
             <Parameter Name="LoaiBDS" Mode="In" Type="Int32" />
+            <Parameter Name="DonViDienTich" Mode="In" Type="String" />
+            <Parameter Name="DonViGia" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetProfile" ReturnType="Collection(RealEstateModel.GetProfile_Result)">
           <Parameter Name="email" Mode="In" Type="String" />
@@ -1716,6 +1735,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <FunctionImport Name="GetPropertyByUser" ReturnType="Collection(RealEstateModel.GetPropertyByUser_Result)">
             <Parameter Name="user_id" Mode="In" Type="Int32" />
             <Parameter Name="PageNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetPropertyDetail" ReturnType="Collection(RealEstateModel.GetPropertyDetail_Result)">
+            <Parameter Name="propertyId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetPropertySearch" ReturnType="Collection(RealEstateModel.GetPropertySearch_Result)">
           <Parameter Name="Keyword" Mode="In" Type="String" />
@@ -1753,9 +1775,19 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <FunctionImport Name="VerifyLogin" ReturnType="Collection(RealEstateModel.VerifyLogin_Result)">
           <Parameter Name="Email" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetPropertyDetail" ReturnType="Collection(RealEstateModel.GetPropertyDetail_Result)">
-          <Parameter Name="propertyId" Mode="In" Type="Int32" />
-            <Parameter Name="userId" Mode="In" Type="Int32" />
+          <FunctionImport Name="UpdateProperty">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Title" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="AreaMax" Mode="In" Type="Decimal" />
+            <Parameter Name="AreaMin" Mode="In" Type="Decimal" />
+            <Parameter Name="AreaUnit" Mode="In" Type="String" />
+            <Parameter Name="TypeId" Mode="In" Type="Int32" />
+            <Parameter Name="PriceMax" Mode="In" Type="Int32" />
+            <Parameter Name="PriceMin" Mode="In" Type="Int32" />
+            <Parameter Name="PriceUnit" Mode="In" Type="String" />
+            <Parameter Name="AddressId" Mode="In" Type="Int32" />
+            <Parameter Name="AddressDetail" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetProfile_Result">
@@ -1784,7 +1816,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
           <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Address" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GetPropertyById_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -1793,7 +1825,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Description" Nullable="true" />
           <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="TypeId" Nullable="false" />
           <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
@@ -1805,6 +1836,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Avatar" Nullable="true" />
+          <Property Type="String" Name="Address" Nullable="true" />
           <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="ImageGallery" Nullable="true" />
@@ -1826,7 +1858,31 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
           <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Address" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetPropertyDetail_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="TypeId" Nullable="false" />
+          <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="Address_id" Nullable="true" />
+          <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" />
+          <Property Type="String" Name="Avatar" Nullable="true" />
+          <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ImageGallery" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="NameType" Nullable="false" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="GetPropertySearch_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -1835,7 +1891,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Description" Nullable="true" />
           <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="TypeId" Nullable="false" />
           <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
@@ -1870,30 +1925,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
           <Property Type="String" Name="Password" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="RoleId" Nullable="false" />
           <Property Type="String" Name="RoleName" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="GetPropertyDetail_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="Int32" Name="UserId" Nullable="false" />
-          <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="Description" Nullable="true" />
-          <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
-          <Property Type="Int32" Name="TypeId" Nullable="false" />
-          <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
-          <Property Type="Int32" Name="Address_id" Nullable="true" />
-          <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
-          <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
-          <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
-          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Avatar" Nullable="true" />
-          <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="ImageGallery" Nullable="true" />
-          <Property Type="String" Name="NameType" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1989,7 +2020,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
                 <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
                 <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
@@ -2242,7 +2272,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
                 <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
                 <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
@@ -2254,6 +2283,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
                 <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="NameUser" ColumnName="NameUser" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
@@ -2283,6 +2313,34 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPropertyDetail" FunctionName="RealEstateModel.Store.GetPropertyDetail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RealEstateModel.GetPropertyDetail_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
+                <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
+                <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
+                <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
+                <ScalarProperty Name="Address_id" ColumnName="Address_id" />
+                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="NameUser" ColumnName="NameUser" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
+                <ScalarProperty Name="NameType" ColumnName="NameType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetPropertySearch" FunctionName="RealEstateModel.Store.GetPropertySearch">
             <ResultMapping>
               <ComplexTypeMapping TypeName="RealEstateModel.GetPropertySearch_Result">
@@ -2292,7 +2350,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
                 <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
                 <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
@@ -2347,34 +2404,7 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetPropertyDetail" FunctionName="RealEstateModel.Store.GetPropertyDetail">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="RealEstateModel.GetPropertyDetail_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="PriceMin" ColumnName="PriceMin" />
-                <ScalarProperty Name="PriceMax" ColumnName="PriceMax" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="AreaMin" ColumnName="AreaMin" />
-                <ScalarProperty Name="AreaMax" ColumnName="AreaMax" />
-                <ScalarProperty Name="AreaUnit" ColumnName="AreaUnit" />
-                <ScalarProperty Name="Address_id" ColumnName="Address_id" />
-                <ScalarProperty Name="PriceUnit" ColumnName="PriceUnit" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="NameUser" ColumnName="NameUser" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="ImageGallery" ColumnName="ImageGallery" />
-                <ScalarProperty Name="NameType" ColumnName="NameType" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateProperty" FunctionName="RealEstateModel.Store.UpdateProperty" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

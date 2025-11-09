@@ -1,4 +1,4 @@
-﻿@model List<RealEstate.Models.GetPropertyByUser_Result>
+﻿@model List<RealEstate.Models.ViewModels.PropertyViewModel>
 
 @{
     ViewBag.Title = "Tin của tôi";
@@ -29,9 +29,9 @@ else
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Name</td>
-                    <td>@String.Format("{0:N0}", item.PriceMin) - @String.Format("{0:N0}", item.PriceMax) VND</td>
-                    <td>@item.AreaMin - @item.AreaMax m²</td>
+                    <td>@item.Title</td>
+                    <td>@String.Format("{0:N0}", item.PriceMin) - @String.Format("{0:N0}", item.PriceMax) @item.PriceUnit</td>
+                    <td>@item.AreaMin - @item.AreaMax @item.AreaUnit </td>
                     <td>
                         @if (item.Status == "Pending")
                         {

@@ -20,7 +20,7 @@ namespace RealEstate.Repository
 		public List<PropertyViewModel> GetPropertyAll( int PageNumber ) 
 		{
               
-            List<PropertyViewModel> ProperyList = db.GetProperty(  PageNumber)
+            List<PropertyViewModel> ProperyList = db.GetProperty(PageNumber)
                  .Select(o => new PropertyViewModel
                  {
                      Id = o.Id,
@@ -45,7 +45,7 @@ namespace RealEstate.Repository
 
              return ProperyList;
         }
-
+       
         public List<PropertyType> GetPropertyTypes()
         {
             return db.PropertyTypes.ToList();
@@ -69,7 +69,7 @@ namespace RealEstate.Repository
                 PriceMax = Convert.ToInt32(i.PriceMax),
                 PriceMin = Convert.ToInt32(i.PriceMin),
                 PriceUnit = Convert.ToString(i.PriceUnit),
-                Address = i.Address ?? "",
+                //Address = i.Address ?? "",
                 Phone = i.Phone ?? "",
                 CreatedAt = Convert.ToDateTime(i.CreatedAt),
                 ImageGallery = JsonConvert.DeserializeObject<List<PropertyImage>>(Convert.ToString(i.ImageGallery)),
@@ -147,7 +147,9 @@ namespace RealEstate.Repository
             return propertyDetailViewModel;
 
         }
-        
+
+       
+
 
 
 

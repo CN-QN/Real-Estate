@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="08ba6a98fa4a476fb7a0270d2fa64fb4" Name="Diagram1">
+      <Diagram DiagramId="b6810a6cde244b79b74084f53ec2901b" Name="Diagram1">
         <EntityTypeShape EntityType="RealEstateModel.Address" Width="1.5" PointX="3" PointY="25.5" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.District" Width="1.5" PointX="0.75" PointY="24.625" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.Favorite" Width="1.5" PointX="5.25" PointY="20.625" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.Furniture" Width="1.5" PointX="3" PointY="33.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.Log" Width="1.5" PointX="5.25" PointY="17.625" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.Message" Width="1.5" PointX="8.25" PointY="19.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Payment" Width="1.5" PointX="9.75" PointY="26.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Property" Width="1.5" PointX="5.25" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Payment" Width="1.5" PointX="9.75" PointY="26.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Property" Width="1.5" PointX="5.25" PointY="23.625" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.PropertyImage" Width="1.5" PointX="7.5" PointY="23.625" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.PropertyType" Width="1.5" PointX="3" PointY="36" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.Province" Width="1.5" PointX="1.5" PointY="30.875" IsExpanded="true" />
@@ -21,7 +21,7 @@
         <EntityTypeShape EntityType="RealEstateModel.Review" Width="1.5" PointX="10.5" PointY="22.625" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.Role" Width="1.5" PointX="0.75" PointY="19.875" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RealEstateModel.Transaction" Width="1.5" PointX="7.5" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateModel.Transaction" Width="1.5" PointX="7.5" PointY="26.25" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.UrbanAttribute" Width="1.5" PointX="9.75" PointY="31.5" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.UrbanImage" Width="1.5" PointX="9.75" PointY="34.25" IsExpanded="true" />
         <EntityTypeShape EntityType="RealEstateModel.Urban" Width="1.5" PointX="7.5" PointY="31.75" IsExpanded="true" />

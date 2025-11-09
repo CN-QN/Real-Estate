@@ -83,7 +83,6 @@
     <Property Name="Description" Type="nvarchar(max)" />
     <Property Name="PriceMin" Type="decimal" Precision="18" Scale="2" />
     <Property Name="PriceMax" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="Address" Type="nvarchar" MaxLength="255" />
     <Property Name="TypeId" Type="int" Nullable="false" />
     <Property Name="AreaMin" Type="decimal" Precision="18" Scale="2" />
     <Property Name="AreaMax" Type="decimal" Precision="18" Scale="2" />
@@ -546,7 +545,9 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_PropertyImages_Properties">
-    <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
+    <End Role="Properties" Type="Self.Properties" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="PropertyImages" Type="Self.PropertyImages" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Properties">
@@ -657,6 +658,8 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Parameter Name="DienTichMin" Type="decimal" Mode="In" />
     <Parameter Name="DienTichMax" Type="decimal" Mode="In" />
     <Parameter Name="LoaiBDS" Type="int" Mode="In" />
+    <Parameter Name="DonViDienTich" Type="nvarchar" Mode="In" />
+    <Parameter Name="DonViGia" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="Get_Property_Count_By_District" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
@@ -677,7 +680,6 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
   </Function>
   <Function Name="GetPropertyDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="propertyId" Type="int" Mode="In" />
-    <Parameter Name="userId" Type="int" Mode="In" />
   </Function>
   <Function Name="GetPropertySearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
@@ -712,6 +714,20 @@ warning 6002: The table/view 'RealEstate.dbo.PropertyAttributes' does not have a
     <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="UpdateProperty" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="Title" Type="nvarchar" Mode="In" />
+    <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="AreaMax" Type="decimal" Mode="In" />
+    <Parameter Name="AreaMin" Type="decimal" Mode="In" />
+    <Parameter Name="AreaUnit" Type="nvarchar" Mode="In" />
+    <Parameter Name="TypeId" Type="int" Mode="In" />
+    <Parameter Name="PriceMax" Type="int" Mode="In" />
+    <Parameter Name="PriceMin" Type="int" Mode="In" />
+    <Parameter Name="PriceUnit" Type="nvarchar" Mode="In" />
+    <Parameter Name="AddressId" Type="int" Mode="In" />
+    <Parameter Name="AddressDetail" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="VerifyLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Email" Type="nvarchar" Mode="In" />
   </Function>

@@ -7,7 +7,6 @@
     @using (Html.BeginForm("CreatePost", "Agent", FormMethod.Post,new {enctype = "multipart/form-data"}))
     {
 
-        <div class="fs-6 mb-2 fw-bold">Các bước đăng tin > <a class="text-decoration-none" href="#">Soạn tin đăng</a></div>
         <div class="bg-white p-4 mb-4">
             <p class="text-primary fw-bold">I. Thông tin cơ bản</p>
             <div class="row">
@@ -147,11 +146,14 @@
                             </label>
                         </div>
                         <div class="col-9 d-flex justify-content-between ">
-                            <div class="col-5">
+                            <div class="col-3">
                                 <input type="number" class="form-control" name="GiaMin" value="" placeholder="Giá Min" />
                             </div>
-                            <div class="col-5">
+                            <div class="col-3">
                                 <input type="number" class="form-control" name="GiaMax" value="" placeholder="Giá Max" />
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="form-control" name="DonViGia" value="" placeholder="Triệu , Tỷ " />
                             </div>
                         </div>
                     </div>
@@ -164,11 +166,14 @@
                             </label>
                         </div>
                         <div class="col-9 d-flex justify-content-between ">
-                            <div class="col-5">
+                            <div class="col-3">
                                 <input type="number" class="form-control" name="DienTichMin" value="" placeholder="Diện tích Min" />
                             </div>
-                            <div class="col-5">
+                            <div class="col-3">
                                 <input type="number" class="form-control" name="DienTichMax" value="" placeholder="Diện tích Max" />
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="form-control" name="DonViDienTich" value="" placeholder="m2 , m3" />
                             </div>
                         </div>
 

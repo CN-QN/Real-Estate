@@ -41,21 +41,19 @@
         </div>
 
         <div class="form-section">
-            <label for="Address">Địa chỉ:</label>
+            <label for="Address_detail">Địa chỉ:</label>
+            @Html.HiddenFor(m => m.Address_id)  
             @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
         </div>
 
+
         <div class="form-section">
             <label for="TypeId">Loại BĐS:</label>
-            @Html.DropDownList("LoaiBDS", (SelectList)ViewBag.Type, "-- Chọn loại BĐS --", new { @class = "form-control" })
+            @Html.DropDownList("TypeId", (SelectList)ViewBag.Type, Model.NameType, new { @class = "form-control" })
 
         </div>
 
-        <div class="form-section">
-            <label>Avatar hiện tại:</label>
-            <img src="@Model.Avatar" class="main-image" />
-            <input type="file" name="AvatarFile" class="form-control" />
-        </div>
+
 
         <div class="form-section">
             <label>Gallery hiện tại:</label>
@@ -65,7 +63,7 @@
                     var images = Model.ImageGallery.Split(',');
                     foreach (var img in images)
                     {
-                        <img src="@img" class="gallery-image" />
+                        <img src="~/Content/Uploads/@img" class="gallery-image" />
                     }
                 }
             </div>

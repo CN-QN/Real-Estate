@@ -52,7 +52,7 @@ namespace RealEstate.Models
         public virtual DbSet<Ward> Wards { get; set; }
         public virtual DbSet<PropertyAttribute> PropertyAttributes { get; set; }
     
-        public virtual ObjectResult<Nullable<int>> CreatePost(Nullable<int> userId, Nullable<int> provinceCode, Nullable<int> districtCode, string wardCode, string addressDetail, Nullable<decimal> latitude, Nullable<decimal> longitude, string streetName, string tenDuAn, string moTa, Nullable<decimal> giaMin, Nullable<decimal> giaMax, Nullable<decimal> dienTichMin, Nullable<decimal> dienTichMax, Nullable<int> loaiBDS)
+        public virtual ObjectResult<Nullable<int>> CreatePost(Nullable<int> userId, Nullable<int> provinceCode, Nullable<int> districtCode, string wardCode, string addressDetail, Nullable<decimal> latitude, Nullable<decimal> longitude, string streetName, string tenDuAn, string moTa, Nullable<decimal> giaMin, Nullable<decimal> giaMax, Nullable<decimal> dienTichMin, Nullable<decimal> dienTichMax, Nullable<int> loaiBDS, string donViDienTich, string donViGia)
         {
             var userIdParameter = userId.HasValue ?
                 new ObjectParameter("UserId", userId) :
@@ -114,7 +114,15 @@ namespace RealEstate.Models
                 new ObjectParameter("LoaiBDS", loaiBDS) :
                 new ObjectParameter("LoaiBDS", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreatePost", userIdParameter, provinceCodeParameter, districtCodeParameter, wardCodeParameter, addressDetailParameter, latitudeParameter, longitudeParameter, streetNameParameter, tenDuAnParameter, moTaParameter, giaMinParameter, giaMaxParameter, dienTichMinParameter, dienTichMaxParameter, loaiBDSParameter);
+            var donViDienTichParameter = donViDienTich != null ?
+                new ObjectParameter("DonViDienTich", donViDienTich) :
+                new ObjectParameter("DonViDienTich", typeof(string));
+    
+            var donViGiaParameter = donViGia != null ?
+                new ObjectParameter("DonViGia", donViGia) :
+                new ObjectParameter("DonViGia", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreatePost", userIdParameter, provinceCodeParameter, districtCodeParameter, wardCodeParameter, addressDetailParameter, latitudeParameter, longitudeParameter, streetNameParameter, tenDuAnParameter, moTaParameter, giaMinParameter, giaMaxParameter, dienTichMinParameter, dienTichMaxParameter, loaiBDSParameter, donViDienTichParameter, donViGiaParameter);
         }
     
         public virtual ObjectResult<GetProfile_Result> GetProfile(string email)
@@ -155,6 +163,15 @@ namespace RealEstate.Models
                 new ObjectParameter("PageNumber", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPropertyByUser_Result>("GetPropertyByUser", user_idParameter, pageNumberParameter);
+        }
+    
+        public virtual ObjectResult<GetPropertyDetail_Result> GetPropertyDetail(Nullable<int> propertyId)
+        {
+            var propertyIdParameter = propertyId.HasValue ?
+                new ObjectParameter("propertyId", propertyId) :
+                new ObjectParameter("propertyId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPropertyDetail_Result>("GetPropertyDetail", propertyIdParameter);
         }
     
         public virtual ObjectResult<GetPropertySearch_Result> GetPropertySearch(string keyword)
@@ -278,17 +295,57 @@ namespace RealEstate.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VerifyLogin_Result>("VerifyLogin", emailParameter);
         }
     
-        public virtual ObjectResult<GetPropertyDetail_Result> GetPropertyDetail(Nullable<int> propertyId, Nullable<int> userId)
+        public virtual int UpdateProperty(Nullable<int> id, string title, string description, Nullable<decimal> areaMax, Nullable<decimal> areaMin, string areaUnit, Nullable<int> typeId, Nullable<int> priceMax, Nullable<int> priceMin, string priceUnit, Nullable<int> addressId, string addressDetail)
         {
-            var propertyIdParameter = propertyId.HasValue ?
-                new ObjectParameter("propertyId", propertyId) :
-                new ObjectParameter("propertyId", typeof(int));
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
     
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("userId", userId) :
-                new ObjectParameter("userId", typeof(int));
+            var titleParameter = title != null ?
+                new ObjectParameter("Title", title) :
+                new ObjectParameter("Title", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPropertyDetail_Result>("GetPropertyDetail", propertyIdParameter, userIdParameter);
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            var areaMaxParameter = areaMax.HasValue ?
+                new ObjectParameter("AreaMax", areaMax) :
+                new ObjectParameter("AreaMax", typeof(decimal));
+    
+            var areaMinParameter = areaMin.HasValue ?
+                new ObjectParameter("AreaMin", areaMin) :
+                new ObjectParameter("AreaMin", typeof(decimal));
+    
+            var areaUnitParameter = areaUnit != null ?
+                new ObjectParameter("AreaUnit", areaUnit) :
+                new ObjectParameter("AreaUnit", typeof(string));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("TypeId", typeId) :
+                new ObjectParameter("TypeId", typeof(int));
+    
+            var priceMaxParameter = priceMax.HasValue ?
+                new ObjectParameter("PriceMax", priceMax) :
+                new ObjectParameter("PriceMax", typeof(int));
+    
+            var priceMinParameter = priceMin.HasValue ?
+                new ObjectParameter("PriceMin", priceMin) :
+                new ObjectParameter("PriceMin", typeof(int));
+    
+            var priceUnitParameter = priceUnit != null ?
+                new ObjectParameter("PriceUnit", priceUnit) :
+                new ObjectParameter("PriceUnit", typeof(string));
+    
+            var addressIdParameter = addressId.HasValue ?
+                new ObjectParameter("AddressId", addressId) :
+                new ObjectParameter("AddressId", typeof(int));
+    
+            var addressDetailParameter = addressDetail != null ?
+                new ObjectParameter("AddressDetail", addressDetail) :
+                new ObjectParameter("AddressDetail", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateProperty", idParameter, titleParameter, descriptionParameter, areaMaxParameter, areaMinParameter, areaUnitParameter, typeIdParameter, priceMaxParameter, priceMinParameter, priceUnitParameter, addressIdParameter, addressDetailParameter);
         }
     }
 }

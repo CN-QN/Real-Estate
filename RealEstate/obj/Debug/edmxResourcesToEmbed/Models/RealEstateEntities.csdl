@@ -98,7 +98,6 @@
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="PriceMin" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="PriceMax" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="TypeId" Type="Int32" Nullable="false" />
     <Property Name="AreaMin" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="AreaMax" Type="Decimal" Precision="18" Scale="2" />
@@ -108,7 +107,7 @@
     <Property Name="CreatedAt" Type="DateTime" Precision="0" />
     <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="UpdatedAt" Type="DateTime" Precision="0" />
-    <NavigationProperty Name="Address1" Relationship="Self.FK_Properties_Address" FromRole="Properties" ToRole="Address" />
+    <NavigationProperty Name="Address" Relationship="Self.FK_Properties_Address" FromRole="Properties" ToRole="Address" />
     <NavigationProperty Name="Favorites" Relationship="Self.FK_Favorites_Properties" FromRole="Properties" ToRole="Favorites" />
     <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_Property" FromRole="Properties" ToRole="Messages" />
     <NavigationProperty Name="PropertyAttributes" Relationship="Self.FK__PropertyA__Prope__1BC821DD" FromRole="Properties" ToRole="PropertyAttributes" />
@@ -516,7 +515,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_PropertyImages_Properties">
-    <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+    <End Role="Properties" Type="Self.Property" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="PropertyImages" Type="Self.PropertyImage" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Properties">
@@ -826,6 +827,8 @@
       <Parameter Name="DienTichMin" Mode="In" Type="Decimal" />
       <Parameter Name="DienTichMax" Mode="In" Type="Decimal" />
       <Parameter Name="LoaiBDS" Mode="In" Type="Int32" />
+      <Parameter Name="DonViDienTich" Mode="In" Type="String" />
+      <Parameter Name="DonViGia" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="GetProfile" ReturnType="Collection(RealEstateModel.GetProfile_Result)">
       <Parameter Name="email" Mode="In" Type="String" />
@@ -839,6 +842,9 @@
     <FunctionImport Name="GetPropertyByUser" ReturnType="Collection(RealEstateModel.GetPropertyByUser_Result)">
       <Parameter Name="user_id" Mode="In" Type="Int32" />
       <Parameter Name="PageNumber" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetPropertyDetail" ReturnType="Collection(RealEstateModel.GetPropertyDetail_Result)">
+      <Parameter Name="propertyId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="GetPropertySearch" ReturnType="Collection(RealEstateModel.GetPropertySearch_Result)">
       <Parameter Name="Keyword" Mode="In" Type="String" />
@@ -876,9 +882,19 @@
     <FunctionImport Name="VerifyLogin" ReturnType="Collection(RealEstateModel.VerifyLogin_Result)">
       <Parameter Name="Email" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="GetPropertyDetail" ReturnType="Collection(RealEstateModel.GetPropertyDetail_Result)">
-      <Parameter Name="propertyId" Mode="In" Type="Int32" />
-      <Parameter Name="userId" Mode="In" Type="Int32" />
+    <FunctionImport Name="UpdateProperty">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Title" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="AreaMax" Mode="In" Type="Decimal" />
+      <Parameter Name="AreaMin" Mode="In" Type="Decimal" />
+      <Parameter Name="AreaUnit" Mode="In" Type="String" />
+      <Parameter Name="TypeId" Mode="In" Type="Int32" />
+      <Parameter Name="PriceMax" Mode="In" Type="Int32" />
+      <Parameter Name="PriceMin" Mode="In" Type="Int32" />
+      <Parameter Name="PriceUnit" Mode="In" Type="String" />
+      <Parameter Name="AddressId" Mode="In" Type="Int32" />
+      <Parameter Name="AddressDetail" Mode="In" Type="String" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="GetProfile_Result">
@@ -907,7 +923,7 @@
     <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
     <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
     <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-    <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
+    <Property Type="String" Name="Address" Nullable="true" />
   </ComplexType>
   <ComplexType Name="GetPropertyById_Result">
     <Property Type="Int32" Name="Id" Nullable="false" />
@@ -916,7 +932,6 @@
     <Property Type="String" Name="Description" Nullable="true" />
     <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
     <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-    <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
     <Property Type="Int32" Name="TypeId" Nullable="false" />
     <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
     <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
@@ -928,6 +943,7 @@
     <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
     <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
     <Property Type="String" Name="Avatar" Nullable="true" />
+    <Property Type="String" Name="Address" Nullable="true" />
     <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
     <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
     <Property Type="String" Name="ImageGallery" Nullable="true" />
@@ -949,7 +965,31 @@
     <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
     <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
     <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
-    <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
+    <Property Type="String" Name="Address" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="GetPropertyDetail_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="Int32" Name="UserId" Nullable="false" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Int32" Name="TypeId" Nullable="false" />
+    <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="Address_id" Nullable="true" />
+    <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
+    <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
+    <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" />
+    <Property Type="String" Name="Avatar" Nullable="true" />
+    <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="ImageGallery" Nullable="true" MaxLength="4000" />
+    <Property Type="String" Name="NameType" Nullable="false" MaxLength="50" />
   </ComplexType>
   <ComplexType Name="GetPropertySearch_Result">
     <Property Type="Int32" Name="Id" Nullable="false" />
@@ -958,7 +998,6 @@
     <Property Type="String" Name="Description" Nullable="true" />
     <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
     <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-    <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
     <Property Type="Int32" Name="TypeId" Nullable="false" />
     <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
     <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
@@ -993,29 +1032,5 @@
     <Property Type="String" Name="Password" Nullable="true" MaxLength="255" />
     <Property Type="Int32" Name="RoleId" Nullable="false" />
     <Property Type="String" Name="RoleName" Nullable="false" MaxLength="50" />
-  </ComplexType>
-  <ComplexType Name="GetPropertyDetail_Result">
-    <Property Type="Int32" Name="Id" Nullable="false" />
-    <Property Type="Int32" Name="UserId" Nullable="false" />
-    <Property Type="String" Name="Title" Nullable="false" MaxLength="200" />
-    <Property Type="String" Name="Description" Nullable="true" />
-    <Property Type="Decimal" Name="PriceMin" Nullable="true" Precision="18" Scale="2" />
-    <Property Type="Decimal" Name="PriceMax" Nullable="true" Precision="18" Scale="2" />
-    <Property Type="String" Name="Address" Nullable="true" MaxLength="255" />
-    <Property Type="Int32" Name="TypeId" Nullable="false" />
-    <Property Type="Decimal" Name="AreaMin" Nullable="true" Precision="18" Scale="2" />
-    <Property Type="Decimal" Name="AreaMax" Nullable="true" Precision="18" Scale="2" />
-    <Property Type="String" Name="AreaUnit" Nullable="true" MaxLength="10" />
-    <Property Type="Int32" Name="Address_id" Nullable="true" />
-    <Property Type="String" Name="PriceUnit" Nullable="true" MaxLength="10" />
-    <Property Type="DateTime" Name="CreatedAt" Nullable="true" />
-    <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
-    <Property Type="DateTime" Name="UpdatedAt" Nullable="true" />
-    <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="Avatar" Nullable="true" />
-    <Property Type="String" Name="NameUser" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="ImageGallery" Nullable="true" />
-    <Property Type="String" Name="NameType" Nullable="false" MaxLength="50" />
   </ComplexType>
 </Schema>

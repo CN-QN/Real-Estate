@@ -19,7 +19,6 @@ namespace RealEstate.Models
         public string Description { get; set; }
         public Nullable<decimal> PriceMin { get; set; }
         public Nullable<decimal> PriceMax { get; set; }
-        public string Address { get; set; }
         public int TypeId { get; set; }
         public Nullable<decimal> AreaMin { get; set; }
         public Nullable<decimal> AreaMax { get; set; }
@@ -31,6 +30,7 @@ namespace RealEstate.Models
         public Nullable<System.DateTime> UpdatedAt { get; set; }
         public string Email { get; set; }
         public string Avatar { get; set; }
+        public string Address { get; set; }
         public string NameUser { get; set; }
         public string Phone { get; set; }
         public string ImageGallery { get; set; }

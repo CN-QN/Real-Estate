@@ -16,10 +16,14 @@ namespace RealEstate.Models.ViewModels
         public decimal GiaMin { get; set; }
         [Required(ErrorMessage = " Vui lòng nhập giá max")]
 
+
+        public string DonViGia { get; set; }
+
         public decimal GiaMax { get; set; }
         [Required(ErrorMessage = " Vui lòng nhập diện tích min")]
         public decimal DienTichMin { get; set; }
         [Required(ErrorMessage = " Vui lòng nhập diện tích max")]
+        public string DonViDienTich { get; set; }
         public decimal DienTichMax { get; set; }
         [Required(ErrorMessage = " Vui lòng nhập mô tả")]
         public string MoTa { get; set; }

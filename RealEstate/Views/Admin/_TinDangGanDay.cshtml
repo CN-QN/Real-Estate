@@ -38,26 +38,36 @@
                             }
                         </td>
                         <td class="text-center d-flex justify-content-between ">
-                           <div  >
+                            <div>
                                 @using (Html.BeginForm("EditPost", "Admin", FormMethod.Get))
-                            {
+                                {
                                 @Html.Hidden("id", item.Id)
                                 <button type="submit" class="btn btn-sm btn-warning">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
-                            }
-                               </div>
+                                }
+                            </div>
 
                             <div>
+                                @using (Html.BeginForm("ChiTietTin", "Admin", FormMethod.Post    ))
+                                {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("id", item.Id)
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                                }
+                            </div>
+                            <div>
                                 @using (Html.BeginForm("DeletePost", "Admin", FormMethod.Post, new { onsubmit = "return confirm('Bạn có chắc muốn xóa không?');" }))
-                            {
+                                {
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("id", item.Id)
                                 <button type="submit" class="btn btn-sm btn-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
-                            }
-                                </div>
+                                }
+                            </div>
                         </td>
                     </tr>
                 }

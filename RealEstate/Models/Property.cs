@@ -33,7 +33,6 @@ namespace RealEstate.Models
         public string Description { get; set; }
         public Nullable<decimal> PriceMin { get; set; }
         public Nullable<decimal> PriceMax { get; set; }
-        public string Address { get; set; }
         public int TypeId { get; set; }
         public Nullable<decimal> AreaMin { get; set; }
         public Nullable<decimal> AreaMax { get; set; }
@@ -44,7 +43,7 @@ namespace RealEstate.Models
         public string Status { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
     
-        public virtual Address Address1 { get; set; }
+        public virtual Address Address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Favorite> Favorites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

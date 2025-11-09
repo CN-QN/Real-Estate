@@ -86,7 +86,7 @@ namespace RealEstate.Controllers
                 {
                     TempData["ToastrType"] = "success";
                     TempData["ToastrMessage"] = "Đăng tin thành công. Tin của bạn đang chờ duyệt.";
-                    return RedirectToAction("Index", "Agent");
+                    return RedirectToAction("MyPosts", "Agent");
                 }
             }
 
@@ -106,14 +106,14 @@ namespace RealEstate.Controllers
                 return RedirectToAction("Index", "Agent");
             }
             int userId = Convert.ToInt32(User.Identity.GetUserId());
-            var post = _AgentService.GetMyPostDetail(id.Value, userId);
-            if (post == null)
-            {
-                TempData["ToastrType"] = "error";
-                TempData["ToastrMessage"] = "Không tìm thấy bài viết.";
-                return RedirectToAction("MyPosts");
-            }
-            return View(post);
+            //var post = _AgentService.GetMyPostDetail(id.Value, userId);
+            //if (post == null)
+            //{
+            //    TempData["ToastrType"] = "error";
+            //    TempData["ToastrMessage"] = "Không tìm thấy bài viết.";
+            //    return RedirectToAction("MyPosts");
+            //}
+            return View();
         }
 
 
@@ -136,9 +136,16 @@ namespace RealEstate.Controllers
             ViewBag.Districts = new List<District>();
             ViewBag.Wards = new List<Ward>();
             ViewBag.Type = new SelectList(_PropertyService.GetPropertyTypes(), "Id", "Name", null);
-            var item = _AgentService.GetMyPostDetail(id.Value, Convert.ToInt32(User.Identity.GetUserId()));
+            //var item = _AgentService.GetMyPostDetail(id.Value, Convert.ToInt32(User.Identity.GetUserId()));
 
-            return View(item);
+            return View();
+        }
+
+        [HttpPost , ActionName("EditPost"),ValidateInput(false)]
+        public ActionResult EditPosts(GetPropertyDetail_Result model , int id)
+        {
+            _AgentService.EditPost(model, id);
+            return RedirectToAction("MyPosts","Agent");
         }
 
         public ActionResult DeletePost(int? id)
@@ -147,8 +154,8 @@ namespace RealEstate.Controllers
             {
                 return RedirectToAction("Index", "Agent");
             }
-            var item = _AgentService.GetMyPostDetail(id.Value, Convert.ToInt32(User.Identity.GetUserId()));
-            return View(item);
+            //var item = _AgentService.GetMyPostDetail(id.Value, Convert.ToInt32(User.Identity.GetUserId()));
+            return View();
         }
         [HttpPost, ActionName("DeletePost")]
         public ActionResult DeletePosts(int id)

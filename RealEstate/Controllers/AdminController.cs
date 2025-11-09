@@ -8,10 +8,10 @@ using System.Web.Mvc;
 
 namespace RealEstate.Controllers
 {
-    [Authorize(Roles = "Agents")]
     public class AdminController : Controller
     {
         private readonly AdminService _AdminService = new AdminService();
+        private readonly AgentService _AgentService = new AgentService();
 
         public ActionResult Index()
         {
@@ -23,7 +23,11 @@ namespace RealEstate.Controllers
             ViewBag.PageNumber = PageNumber ?? 1;
             return View();
         }
-
+        public ActionResult ChiTietTin(int id)
+        {
+            var post = _AgentService.GetMyPostDetail(id);
+            return View(post);
+        }
         public ActionResult QuanLyNguoiDung(int? PageNumber)
         {
             ViewBag.PageNumber = PageNumber ?? 1;

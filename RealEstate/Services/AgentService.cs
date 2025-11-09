@@ -16,11 +16,15 @@ namespace RealEstate.Services
         {
             return _AgentRepo.Provinces();
         }
-        public GetPropertyDetail_Result GetMyPostDetail(int propertyId, int userId)
+        public GetPropertyDetail_Result GetMyPostDetail(int propertyId)
         {
-            return _AgentRepo.GetMyPostDetail(propertyId, userId);
+            return _AgentRepo.GetMyPostDetail(propertyId);
         }
+        public void EditPost(GetPropertyDetail_Result model, int id)
+        {
+            _AgentRepo.EditPost(model, id);
 
+        }
         public List<District> Districts(int? province_code)
         {
             if (!province_code.HasValue)
@@ -58,7 +62,7 @@ namespace RealEstate.Services
             return _AgentRepo.CreatePost(request, userId);
         }
 
-        public List<GetPropertyByUser_Result> GetMyPosts(int userId, int pageNumber)
+        public List<PropertyViewModel> GetMyPosts(int userId, int pageNumber)
         {
             return _AgentRepo.GetMyPosts( userId,  pageNumber);
         }

@@ -851,6 +851,7 @@
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
     <Content Include="Views\Users\ProfileUser.cshtml" />
+    <Content Include="Views\Admin\ChiTietTin.cshtml" />
     <None Include="Views\Admin\EditPost.cshtml" />
     <Content Include="Views\Admin\_DanhSachNguoiDung.cshtml" />
     <Content Include="Views\Admin\EditUser.cshtml" />

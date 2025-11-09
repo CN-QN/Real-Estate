@@ -21,9 +21,9 @@ namespace RealEstate.Repository
             List<District> districts = db.Districts.Where(i =>i.province_code == province_code).ToList();
             return districts;
         }
-        public GetPropertyDetail_Result GetMyPostDetail(int propertyId, int userId)
+        public GetPropertyDetail_Result GetMyPostDetail(int propertyId )
         {
-            var post = db.GetPropertyDetail(propertyId, userId).FirstOrDefault();
+            var post = db.GetPropertyDetail(propertyId).FirstOrDefault();
             return post;
         }
 
@@ -32,9 +32,61 @@ namespace RealEstate.Repository
             List<Ward> wards = db.Wards.Where(i =>i.district_code== district_code).ToList();
             return wards;
         }
-        public List<GetPropertyByUser_Result> GetMyPosts(int userId, int pageNumber)
+        public void EditPost(GetPropertyDetail_Result model, int Id)
         {
-            var posts =  db.GetPropertyByUser(userId, pageNumber).ToList();
+            db.Database.ExecuteSqlCommand(@"
+        EXEC UpdateProperty 
+            @Id = {0}, 
+            @Title = {1}, 
+            @Description = {2}, 
+            @AreaMax = {3}, 
+            @AreaMin = {4}, 
+            @AreaUnit = {5}, 
+            @TypeId = {6}, 
+            @PriceMax = {7}, 
+            @PriceMin = {8}, 
+            @PriceUnit = {9}, 
+            @AddressId = {10},
+            @AddressDetail = {11}",
+                Id,
+                model.Title,
+                model.Description,
+                model.AreaMax,
+                model.AreaMin,
+                model.AreaUnit,
+                model.TypeId,
+                model.PriceMax,
+                model.PriceMin,
+                model.PriceUnit,
+                model.Address_id,
+                model.Address
+            );
+        }
+
+        public List<PropertyViewModel> GetMyPosts(int userId, int pageNumber)
+        {
+            var posts = db.GetPropertyByUser(userId, pageNumber)
+    .Select(p => new PropertyViewModel
+    {
+        Id = p.Id,
+        Title = p.Title,
+        AreaMin = p.AreaMin.Value,
+        AreaMax = p.AreaMax.Value,
+        AreaUnit = p.AreaUnit,
+        Name = p.Name,
+        PriceMin = p.PriceMin.Value,
+        PriceMax = p.PriceMax.Value,
+        PriceUnit = p.PriceUnit,
+        TypeId = p.TypeId,
+        Address = p.Address,
+        TotalPage =Convert.ToInt32(p.TotalPage),
+        ImageUrl = p.ImageUrl,
+        Avatar = p.Avatar,
+        Status = p.Status,
+        CreatedAt = p.CreatedAt.Value
+    })
+    .ToList();
+
             return posts;
         }
         public bool CreatePost(PostViewModels request, int userId)
@@ -54,7 +106,9 @@ namespace RealEstate.Repository
      request.GiaMax,
      request.DienTichMin,
      request.DienTichMax,
-     request.LoaiBDS
+     request.LoaiBDS,
+     request.DonViDienTich,
+     request.DonViGia
  ).FirstOrDefault();
 
 
