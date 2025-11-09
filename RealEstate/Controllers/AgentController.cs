@@ -105,15 +105,14 @@ namespace RealEstate.Controllers
             {
                 return RedirectToAction("Index", "Agent");
             }
-            int userId = Convert.ToInt32(User.Identity.GetUserId());
-            //var post = _AgentService.GetMyPostDetail(id.Value, userId);
-            //if (post == null)
-            //{
-            //    TempData["ToastrType"] = "error";
-            //    TempData["ToastrMessage"] = "Không tìm thấy bài viết.";
-            //    return RedirectToAction("MyPosts");
-            //}
-            return View();
+            var post = _AgentService.GetMyPostDetail(id.Value );
+            if (post == null)
+            {
+                TempData["ToastrType"] = "error";
+                TempData["ToastrMessage"] = "Không tìm thấy bài viết.";
+                return RedirectToAction("MyPosts");
+            }
+            return View(post);
         }
 
 
@@ -124,6 +123,36 @@ namespace RealEstate.Controllers
         public ActionResult Customers()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult DeleteImage(int id, string name)
+        {
+            try
+            {
+                using (var db = new RealEstateEntities())
+                {
+
+                    var post = db.PropertyImages.Where(p => p.PropertyId == id && p.ImageUrl == name).FirstOrDefault();
+                    if (post == null)
+                        return Json(new { success = false, message = "Không tìm thấy bài đăng." });
+
+                    db.PropertyImages.Remove(post);
+                    db.SaveChanges();
+
+                    // Xóa file vật lý
+                    var path = Server.MapPath("~/Content/Uploads/" + name);
+                    if(System.IO.File.Exists(path))
+
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                    return View("EditPost", "Agent",id);
+                }
+            }
+            catch
+            {
+                throw new Exception("Error");
+            }
         }
 
         public ActionResult EditPost(int? id)
@@ -136,9 +165,9 @@ namespace RealEstate.Controllers
             ViewBag.Districts = new List<District>();
             ViewBag.Wards = new List<Ward>();
             ViewBag.Type = new SelectList(_PropertyService.GetPropertyTypes(), "Id", "Name", null);
-            //var item = _AgentService.GetMyPostDetail(id.Value, Convert.ToInt32(User.Identity.GetUserId()));
+            var item = _AgentService.GetMyPostDetail(id.Value );
 
-            return View();
+            return View(item);
         }
 
         [HttpPost , ActionName("EditPost"),ValidateInput(false)]
@@ -154,7 +183,7 @@ namespace RealEstate.Controllers
             {
                 return RedirectToAction("Index", "Agent");
             }
-            //var item = _AgentService.GetMyPostDetail(id.Value, Convert.ToInt32(User.Identity.GetUserId()));
+            var item = _AgentService.GetMyPostDetail(id.Value );
             return View();
         }
         [HttpPost, ActionName("DeletePost")]
